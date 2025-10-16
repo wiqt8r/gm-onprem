@@ -1,85 +1,105 @@
-# GIS
+# ГИС
 
-## How Navixy uses GIS
+## Как ГдеМои использует ГИС
 
-Navixy platform integrates with supplemental GIS (Geographic Information Services) to provide accurate and efficient location-based tracking and monitoring services for fleets and assets. The examples of such services include:
+Платформа **ГдеМои** интегрируется с дополнительными геоинформационными сервисами (ГИС), чтобы обеспечивать точные и эффективные функции геолокации, мониторинга и анализа для отслеживания транспортных средств, персонала и других объектов.  
 
-* **Geocoding** is the process of converting addresses, such as a street address, into geographic coordinates like latitude and longitude, and vice versa.
-* **Routing** involves creating a path between two points on the map. To enable geocoding and routing, you need a geocoder/route provider.
-* **Distance matrix** is used to calculate the distance and travel time between multiple points on the map. This information can be used to optimize routes, estimate travel time and fuel consumption, and to provide location-based analytics.
-* **LBS/Cell ID databases** are used to provide location data for devices that do not have GPS capabilities or they are temporarily limited. In these cases, Navixy uses the cell tower data to triangulate the position of the device. This technology is useful in areas with weak GPS signals or for devices that are inside buildings or other structures.
+Примеры таких сервисов:
 
-## Popular options for GIS
+* **Геокодирование** — процесс преобразования адресов (например, улицы и номера дома) в географические координаты (широту и долготу), а также координат в адреса (**обратное геокодирование**).  
+* **Маршрутизация** — построение маршрута между двумя точками на карте. Для этого требуется внешний сервис геокодирования и маршрутизации (geocoder/route provider).  
+* **Матрица расстояний (Distance Matrix)** — инструмент, используемый для расчёта расстояний и времени в пути между несколькими точками на карте. Эти данные применяются для оптимизации маршрутов, оценки времени и расхода топлива, а также для аналитики, основанной на местоположении.  
+* **Базы LBS/Cell ID** — используются для определения местоположения устройств, не имеющих GPS, или при временной потере GPS-сигнала. В этих случаях **ГдеМои** использует данные базовых станций для триангуляции координат. Такая технология особенно полезна в зонах со слабым GPS-сигналом или при работе устройств внутри зданий.
 
-Navixy works with a range of GIS providers and below you will find information on how to integrate with the most common choices.
+---
 
-### Navixy Premium GIS
+## Популярные варианты ГИС
 
-Navixy Premium GIS is an add-on package for the Navixy GPS tracking platform that offers advanced GIS features for businesses that require more precise location data and mapping capabilities. The package includes access to premium geocoding and routing services from Google, advanced mapping features, and the ability to create custom map layers.
+**ГдеМои** поддерживает работу с разными поставщиками ГИС-сервисов. Ниже представлены наиболее распространённые варианты и рекомендации по их интеграции.
 
-With Premium GIS, businesses can get more accurate and detailed location information, optimize their routes and navigation, and create customized maps to suit their specific needs. The package is available as an add-on to Navixy's basic GPS tracking platform, and users can choose to add it to their subscription if they need advanced GIS functionality.
+---
 
-Integrating your On-Premise instance with Navixy Premium GIS is a simple and cost-effective process that covers most of the needs.
+### ГдеМои - Премиум ГИС
+
+**ГдеМои Премиум ГИС** — это дополнительный пакет, предоставляющий расширенные возможности геоинформационных сервисов для компаний, которым необходима высокая точность данных и продвинутая картография.  
+Пакет включает:
+
+- премиальные сервисаы геокодирования (например, Google)
+- премиальные сервисы маршрутизации
+- расширенные функции работы с картами
+
+Использование **Премиум ГИС** позволяет получать более точные координаты, а также оптимизировать маршруты и навигацию.  
+Интеграция **ГдеМои – Локальная версия** с Премиум ГИС выполняется при первичной установке платформы, а также может быть осуществлена в любой момент времени по запросу.
+
+---
 
 ### **Google Maps**
 
-Google Maps are one of the most popular choices around the world for its powerful geocoder and routing capabilities. If you prefer not to use Navixy Premium GIS, but to purchase Google Maps license separately, you need to follow some security procedures as described below.
+**Google Maps** — один из самых популярных сервисов благодаря мощным функциям геокодирования и маршрутизации.  
+Если вы не хотите использовать **ГдеМои Премиум ГИС** и предпочитаете приобрести лицензию **Google Maps** самостоятельно, необходимо корректно настроить API-ключи и соблюсти определенные меры безопасности.
 
-For security reasons we recommend creating three Google API keys and restrict them as follows:
+#### Рекомендации по настройке ключей API
 
-Google API key #1
+По соображениям безопасности рекомендуется создать **три отдельных ключа Google API** и ограничить их использование следующим образом:
 
-Should be restricted by HTTP referrer as follows:
+**Ключ Google API #1**
 
-_.contoso.com/_
+- Ограничить по HTTP-рефереру, например:  
+  `*.your-domain.com/*`  (укажите свой домен вместо `your-domain`)
+- Разрешить использование следующих API:
+  * Google Maps JavaScript API  
+  * Google Street View Image API  
 
-(Use your own domain instead 'contoso')
+**Ключ Google API #2**
 
-Should be restricted by following APIs:
+- Ограничить по IP-адресу вашего сервера.  
+- Разрешить следующие API:
+  * Google Maps Geocoding API  
+  * Google Maps Geolocation API  
+  * Google Maps Directions API  
 
-* Google Maps JavaScript API
-* Google Street View Image API
+**Ключ Google API #3**
 
-Google API key #2
+- Используется для отображения карт в email-уведомлениях.  
+- Ограничить по HTTP-рефереру:  
+  `*.your-domain.com/*`  
+- Разрешить:
+  * Google Static Maps API  
+- Также необходимо сгенерировать **URL signing secret** для этого ключа.
 
-Should be restricted by your server's IP address only, and by the following APIs:
+Передайте созданные ключи в техническую поддержку **ГдеМои**, чтобы они были установлены, или воспользуйтесь нашим руководством, если вы хотите настроить их самостоятельно.  
+Если вам нужна помощь с созданием ключей Google API, ознакомьтесь с инструкцией по ссылке:  
+[Google Maps и Геокодирование](../configuration/maps-and-gis/google-maps-and-geocoding.md)
 
-* Google Maps Geocoding API
-* Google Maps Geolocation API
-* Google Maps Directions API
+> ⚠️ Согласно политике Google, для использования API в целях трекинга активов требуется **Google Premium Plan**.  
+> Подробнее — на официальном сайте:  
+> [https://developers.google.com/maps/pricing-and-plans/](https://developers.google.com/maps/pricing-and-plans/)
 
-Google API key #3
+---
 
-is used for maps in email notifications. It should be restricted by HTTP referrer as follows:
+### **OpenStreetMap**
 
-_.contoso.com/_ and
+**OpenStreetMap (OSM)** и **OpenSourceRoutingMachine (OSRM)** — это бесплатные решения с открытым исходным кодом для геокодирования и маршрутизации.  
+**OSM** — это глобальный проект по созданию открытой карты мира, а **OSRM** — движок маршрутизации, использующий данные OSM для построения маршрутов между точками.
 
-* Google Static Maps API
+Недостаток использования OSM заключается в том, что точность данных может быть ниже, чем у Google, в некоторых регионах, а также существуют ограничения на количество запросов.  
+Если отправлять слишком много запросов на геокодирование, IP-адрес может быть временно заблокирован серверами OSM.  
+На практике лимиты начинают ощущаться примерно при **700+ устройствах**.
 
-You should also generate URL signing secret for this key.
+Однако для небольших установок OSM и OSRM могут стать вполне подходящим вариантом.  
+Кроме того, их использование помогает поддерживать open-source инициативы и сообщество картографов по всему миру.
 
-Provide the above keys to Navixy tech support so that we can install them for you, or you can refer to our how-to guide if you wish to install them yourself.
+---
 
-If you need help with creating your own Google API keys, please refer to [this](../configuration/maps-and-gis/google-maps-and-geocoding.md) article.
+### **Nominatim**
 
-Please note that according to Google usage policy, Google Premium plan is required to be able to use Google API for asset tracking purposes.
+**Nominatim** — это свободное программное обеспечение, предоставляющее функции геокодирования на основе данных **OpenStreetMap**.  
+Подробнее — на [официальном сайте Nominatim](http://nominatim.org/release-docs/latest/).
 
-You can get more information from Google using the link below:
+---
 
-[https://developers.google.com/maps/pricing-and-plans/](https://developers.google.com/maps/pricing-and-plans/)
+### **Mapbox**
 
-### OpenStreetMap
-
-OpenStreetMap (OSM) and OpenSourceRoutingMachine (OSRM) are free and open-source alternatives to Google API for geocoding and routing. OSM is a collaborative project to create a free editable map of the world, while OSRM is a routing engine that can use OSM data to create routes between two points on the map.
-
-The downside of using OSM is that it's less accurate than Google in some parts of the world, and it has usage limits. If you send too many geocoding requests per second, your IP might be blocked by OSM servers. In practice, you will start hitting this limit if you have approximately 700 devices and more.
-
-However, if you're going to use a small number of devices, OSM geocoder and OSRM routing might be a viable option. Additionally, using OSM and OSRM is a good way to support open-source initiatives and contribute to the global mapping community.
-
-### Nominatim
-
-Nominatim is a free software that can provide geocoding capabilities using OpenStreetMap data. You can find more information on our [their official website.](http://nominatim.org/release-docs/latest/)
-
-### Mapbox
-
-Mapbox provides a highly accurate geocoding and routing service with global coverage, and it can also integrate with Navixy to provide additional features such as custom map styling and map data analysis. However, Mapbox is a paid service and may not be suitable for those looking for a free alternative.
+**Mapbox** предоставляет высокоточный сервис геокодирования и маршрутизации с глобальным охватом.  
+Он также может быть интегрирован с **ГдеМои** для получения дополнительных возможностей — например, кастомизации карт и аналитики пространственных данных.  
+Однако **Mapbox** является платным сервисом и может быть не самым подходящим вариантом для тех, кто ищет полностью бесплатное решение.
