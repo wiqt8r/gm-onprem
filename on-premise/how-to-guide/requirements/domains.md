@@ -1,15 +1,19 @@
-# Domains
+# Домены
 
-Navixy is a web-based platform that is usually deployed in a public network. Therefore, a domain name is typically required to access the platform. While using an IP address is possible, domain names significantly improve the presentation and ease of use of the service.
+**ГдеМои** — это веб-платформа, которая, как правило, развёртывается в публичной сети.  
+Поэтому для доступа к системе обычно требуется доменное имя. Хотя использование IP-адреса также возможно, доменные имена значительно повышают удобство и визуальное восприятие сервиса.
 
-To use a domain name, an account with a public DNS hosting service is necessary. Many DNS hosting services are available, with one of the most popular being GoDaddy.
+Для использования доменного имени необходимо иметь учётную запись в публичном DNS-хостинге. Существует множество DNS-провайдеров, и вы можете воспользоваться услугами любого из них на ваш выбор.
 
-Typically, a DNS hosting service provides an admin panel to create and control domain names. For Navixy, several A-type DNS records are needed, pointing to the Navixy server.
+Обычно DNS-хостинг предоставляет административную панель для создания и управления доменами.  
+Для работы **ГдеМои – Локальная версия** требуется настроить несколько DNS-записей типа **A**, указывающих на сервер **ГдеМои**.
 
-Suppose the domain name is "[your-domain.com](http://your-domain.com)"; here's an example of the domain configuration:
+Предположим, доменное имя — **your-domain.com**. Пример конфигурации DNS может выглядеть так:
 
-- [api.your-domain.com](http://api.your-domain.com): domain used for API calls and backend operations
-- [panel.your-domain.com](http://panel.your-domain.com): domain used for accessing the admin panel. It can also be [admin.your-domain.com](http://admin.your-domain.com) or anything else.
-- [my.your-domain.com](http://my.your-domain.com): domain used for accessing the monitoring service. This domain will be used by users. It can also be [gps.your-domain.com](http://gps.your-domain.com), [pro.your-domain.com](http://pro.your-domain.com), or anything else.
+- **my.your-domain.com** — домен для доступа пользователей к веб-интерфейсу мониторинга. Также можно использовать варианты **gps.your-domain.com**, **pro.your-domain.com** и т. п.  
+- **api.your-domain.com** — домен, используемый для API-запросов и фоновых операций.  
+- **panel.your-domain.com** — домен для доступа к панели администратора. Также может использоваться **admin.your-domain.com** или любой другой.  
 
-After creating the A-type records, they can be used for the Navixy On-premise installation.
+**Примечание:** домены для доступа к API и панели администратора являются опциональными. Если вы не хотите регистрировать отдельные домены для этой цели, API и панель администратора могут быть субдиректориями основного домена.
+
+После создания A-записей их можно использовать при установке **ГдеМои – Локальная версия**.
