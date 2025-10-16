@@ -1,7 +1,11 @@
-# Requirements
+# Требования
 
-This section provides detailed technical requirements for the hardware and software environment, along with related services that need to be considered for the installation of On-Premise Edition. This includes necessary components such as domain names, SMS center, geocoding service, and more. By following these requirements, you can ensure a successful installation of Navixy On-Premise and optimize its performance.
+В этом разделе представлены подробные технические требования к аппаратной и программной среде, а также к сопутствующим сервисам, которые необходимо учитывать при установке платформы **ГдеМои – Локальная версия**.  
+К ним относятся такие компоненты, как доменные имена, SMS-шлюз, сервис геокодирования и другие элементы инфраструктуры.  
+Соблюдение данных требований позволит обеспечить успешную установку и оптимальную производительность системы **ГдеМои – Локальная версия**.
 
-{% hint style="info" %}
-As a customer who purchases Navixy On-premise solution, you become the administrator and owner of your servers and are responsible for ensuring their stable operation and maintenance. It is essential that you comply with all technical requirements listed in this section to avoid unpredictable consequences and minimize the risks of system malfunction and data loss. Non-compliance can result in severe consequences, and in some cases, technical support may not be possible.
-{% endhint %}
+---
+
+Приобретая решение **ГдеМои – Локальная версия**, вы становитесь администратором и владельцем собственных серверов и несёте ответственность за их стабильную работу и обслуживание.  
+Крайне важно соблюдать все технические требования, приведённые в данном разделе, чтобы избежать непредсказуемых последствий и минимизировать риски сбоев или потери данных.  
+Несоблюдение этих требований может привести к серьёзным последствиям и, в некоторых случаях, сделать предоставление технической поддержки невозможным.
