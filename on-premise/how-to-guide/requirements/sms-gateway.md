@@ -1,38 +1,68 @@
-# SMS gateway
+# SMS-шлюз
 
-Navixy highly recommends using an SMS center (SMSC) for outgoing messages and leasing a dedicated phone number for incoming SMS messages to utilize the full potential of the platform, including automatic device activation, user notifications and alerts, and device configuration directly from the user interface.
+Для полной функциональности платформы **ГдеМои – Локальная версия** рекомендуется использовать **SMS-центр (SMSC)** для исходящих сообщений и арендовать **выделенный номер телефона** для приёма входящих SMS.  
+Это позволит использовать весь потенциал системы — автоматическую активацию устройств, уведомления и оповещения пользователей, а также удалённую настройку трекеров прямо из пользовательского интерфейса.
 
-## Options for SMS center
+---
 
-1. **Cloud-based SMS service.** We support the following popular global SMS services:
+## Варианты подключения SMS-шлюза
 
-* [https://www.twilio.com/](https://www.twilio.com/)
-* [https://www.nexmo.com/](https://www.nexmo.com/)
-* [https://www.textlocal.com/](https://www.textlocal.com/)
-* [https://www.infobip.com/](https://www.infobip.com/)
-* [https://www.tyntec.com/](https://www.tyntec.com/)
+### 1. **Облачные SMS-сервисы**
 
-2. **Any service or device working over SMPP protocol.** SMPP is an alternative to HTTP API and is widely used by different SMS services world-wide. If your preferred service support SMPP v3.4, then we can work with it. To connect SMPP service or device with our platform, we need the following information:
+**ГдеМои** поддерживает интеграцию с API популярных международных SMS-провайдеров:
 
-* Mandatory parameters:
-  * IP address of SMPP provider server
-  * Port
-  * Login (also known as system id)
-  * Password
-* Optional parameters:
-  * Link timeout
-  * Source TON/NPI
-  * Destination TON/NPI
-  * Default charset
-  * Allowed sender
+* [https://www.twilio.com/](https://www.twilio.com/)  
+* [https://www.nexmo.com/](https://www.nexmo.com/)  
+* [https://www.textlocal.com/](https://www.textlocal.com/) 
+* [https://www.tyntec.com/](https://www.tyntec.com/)  
 
-3. **Hardware VoIP devices.** We support Yeastar (former Neogate) line of products, specifically TG series:
+Эти сервисы обеспечивают высокую надёжность доставки сообщений, возможность аренды виртуальных номеров и глобальное покрытие GSM-сетей.
 
+---
+
+### 2. **Любой облачный или локальный сервис с поддержкой протокола SMPP**
+
+Протокол **SMPP (Short Message Peer-to-Peer)** — это альтернатива HTTP API, широко используемая SMS-провайдерами по всему миру.  
+Если ваш сервис поддерживает **SMPP версии 3.4**, его можно интегрировать с платформой **ГдеМои**.
+
+Для подключения SMPP-сервиса или оборудования потребуются следующие данные:
+
+**Обязательные параметры:**
+* IP-адрес сервера SMPP-провайдера  
+* Порт  
+* Логин (system ID)  
+* Пароль  
+
+**Необязательные параметры:**
+* Link timeout (время ожидания соединения)  
+* Source TON/NPI  
+* Destination TON/NPI  
+* Default charset  
+* Allowed sender  
+
+---
+
+### 3. **Аппаратные VoIP-шлюзы**
+
+**ГдеМои** поддерживает линейку VoIP-устройств **Yeastar** (ранее Neogate), в частности серию **TG**:  
 * [https://www.yeastar.com/gsm-cdma-umts-gateways/](https://www.yeastar.com/gsm-cdma-umts-gateways/)
 
-For successful delivery and automatic GPS trackers configuration your SMSC should comply with the following requirements:
+Эти устройства позволяют использовать физические SIM-карты и отправлять/принимать SMS напрямую через GSM-модули.  
+Это удобно для локальных установок, когда предпочтительна работа без сторонних облачных сервисов.
 
-* Permit to send SMS messages using the _'from'_ phone number in the international format – to all the GSM networks you will use
-* Support texting using charsets in either GSM0338 8bit or Latin-1 (these formats are used to sending SMS commands to GPS trackers),  UCS2 (this format is used to sent texts with latin chars).
+---
 
-You can send the connection details for SMSC of your choice to Navixy technical support and we will configure them for you. If you prefer configuring them yourself, please refer to our how-to documentation on SMS gateway configuration.
+## Требования к SMS-шлюз
+
+Для успешной доставки сообщений и корректной автоматической настройки GPS-трекеров ваш SMS-шлюз должен соответствовать следующим требованиям:
+
+* Поддерживать отправку SMS **с подменой поля “From”** в международном формате, во все GSM-сети, с которыми вы работаете.  
+* Поддерживать отправку сообщений в кодировках:  
+  * **GSM0338 8-bit** или **Latin-1** — для команд GPS-трекерам;  
+  * **UCS2** — для текстов, содержащих латинские символы или нестандартные символы.  
+
+---
+
+## Настройка и поддержка
+
+Для подключения вашего SMS-шлюза вы можете обратиться в техническую поддержку **ГдеМои**, и специалисты помогут выполнить настройку, а также предоставят всю необходимую документацию.
