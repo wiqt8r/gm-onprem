@@ -1,10 +1,14 @@
-# Email gateway
+# Почтовый шлюз
 
-SMTP (Simple Mail Transfer Protocol) server is used to send emails, such as notifications, invites, reports, and others. In order to use SMTP with Navixy On-premise, the following requirements should be met:
+Для отправки писем — таких как уведомления, отчёты, приглашения для регистрации и другие — в **ГдеМои – Локальная версия** используется сервер **SMTP** (Simple Mail Transfer Protocol).  
+Чтобы система могла корректно отправлять электронные письма, необходимо выполнить следующие требования:
 
-- The SMTP server can be either remote or local.
-- The SMTP server can be with or without authorization (open relay).
-- The server must permit to replace the sender in the 'From' header (command mail from:<>).
-- It is recommended to add SPF (Sender Policy Framework) record and create DKIM (DomainKeys Identified Mail) for emails. This will protect your emails from being considered as spam by the recipient's server.
+- SMTP-сервер может быть как **удалённым**, так и **локальным**.  
+- SMTP-сервер может работать **с авторизацией** или **без неё** (open relay).  
+- Сервер должен **разрешать подмену отправителя** в заголовке *“From”* (команда `MAIL FROM:<>`).  
+- Рекомендуется добавить **SPF-запись (Sender Policy Framework)** и настроить **DKIM (DomainKeys Identified Mail)** для исходящей почты.  
+  Это поможет предотвратить попадание ваших писем в спам у получателя.
 
-Please note that Navixy does not provide an SMTP server and you will need to use your own or a third-party service. It is also important to configure your SMTP settings properly to ensure successful email delivery.
+Обратите внимание, что **ГдеМои** не предоставляет собственный SMTP-сервер для локальной установки.  
+Для работы почтовых уведомлений необходимо использовать **собственный** или **сторонний SMTP-сервис**.  
+Также важно правильно настроить параметры SMTP, чтобы обеспечить успешную доставку сообщений.
