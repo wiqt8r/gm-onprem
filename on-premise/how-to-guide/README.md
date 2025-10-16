@@ -1,13 +1,13 @@
-# Deployment guides
+# Установка и администрирование
 
-Navixy On-Premise is a flexible deployment option that can be installed on either physical servers or cloud infrastructure platforms such as Amazon Web Services (AWS), Microsoft Azure, or Google Cloud Platform (GCP).
+Локальная версия ГдеМои предлагает гибкие возможности развертывания, позволяющие выполнить установку как на физические серверы, так и в облачную инфраструктуру, включая Yandex Cloud, Amazon Web Services (AWS), Microsoft Azure, Google Cloud Platform (GCP) и другие облачные решения.
 
-* [Requirements](requirements/)
-* [Installation](installation/)
-* [Configuration](configuration/)
-* [Maintenance](maintenance/)
-* [Troubleshooting](troubleshooting/)
+* [Требования](requirements/)
+* [Установка](installation/)
+* [Настройка](configuration/)
+* [Обслуживание](maintenance/)
+* [Устранение неполадок](troubleshooting/)
 
 {% hint style="info" %}
-Please note that deploying and maintaining a Navixy On-Premise instance requires technical expertise and knowledge in IT system administration. If you are not familiar with these aspects, we recommend considering the [Platform-as-a-Service (PaaS)](../../qa/paas.md) deployment.
+Обратите внимание: развертывание и поддержка локальной версии ГдеМои требует технической подготовки и профессионализма в области администрирования IT-систем. Если у вас нет соответствующего опыта, рекомендуем рассмотреть вариант использования PaaS-решения ГдеМои.
 {% endhint %}
