@@ -1,27 +1,65 @@
-# Server hardware
+# Серверное оборудование
 
-The hardware requirements for Navixy primarily depend on the number of active IoT devices (GPS trackers) that are connected to the platform. Navixy's setup is scalable both vertically and horizontally, and the platform has been tested to support more than 300,000 active devices and 50,000 users simultaneously.
+Аппаратные требования для **ГдеМои – Локальная версия** в первую очередь зависят от количества активных IoT-устройств (GPS-трекеров), подключённых к платформе.  
+Архитектура **ГдеМои** масштабируется как **вертикально**, так и **горизонтально**, и протестирована для поддержки более **300 000 активных устройств** и **50 000 пользователей**, работающих одновременно.
 
-## Scalability
+---
 
-﻿Scalability should always be considered. Successful businesses tend to grow, and as the number of connected devices increases, so does the consumption of server resources. It should be foreseen to increase server resources in all aspects - disk space, RAM and processor capacity. The configurations listed in the table below are recommended and will ensure stable operation of the platform, but as resource consumption increases, these configurations may become inapplicable, and it will be necessary to expand the server capabilities.
+## Масштабируемость
 
-## Storage
+При проектировании инфраструктуры всегда необходимо учитывать возможность **масштабирования**.  
+По мере роста бизнеса увеличивается и количество подключённых устройств, что ведёт к росту потребления серверных ресурсов.  
+Следовательно, необходимо заранее предусмотреть возможность расширения по всем направлениям — **дисковое пространство**, **оперативная память** и **вычислительная мощность**.  
 
-In a highly loaded system, one of the key factors for fast performance is disk speed. If you are deploying a new server, it is highly recommended that you use SSD to host the database. Using HDD is a bottle neck for the speed of large databases when running big queries.
+Конфигурации, приведённые в таблице ниже, обеспечивают стабильную работу платформы при соответствующих нагрузках.  
+Однако по мере увеличения числа устройств эти параметры могут стать недостаточными, и серверные ресурсы потребуется масштабировать.
 
-The disk space requirements in the table below are approximate. The actual space consumption depends on the number of devices and how often they transfer data to the server. Data from a stationary object that transmits information once a day and data from an actively moving vehicle take up dramatically different amounts of space.
+---
 
-## RAM
+## Дисковое пространство
 
-The RAM values shown in the table below are averages. Actual RAM consumption depends on how many devices are online at the same time and how much data they send. Memory may also be consumed by additional services installed on the server for any purposes. In addition, Windows servers usually consume more RAM due to the fact that they have more processes running in the background.
+Для высоконагруженных систем **скорость дисковой подсистемы** является ключевым фактором производительности.  
+Если вы разворачиваете новый сервер, настоятельно рекомендуется использовать **SSD-накопители** для размещения базы данных.  
+Использование HDD может стать узким местом при выполнении сложных или массовых запросов.
 
-## Server configurations
+Объём дискового пространства, указанный в таблице, является примерным.  
+Фактическое потребление зависит от количества устройств и частоты отправки данных.  
+Например, данные стационарного объекта, передающего данные один раз в сутки, займут значительно меньше места, чем данные транспортного средства, передающего информацию раз в несколько секунд.
 
-|                                         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **For up to 100 active devices**        | <p>In this case, the platform consumes minimal system resources and can run on almost any hardware. Below is a known applicable configuration:<br><br>- 2-core processor.<br>- 4-8 Gb RAM for application and database.<br>- 300-500 Gb free disk space.<br>- SSD or HDD with 7200 rpm or higher.</p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **From 100 to 1000 active devices**     | <p>In this case we recommend install software using single server or using a virtual server. It may be server with:<br><br>- 4-core processor.<br>- 8 Gb RAM for application and database.<br>- Over 500 Gb free disk space.<br>- RAID 1 or RAID 10, write cache enabled, SSD is preferrable.<br>- Swap must be off</p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **From 1,000 to 5,000 active devices**  | <p>For this amount of devices, virtual server is recommended in terms of scalability. You can utilize all-in-one server or host database separately*.<br><br>It may be server with:<br><br>- 8-core processor.<br>- 16 Gb RAM or more for application and database.<br>- Over 1 Tb free disk space for a server where the database is hosted.<br>- Database must be stored on a separate disk apart from OS.<br>- RAID 1 or RAID 10, write cache enabled, SSD is recommended.<br>- Swap must be off<br><br><em>* When splitting the platform to two servers, see the configuration for application server in the section below.</em></p>                                                                                                                                                                                                  |
-| **From 5,000 to 15,000 active devices** | <p>For large instances, it is recommended to perform a two-server installation, i.e. host the database on a separate server. This gives more flexibility in server administration and resource scalability.<br><br>Database server<br><br>- 8-core processor or more powerful.<br>- 32 Gb RAM or more. Highly depends on the amount of devices.<br>- Over 2 Tb free disk space. Expansion must be foreseen.<br>- Database must be stored on a separate disk apart from OS.<br>- Disk speed is crucial, so SSD is highly recommended.<br>- RAID 10.<br>- Swap must be off<br><br>Application server (for Java servers and Web-interfaces)<br><br>- 8-core processor<br>- 16 Gb RAM<br>- RAID 5<br>- 500Gb SSD<br><br>Auxiliary equipment<br><br>-  Network gigabit switch for connection between servers (in case of hardware servers)</p> |
-| **Above 15,000 active devices**         | Please [contact us](https://www.navixy.com/contact/) for further discussion. We'll give you detailed recommendations depending on your specific requirements and budget.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+---
+
+## Оперативная память
+
+Показатели оперативной памяти в таблице приведены усреднённо.  
+Реальное потребление зависит от количества одновременно активных устройств и объёма данных, передаваемых ими.  
+Также на использование памяти влияют дополнительные службы и процессы, установленные на сервере.  
+Отдельно стоит отметить, что **Windows-серверы** обычно потребляют больше ОЗУ из-за фоновых системных процессов.
+
+---
+
+## Рекомендуемые конфигурации серверов
+
+| Количество активных устройств | Конфигурация сервера |
+| ----------------------------- | -------------------- |
+| **До 100 активных устройств** | В этом случае платформа использует минимальные ресурсы и может быть запущена практически на любом оборудовании.<br><br>- 2-ядерный процессор<br>- 4–8 ГБ ОЗУ (для приложения и базы данных)<br>- 300–500 ГБ свободного дискового пространства<br>- SSD или HDD со скоростью не менее 7200 об/мин |
+| **От 100 до 1000 активных устройств** | Рекомендуется установка на одном сервере или виртуальной машине.<br><br>- 4-ядерный процессор<br>- 8 ГБ ОЗУ<br>- От 500 ГБ свободного дискового пространства<br>- RAID 1 или RAID 10, включён кеш записи, предпочтительно SSD<br>- Swap (файл подкачки) должен быть отключён |
+| **От 1000 до 5000 активных устройств** | Для такого количества устройств рекомендуется использовать виртуальный сервер с возможностью масштабирования.<br>Можно развернуть систему «всё в одном» или вынести базу данных на отдельный сервер*.<br><br>- 8-ядерный процессор<br>- 16 ГБ ОЗУ и более<br>- От 1 ТБ свободного дискового пространства (для сервера с БД)<br>- База данных должна храниться на отдельном диске, не совместно с ОС<br>- RAID 1 или RAID 10, включён кеш записи, предпочтительно SSD<br>- Swap должен быть отключён<br><br>*При разделении платформы на два сервера см. раздел ниже о конфигурации серверов приложений. |
+| **От 5000 до 15000 активных устройств** | Для крупных внедрений рекомендуется установка на два сервера — отдельный сервер базы данных и сервер приложений. Это повышает гибкость администрирования и удобство масштабирования.<br><br>**Сервер базы данных**:<br>- 8-ядерный или более мощный процессор<br>- 32 ГБ ОЗУ или больше (в зависимости от числа устройств)<br>- От 2 ТБ свободного пространства, с возможностью расширения<br>- База данных должна храниться на отдельном диске<br>- SSD крайне рекомендуется<br>- RAID 10<br>- Swap отключён<br><br>**Сервер приложений (Java и веб-интерфейсы)**:<br>- 8-ядерный процессор<br>- 16 ГБ ОЗУ<br>- RAID 5<br>- 500 ГБ SSD<br><br>**Дополнительное оборудование**:<br>- Гигабитный коммутатор для соединения между серверами (в случае физических серверов) |
+| **Более 15000 активных устройств** | Для таких масштабов рекомендуется обратиться к техническим специалистам **ГдеМои** для индивидуальных рекомендаций. Мы подберём оптимальную конфигурацию с учётом ваших требований и бюджета. |
+
+---
+
+## Примечания
+
+* Рекомендуется использовать **виртуализацию** (например, VMware, KVM, Proxmox) для упрощения обслуживания и возможности масштабирования.  
+* Используйте **SSD-диски** — это значительно ускоряет операции записи и чтения в базе данных.  
+* Для отказоустойчивости применяйте **RAID 10**.  
+* Всегда отключайте **Swap**, чтобы избежать деградации производительности MySQL.  
+* При больших объёмах данных предусмотрите **репликацию** или резервное копирование на отдельный сервер.
+
+---
+
+## Вывод
+
+Для успешной работы **ГдеМои – Локальная версия** необходимо обеспечить соответствие серверного оборудования предполагаемому количеству подключаемых устройств и объёму данных.  
+При правильной конфигурации система масштабируется без потери производительности и обеспечивает стабильную работу даже при высокой нагрузке.
