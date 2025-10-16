@@ -1,97 +1,117 @@
-# Easy installation
+# Простая установка
 
-This guide will help you quickly set up Navixy On-premise platform on your own server. The process is straightforward and requires minimal manual configuration.
+Это руководство поможет вам быстро развернуть платформу **ГдеМои – Локальная версия** на собственном сервере.  
+Процесс установки прост и требует минимальной ручной настройки.
 
-Before you start, check the [Requirements](../requirements/) section and make sure your server and infrastructure are ready to deploy Navixy platform.
+Перед началом убедитесь, что сервер и инфраструктура соответствуют требованиям, описанным в разделе [**Требования**](../requirements/).
 
 {% hint style="info" %}
-This type of deployment uses Docker as the primary means of deployment. However, the process is fully automated, so you don't need to be proficient in this software, just a basic knowledge of Linux administration.
+Данный способ установки использует **Docker** в качестве основного механизма развёртывания.  
+Однако процесс полностью автоматизирован, поэтому глубокие знания Docker не требуются — достаточно базовых навыков администрирования Linux.
 {% endhint %}
 
-This guide will walk you through the step-by-step process of installing the Navixy Easy solution on a Linux server. While we highly recommend Ubuntu for its user-friendly operation and administration, rest assured that any up-to-date Linux distribution is suitable for the installation. Feel free to choose the one that suits your needs best.
+В этом руководстве шаг за шагом показано, как установить платформу **ГдеМои – Локальная версия (Easy)** на сервер под управлением Linux.  
+Рекомендуется использовать **Ubuntu** как наиболее удобную и стабильную систему, однако любая современная Linux-дистрибуция подойдёт для установки.
 
-Please note that the installation requires elevated privileges. In the instructions provided below, the installation is demonstrated using the `root` user. Alternatively, you can also perform the installation using the `sudo` command.
+Обратите внимание, что установка требует **повышенных привилегий**.  
+В инструкциях ниже демонстрируется установка под пользователем `root`.  
+При желании можно использовать команду `sudo`.
 
-## Step 1 - Install Docker and download Navixy build
+---
 
-To prepare for the deployment of the Navixy platform, you can follow these commands.
+## Шаг 1 — Установка Docker и загрузка сборки ГдеМои
 
-The initial command will download the installation script for the Navixy On-premise platform to your server. The subsequent command will execute this script, which will install Docker and fetch the most up-to-date version of the platform distribution package.
+Для подготовки сервера к установке выполните следующие команды.
+
+Первая команда загрузит установочный скрипт для **ГдеМои – Локальная версия**.  
+Вторая — выполнит установку Docker и загрузку актуальной версии установочного пакета платформы.
 
 ```
 curl -fsSL https://get.navixy.com -o install-navixy.sh
 sh ./install-navixy.sh
 ```
 
-{% hint style="info" %}
-The script verifies whether Docker is installed on the server. If Docker is detected, the script will display a message about it and take a pause. This is done to prevent inadvertent deployment on servers where Navixy is already installed. If the installed Docker is not related to Navixy, just wait a while and the script will continue its operation.
-{% endhint %}
+Скрипт проверяет, установлен ли Docker на сервере.  
+Если Docker уже обнаружен, будет выведено уведомление и сделана пауза, чтобы избежать повторной установки поверх существующей.  
+Если установленный Docker не связан с платформой **ГдеМои**, просто подождите — процесс продолжится автоматически.
 
-You will see the installation process of Docker, after which the platform package distribution will be unpacked.
+Во время выполнения скрипта вы увидите процесс установки Docker и распаковки дистрибутива платформы.
 
 ![On-Premise - Dockered installation](../../../on-premise/on-premise/platform-installation/attachments/newdocker.gif)
 
-After the script completes its work, it will report success and display a link leading to the current page.
+После завершения скрипта появится сообщение об успешной установке и ссылка для перехода на текущую страницу документации.
 
-Further, you need to specify license key and necessary settings, and then deploy the platform as described in the next section.
+Далее необходимо указать **лицензионный ключ** и параметры конфигурации, после чего приступить к развёртыванию платформы, как описано в следующем шаге.
 
-## Step 2 - Deploy Navixy platform
+---
 
-Our configuration script makes this step effortless.
+## Шаг 2 — Развёртывание платформы ГдеМои
 
-Open the newly created _“navixy-package”_ directory and execute the `easy-configure.sh` script:
+Следующий шаг выполняется с помощью конфигурационного скрипта, который максимально упрощает процесс.
+
+Откройте созданную директорию _“navixy-package”_ и выполните команду:
 
 ```
 cd ./navixy-package
 ./easy-configure.sh
 ```
 
-The script will run a wizard where you need to specify the necessary parameters of your new Navixy On-premise instance:
+
+Скрипт запустит мастер настройки, в котором необходимо указать параметры новой инсталляции **ГдеМои – Локальная версия**:
 
 ![](../../../on-premise/on-premise/platform-installation/attachments/image-20250306-184855.png)
 
-* **Fingerprint** - license key. Unique set of characters received from Navixy technical team. Can be used only once.
-* **Database Password** - a password for database user. You can make up any password of your choice or auto-generate it with some third-party tools.
-* **Service Domain**- basic domain of your platform. It will be to access user accounts and to register tracking hardware.
-* **API Domain** - domain of API service (**optional** - not required for one domain installations).
-* **Panel Domain** - domain of administrator panel (**optional** - not required for one domain installations).
-* **Working directory** - service directory used to store configuration files, log files and other system files.
-  * The default directory is `.../navixy-package/work/` (inside the unpacked Navixy distributive). If not changed, the platform will be installed to this directory.
+* **Fingerprint** — лицензионный ключ, уникальный набор символов, предоставленный технической поддержкой **ГдеМои**. Используется один раз.  
+* **Database Password** — пароль для пользователя базы данных (можно задать вручную или сгенерировать).  
+* **Service Domain** — основной домен платформы, используемый для доступа пользователей и регистрации устройств.  
+* **API Domain** — домен для API-сервиса (**опционально**, не требуется для однодоменных установок).  
+* **Panel Domain** — домен для административной панели (**опционально**, не требуется для однодоменных установок).  
+* **Working directory** — рабочая директория для хранения конфигурационных файлов, логов и служебных данных.  
+  * По умолчанию: `.../navixy-package/work/` (внутри распакованного дистрибутива).  
 
 {% hint style="info" %}
-If optional domain names for API and panel are not specified, these services will be accessible as subdirectories of the service domain, e.g.:
+Если отдельные домены для API и панели не указаны, эти сервисы будут доступны как подкаталоги основного домена, например:
 
-* `domain.com/api`
+* `domain.com/api`  
 * `domain.com/panel`
 {% endhint %}
 
-After specifying all the parameters, you will be prompted to choose whether you want to enable HTTPS to make your website SSL-protected, or if you do not need this option.
+После ввода параметров появится предложение включить **HTTPS** для защиты сайта с помощью SSL.
 
 ![](../../../on-premise/on-premise/platform-installation/attachments/image-20250306-191609.png)
 
-If you answer Yes, you will be prompted to choose to install a free Let's Encrypt certificate or your own SSL certificate from a third-party authority. Select the desired option and follow the installer prompts.
+Если вы выберете **Yes**, скрипт предложит установить **бесплатный сертификат Let's Encrypt** или использовать **собственный сертификат** от стороннего центра сертификации.  
+Выберите подходящий вариант и следуйте подсказкам установщика.
 
 ![](../../../on-premise/on-premise/platform-installation/attachments/image-20250306-191842.png)
 
-After all settings are done, you will see the configuration summary
+После завершения конфигурации будет показано резюме настроек:
 
 ![](../../../on-premise/on-premise/platform-installation/attachments/image-20250306-192813.png)
 
-Confirm the settings and the script will deploy the Navixy On-premise platform with your parameters. In a short time, the platform will be installed, launched and fully ready to use.
+Подтвердите введённые данные — и скрипт развернёт платформу **ГдеМои – Локальная версия** с указанными параметрами.  
+Через несколько минут система будет установлена, запущена и полностью готова к работе.
 
-## Step 3 - Check the platform operation
+---
 
-Open your web browser and navigate to the admin panel. The access link will depend on the parameters you specified during the installation. It will be one of the following:
+## Шаг 3 — Проверка работы платформы
 
-* Panel domain (e.g. `panel.domain.com`)
-* Subdirectory of service domain (e.g. `domain.com/panel`)
+Откройте веб-браузер и перейдите по адресу административной панели.  
+Ссылка зависит от выбранных при установке параметров — это может быть:
 
-The default login and password are `admin`.
+* **Домен панели** (например, `panel.domain.com`)  
+* **Подкаталог основного домена** (например, `domain.com/panel`)  
+
+Данные для входа по умолчанию:  
+**Логин:** `admin`  
+**Пароль:** `admin`
 
 ![On-Premise - Dockered installation - Checking the platform](../../../on-premise/on-premise/platform-installation/attachments/chrome_VFgPhAehZp.gif)
 
-If you have successfully logged into the platform, change your admin password in _Service preferences_ menu.
+После успешного входа обязательно смените пароль администратора в меню _Service preferences_.
 
-**The installation process is now complete.**
+**На этом установка платформы завершена.**
 
-If you require further guidance on using and configuring the platform, or if you encounter any technical issues, please don't hesitate to reach out for assistance contacting [Navixy technical support](mailto:support@navixy.com).
+---
+
+Если вам требуется дополнительная помощь с настройкой или возникли технические сложности, обратитесь в [техническую поддержку ГдеМои](mailto:support@gdemoi.com).
