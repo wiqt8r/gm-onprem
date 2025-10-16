@@ -1,40 +1,88 @@
-# Platform installation
+# Установка платформы
 
-This section provides detailed technical documentation on how to install and maintain Navixy On-Premise product. Navixy On-Premise deployment is suitable for customers who prefer to manage and maintain their own Navixy installation on their in-house or cloud servers. The installation package contains the latest software version.
+В этом разделе представлена подробная техническая документация по установке и обслуживанию решения **ГдеМои – Локальная версия**.  
+Развёртывание локальной версии подходит для клиентов, которые предпочитают самостоятельно управлять установкой и поддержкой платформы на своих физических или облачных серверах.  
+Установочный пакет включает последнюю версию программного обеспечения.
 
-### 💫 **Automatic installation**
+---
 
-* [Easy installation](easy-installation.md)\
-  Quick installation on any popular Linux distros using Docker containers and automated scripts
+### 💫 **Автоматическая установка**
 
-### 🗒️ **Advanced installation**
+* [Простая установка](easy-installation.md)\
+  Быстрая установка на популярных Linux-дистрибутивах с использованием Docker-контейнеров и автоматизированных скриптов.
 
-* [Ubuntu 20 and newer](advanced-installation/ubuntu-20/)
-* [Windows installation](advanced-installation/windows-installation/)\
-  Detailed guide on how to install Navixy with a dedicated database server
+---
 
-***
+### 🗒️ **Расширенная установка**
 
-### General notes about On-Premise
+* [Ubuntu 20 и новее](advanced-installation/ubuntu-20/)  
+* [Установка на Windows](advanced-installation/windows-installation/)\
+  Подробное руководство по установке **ГдеМои – Локальная версия** с вощможностью развертывания выделенного сервера базы данных.
 
-The Navixy platform On-Premise installation is performed by the customer's IT specialists according to the instructions on our website. The installation process is relatively simple and requires basic system administration skills. After installation, a free 14-day warranty period is provided for testing and integration. During this period, customers can receive support from Navixy's technical team on various aspects of the platform.
+---
 
-### Installation process
+### Общие сведения о локальной установке
 
-Navixy On-Premise is designed for simple setup, usually taking 2 to 3 hours with little assistance required. It runs in a Linux or Windows based environment and usually does not require any specific additional software. The system is expandable and designed to run in a server virtualization environment, allowing for greater control and scalability of the service. Customers can control their database space by user plans settings and can use scalable database storages for larger projects.
+Установка платформы **ГдеМои – Локальная версия** выполняется IT-специалистами заказчика в соответствии с инструкциями, размещёнными на нашем сайте.  
+Процесс установки достаточно прост и требует базовых навыков системного администрирования.  
+После установки предоставляется **14-дневный гарантийный период** для тестирования функционала и отладки работы.  
+В течение этого времени клиенты могут получить поддержку от технической команды **ГдеМои** по любым аспектам работы платформы.
 
-### Operating and maintenance
+---
 
-After the installation is complete, the customer is responsible for the security, availability, and overall management of the On-Premise software. Navixy On-Premise is updated several times per year, giving administrators the option to upgrade or continue using their current version of Navixy. The platform is not always kept up-to-date but can be updated upon request. All software updates are included in the subscription fee.
+### Процесс установки
 
-### Warranty period
+Платформа **ГдеМои – Локальная версия** разработана для простой и быстрой установки, которая обычно занимает **от 15 минут до 2 часов** и не требует внимания технической поддержки.  
+Система работает в среде **Linux** или **Windows** и, как правило, не требует установки специализированного программного обеспечения.  
+Платформа масштабируема и может работать в виртуализированной серверной среде, что обеспечивает гибкость, управляемость и возможность горизонтального и вертикального масштабирования.  
 
-During the 14-day warranty period, customers can perform general tests and integrations with free support from Navixy. This includes assistance for IT administrators on starting, restarting, and stopping services, finding and reading platform logs, fine-tuning platform configuration, and implementing settings for specific tasks. Service managers can receive support for administration tools such as billing, user management, and support tools. Developers can also receive support on how to use APIs and plugins for custom integrations.
+---
 
-### Software updates
+### Эксплуатация и обслуживание
 
-Navixy on-premise is updated several times per year, and software updates are included in the subscription fee. This gives administrators the option of upgrading to the latest version of Navixy or continuing to use the current version. While the platform is not kept constantly up-to-date, customers can request a fresh build of the software from partners and update it themselves. The updates include brand-new functionality and improvements to previously existing features, as well as known bug fixes. This ensures that customers always have access to the latest features and technologies offered by Navixy.
+После завершения установки заказчик несёт полную ответственность за безопасность, доступность и общее администрирование системы **ГдеМои – Локальная версия**.  
+Обновления платформы публикуются несколько раз в год, и администратор может выбрать — обновить систему до последней версии или продолжить использование текущей сборки.  
 
-### System scalability
+Доставка обновлений не автоматизирована. Клиент может получить новую сборку по запросу либо скачать её самостоятельно по инструкции.  
+Все обновления программного обеспечения **включены в стоимость подписки**.
 
-Navixy On-Premise products are optimized to run in server virtualization environments, providing IT administrators with greater control over the daily management of servers. This makes it possible to scale the service up without practical limits. Additionally, administrators can control their database space by adjusting user plans settings, such as data storage period value, and for larger projects, use scalable database storages. With Navixy On-Premise, businesses can enjoy a highly expandable system that meets their needs as they grow and expand their operations.
+---
+
+### Гарантийный период
+
+В течение **14-дневного гарантийного периода** клиент может выполнять тестирование и интеграцию с бесплатной поддержкой со стороны команды **ГдеМои**.  
+
+Поддержка включает:
+* помощь IT-администраторам в запуске, перезапуске и остановке сервисов;  
+* поиск и чтение логов платформы;  
+* настройку конфигурации и параметров производительности;  
+* консультации по интеграции с внешними сервисами и плагинами.  
+
+Менеджеры сервисов получают поддержку в части инструментов администрирования — таких как биллинг, управление пользователями и сервисная поддержка.  
+Разработчики могут получить помощь по работе с **API** и внешними интеграциями.
+
+---
+
+### Обновления программного обеспечения
+
+Платформа **ГдеМои – Локальная версия** получает обновления несколько раз в год. Все обновления включены в подписку. 
+Это даёт администраторам возможность:
+* устанавливать последние версии с новыми функциями и улучшениями,  
+* или продолжать работу на текущей стабильной сборке.
+
+Обновления не доставляются и не устанавливаются автоматически. Клиенты могут запросить свежую сборку в технической поддержке и обновить систему самостоятельно.  
+Обновления включают **новые функции**, **улучшения производительности** и **исправления известных ошибок**, обеспечивая доступ к актуальным возможностям платформы.
+
+---
+
+### Масштабируемость системы
+
+Решение **ГдеМои – Локальная версия** оптимизировано для работы в среде **виртуализации серверов**, что предоставляет администраторам полный контроль над управлением ресурсами и конфигурацией.  
+Такой подход позволяет масштабировать систему практически без ограничений.  
+
+Администраторы могут:
+* управлять объёмом хранилища базы данных,  
+* задавать параметры хранения данных,  
+* использовать масштабируемые хранилища для крупных проектов.  
+
+Благодаря этому **ГдеМои – Локальная версия** обеспечивает высокую гибкость и адаптируется к росту бизнеса без потери стабильности и производительности.
