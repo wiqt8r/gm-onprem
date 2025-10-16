@@ -1,40 +1,54 @@
-# Network
+# Сеть
 
-## Network ports
+## Сетевые порты
 
-The following **inbound** ports must be opened on the server:
+Для корректной работы **ГдеМои – Локальная версия** необходимо открыть следующие **входящие (inbound)** порты на сервере:
 
-* 80 TCP - HTTP communication
-* 443 TCP - HTTPS communication. If you don't plan to use HTTPS this is not necessary
-* 8383 TCP - Websocket, necessary for the GPRS air console
-* 4779, 6994, 7669, 7677, 7685, 7761 and ranges 46982-47000 and 47650-47780 TCP/UDP - for tracker communications
+* **80 TCP** — HTTP-соединения  
+* **443 TCP** — HTTPS-соединения (если не планируется использование HTTPS, этот порт можно не открывать)  
+* **8383 TCP** — WebSocket, используется для GPRS Air Console  
+* **4779, 6994, 7669, 7677, 7685, 7761** и диапазоны **46982–47000**, **47650–47780 TCP/UDP** — каналы связи с трекерами  
 
-List of network ports used for devices can be shortened to only allow [ports actually used by your devices](https://www.navixy.com/devices/).
+Список портов для устройств можно сократить, открыв **только те**, которые действительно используются вашими трекерами.  
+Перечень портов для работы ваших моделей трекеров можно уточнить у технической поддержки ГдеМои.
 
-Additionally, the following **outbound** ports needs to be open:
+---
 
-* Ports 443 and 32233 to [auth.navixy.com](http://auth.navixy.com) and [httpauth.navixy.com](http://httpauth.navixy.com) hosts - mandatory for license authorization and tracking service operation
-* Port 443 to [sms.navixy.com](http://sms.navixy.com) and [geocoder.navixy.com](http://geocoder.navixy.com) - required for operation of application push service and geocodr service (if applicable according to tariff)
-* Port 123 to public network, or to selected NTP server - For time synchronization (correct time is critical for platform functioning)
+Дополнительно необходимо открыть следующие **исходящие (outbound)** порты:
 
-{% hint style="danger" %}
-Connection to [auth.navixy.com](http://auth.navixy.com) is crucial. Services will not work without proper authorization.
-{% endhint %}
+* **443 и 32233** — для соединения с сервером аутентификации **auth.gdemoi.ru** (обязательно для лицензирования и работы сервисов мониторинга)  
+* **443** — для доступа к **sms.gdemoi.com** и **geocoder.gdemoi.com** (необходимо для работы push-уведомлений и сервисов геокодирования, если они предусмотрены тарифом)  
+* **123** — для выхода в публичную сеть или к выбранному **NTP-серверу**, чтобы обеспечивать синхронизацию времени (точное время критически важно для функционирования платформы)
 
-## Traffic
+Подключение к **auth.gdemoi.ru** является обязательным для валидации лицензии и отправки статистических данных по биллингу.  
+Без проверки лицензии работа сервиса будет невозможна.
 
-Navixy platform requires a constant exchange of data with GPS trackers, as well as downloading map tiles from map providers, resulting in a steady network traffic. However, the average network load is relatively small, and most standard ISP's unlimited plans should suffice. For 2000 GPS tracking devices, the approximate network load is as follows:
+---
 
-**Incoming:**
+## Трафик
 
-Average 200-400 kBit/s
+Платформа **ГдеМои – Локальная версия** требует постоянного обмена данными с GPS-трекерами, а также загрузки картографических тайлов от поставщиков карт, что формирует устойчивый сетевой трафик.  
+Тем не менее, средняя нагрузка относительно невелика, и стандартные тарифные планы с «безлимитным» трафиком у большинства провайдеров обычно достаточны.
 
-With occasional peaks up to 800 kBit/s
+Примерные значения для 2000 GPS-устройств:
 
-**Outgoing:**
+**Входящий трафик:**  
+Средний — 200–400 кбит/с  
+Пиковые значения — до 800 кбит/с  
 
-Average 300-800 kBit/s
+**Исходящий трафик:**  
+Средний — 300–800 кбит/с  
+Пиковые значения — до 6 Мбит/с  
 
-With occasional peaks up to 6 MBit/s
+---
 
-It's important to note that these are estimates and may vary depending on the actual usage of the GPS devices and the number of map tiles being downloaded. Therefore, it's recommended to monitor the network traffic regularly and adjust the network bandwidth accordingly. Keep in mind that the number 2000 was taken as an example, but it should give a general idea of the network consumption. However, the actual traffic consumption will depend on the used trackers, so it's important to consider some overhead, especially if you plan to use more than 2000 trackers. Additionally, since outgoing traffic is prevalent, it may be advantageous to select an ISP plan that corresponds with your anticipated network usage.
+Следует учитывать, что приведённые цифры являются ориентировочными и могут меняться в зависимости от:
+
+- количества активных устройств,  
+- частоты передачи данных,  
+- объёма загружаемых карт,  
+- конфигурации конкретных трекеров.
+
+Рекомендуется **регулярно мониторить сетевой трафик** и при необходимости корректировать пропускную способность каналов.  
+Если вы планируете использовать более 2000 трекеров, стоит закладывать дополнительный запас по трафику.  
+Так как исходящий трафик обычно преобладает, может быть выгодно выбрать тариф провайдера с акцентом на высокую скорость исходящего канала.
