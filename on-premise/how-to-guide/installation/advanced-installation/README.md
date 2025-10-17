@@ -1,14 +1,13 @@
-# Advanced installation
+# Расширенная установка
 
-This section provides advanced installation methods for the Navixy On-Premise platform.
+В этом разделе представлены расширенные методы установки платформы **ГдеМои – Локальная версия**.
 
-We recommend that you use the instructions in this section if you have specific installation requirements, such as deploying a dedicated database server or installing Navixy Platform on a Windows Server.
+Используйте данные инструкции, если у вас есть особые требования к установке — например, необходимость развернуть **отдельный сервер базы данных** или установить платформу **ГдеМои – Локальная версия** на **Windows Server**.
 
-Choose the instructions depending on your specific tasks:
+Выберите руководство в зависимости от ваших задач:
 
-* [Ubuntu installation](ubuntu-20/) - wizard-guided installation for one or two servers, designed for Ubuntu.
-* [Windows installation](windows-installation/) - automated and manual installation for Windows servers.
+* [**Установка на Ubuntu**](ubuntu-20/) — установка с пошаговым мастером для одной или двух серверных конфигураций, оптимизированная под Ubuntu.  
+* [**Установка на Windows**](windows-installation/) — автоматическая и ручная установка на серверах под управлением Windows.
 
-{% hint style="info" %}
-The advanced installation methods with a dedicated database server are recommended for big instances with over 5000 tracked assets. For smaller instances, [Easy Installation](../easy-installation.md) is recommended.
-{% endhint %}
+Методы расширенной установки с выделенным сервером базы данных рекомендуются для крупных проектов — **более 5000 подключённых объектов**.  
+Для менее масштабных инсталляций рекомендуется использовать вариант **Простая установка (Easy Installation)**.
