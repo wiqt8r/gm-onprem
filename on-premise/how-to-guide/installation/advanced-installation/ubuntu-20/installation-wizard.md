@@ -1,175 +1,214 @@
-# Installation wizard
+# Мастер установки
 
-The steps for installation will vary based on whether you plan to use an all-in-one server (generally used for small instances) or a separate server for the application and the database (big instance with over 1000 devices). Please select the appropriate section below based on your installation type.
+Шаги установки зависят от того, планируете ли вы использовать **один сервер** (рекомендуется для небольших инсталляций) или **два отдельных сервера** — для приложения и базы данных (для крупных инстанций с более чем 1000 устройств).  
+Выберите подходящий вариант ниже в зависимости от вашей конфигурации.
 
-The installation requires Navixy platform distribution package. It can be downloaded directly to the server using the following command:
+Для установки потребуется дистрибутив платформы **ГдеМои – Локальная версия**.  
+Его можно загрузить напрямую на сервер с помощью следующей команды:
 
 ```
 wget --content-disposition https://get.navixy.com/latest
 ```
+После загрузки пакета можно приступать к установке.
 
-After the package is downloaded, you can proceed with the installation.
+---
 
-## Option 1. All-in-one server
+## Вариант 1. Один сервер (All-in-one)
 
-First, unpack the Navixy platform build provided as a `tar.gz` archive. Go to the directory with the archive and run the following command for unpacking it (of course replace **\<PACKAGE\_NAME>** with the actual file name):
+Сначала распакуйте архив с пакетом платформы **ГдеМои**, предоставленный в формате `tar.gz`.  
+Перейдите в директорию с архивом и выполните команду (замените **<PACKAGE_NAME>** на реальное имя файла):
 
 ```
 tar -zxvf <PACKAGE_NAME>.tar.gz
 ```
 
-The archive will be extracted to `/navixy-package` directory. Then, open this directory and run the installation script from it:
+Архив будет распакован в директорию `/navixy-package`.  
+Перейдите в эту директорию и запустите установочный скрипт:
 
 ```
 ./install.sh
 ```
 
-The script will check the OS compatibility and other pre-requisites. No action is needed from you a this stage.
 
-### Select the server role
+Скрипт проверит совместимость операционной системы и наличие зависимостей.  
+На этом этапе от вас не требуется действий.
 
-You will be asked to select the server role for further deployment. You need to select **Single server - all services in one server**. Be careful not to click other options as they are supposed to be used for two-server deployment.
+---
+
+### Выбор роли сервера
+
+Мастер установки предложит выбрать роль сервера для дальнейшего развёртывания.  
+Выберите **Single server – all services in one server** (один сервер — все сервисы размещаются локально).  
+
+Будьте внимательны — другие варианты используются только для установки на два сервера.
 
 ![](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-134855.png)
 
-### Installation process
+---
 
-The script will make a software check. You will see that the software is being installed, including Java, Nginx and MySQL. You will see a request to restart MySQL, confirm this by entering `1`. Next, you will be asked to confirm databases initialization, answer affirmative again by entering `y`.
+### Процесс установки
+
+Скрипт выполнит проверку необходимого ПО и автоматически установит компоненты: **Java**, **Nginx** и **MySQL**.  
+При появлении запроса на перезапуск MySQL подтвердите, введя `1`.  
+Затем подтвердите инициализацию баз данных — введите `y`.
 
 ![](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130547.png)
 
-MySQL will ask you to specify the root password. It is not mandatory for the platform so you can leave it blank. If you specify any, be sure to remember it. Next, the script will create databases and the DB user _navixy_ with random password. This will be the main user for the platform services to interact with the database. However, you do not need to remember its password as it will be automatically inserted into the configuration files. After this is done, the script will populate the database with system tables.
+MySQL может запросить root-пароль. Он не обязателен, поэтому можно оставить поле пустым.  
+Если вы зададите пароль — обязательно сохраните его.  
+После этого скрипт создаст базы данных и пользователя **navixy** с случайным паролем.  
+Этот пользователь будет использоваться сервисами платформы для взаимодействия с базой данных.  
+Пароль сохраняется автоматически в конфигурационных файлах, поэтому вводить его вручную не потребуется.
 
 ![](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130559.png)
 
-After the database initialization, the script will ask the following:
+После инициализации базы данных появится сообщение:
 
 ```
 This script will install Navixy platform on this server. Continue? (y/n)
 ```
 
-Answer affirmative with `y`, and it will do the following:
 
-* Create user for Java services (backend)
-* Make the Java services directories and populate them with the required files
-* Copy and configure web components (frontend)
-* Copy runit scripts required for running Java services
-* Configure Java services
+Введите `y` для подтверждения и нажмите `Enter`. Скрипт выполнит следующие действия:
 
-### Domains
+* создаст системного пользователя для Java-сервисов (backend);
+* создаст и заполнит директории сервисов;
+* скопирует и настроит веб-компоненты (frontend);
+* добавит runit-скрипты для управления Java-сервисами;
+* выполнит базовую настройку компонентов.
 
-The script will ask you to specify a domain name for your service. This is a domain used for:
+---
 
-* All the system services in one-domain installation.
-* User interface and devices activation in three-domain installation.
+### Домены
 
-![On-Premise - Ubuntu installation - Domain setup](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140224.png)
+Скрипт запросит основной домен вашей платформы.  
+Он используется для доступа к пользовательскому интерфейсу и регистрации устройств.
 
-Next, you will be asked for API and Admin panel domains.
+![Установка Ubuntu — настройка домена](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140224.png)
 
-* For one-domain installation, leave these values blank and press Enter (OK).
-* For three-domain installations, specify API and Panel domains accordingly.
+Затем будет предложено ввести домены для **API** и **панели администратора**:
 
-![On-Premise - Ubuntu installation - API setup](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140910.png)
+* для однодоменной установки — оставьте поля пустыми и нажмите Enter;  
+* для трёхдоменной конфигурации — укажите соответствующие домены.
 
-![On-Premise - Ubuntu installation - Panel setup](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140938.png)
+![Установка Ubuntu — настройка API](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140910.png)
 
-You will see a notification about the domains configuration you have made.
+![Установка Ubuntu — настройка панели администратора](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140938.png)
 
-Next, you will be prompted to perform the installation of SSL certificates for your platform. If this is what you want to do, click `Yes` and follow the wizard prompts.
+После подтверждения параметров вы увидите уведомление о конфигурации доменов.
 
-For details on installing the SSL certificate, see the [Configuration wizard](configuration-wizard.md) page.
+Далее мастер предложит установить SSL-сертификаты для вашей платформы.  
+Если хотите включить HTTPS — выберите **Yes** и следуйте подсказкам мастера.
 
-At this point, the basic platform installation is complete. If you need more customization, use the [**./configure.sh**](configuration-wizard.md) script.
+Подробнее об установке SSL-сертификата читайте в разделе [**Мастер конфигурации**](configuration-wizard.md).
 
-## Option 2. Two servers
+На этом базовая установка завершена.  
+Для дополнительной настройки воспользуйтесь скриптом [**./configure.sh**](configuration-wizard.md).
 
-First, unpack the Navixy platform build provided as a `tar.gz` archive. Upload and unpack the archive to **both servers**. To perform unpacking, go to the directory with the archive and run the following command (of course replace **\<PACKAGE\_NAME>** with the actual file name):
+---
+
+## Вариант 2. Два сервера
+
+Сначала загрузите и распакуйте архив **ГдеМои – Локальная версия** на **оба сервера**.  
+Выполните команду (замените **<PACKAGE_NAME>** на реальное имя файла):
 
 ```
 tar -zxvf <PACKAGE_NAME>.tar.gz
 ```
 
-The archive will be extracted to **navixy-package** directory. The following installation must be done first on the database server and second on the application server.
+Пакет будет распакован в директорию **navixy-package**.  
+Сначала выполните установку **на сервере базы данных**, затем — **на сервере приложения**.
 
-### Database server
+---
 
-Open `/navixy-package` directory and run the `install.sh` script from it.
+### Сервер базы данных
+
+Откройте директорию `/navixy-package` и запустите скрипт установки:
 
 ```
 ./install.sh
 ```
 
-You will be asked to select the server role for further deployment. Select **#2 SQL server**.
 
-![On-Premise - Ubuntu installation - DB server](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135111.png)
+Когда появится запрос о выборе роли сервера, выберите **#2 SQL server**.
 
-The script will begin with a system and software check. You will see that MySQL is being installed and configured. You will see a request to restart MySQL, confirm this by entering `1`. Next, you will be asked to confirm databases initialization, answer affirmative again by entering `y`.
+![Установка Ubuntu — сервер базы данных](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135111.png)
+
+Скрипт выполнит проверку системы и установит MySQL.  
+Подтвердите перезапуск MySQL, введя `1`, затем инициализацию баз данных (`y`).
 
 ![](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130630.png)
 
-MySQL will ask you to specify the root password. It is not mandatory for the platform so you can leave it blank. If you specify any, be sure to remember it. Next, the script will create databases and the DB user _navixy_ with random password. This will be the main user for the platform services to interact with the database.
+MySQL предложит задать root-пароль (можно пропустить).  
+После этого создастся пользователь **navixy** и базы данных.
 
 ![](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130640.png)
 
-The script will then populate the database with system tables. After the database initialization, you will see the following information regarding the database server:
+По завершении появится информация о сервере БД:
 
-* Username: _navixy_ - this is the DB user specified in system configs for the database interaction.
-* Password: _random_ - the password for _navixy_ user.
-* IP address: your DB server actual address.
+* **Пользователь:** `navixy`  
+* **Пароль:** (случайно сгенерированный)  
+* **IP-адрес:** адрес вашего SQL-сервера  
 
 ![](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130655.png)
 
-Be sure to save these values, as you will need them during the application server installation.
+Сохраните эти данные — они понадобятся при установке сервера приложений.
 
-### Application server
+---
 
-Open `/navixy-package` directory and run the `install.sh` script from it.
+### Сервер приложения
+
+На втором сервере откройте `/navixy-package` и выполните:
 
 ```
 ./install.sh
 ```
 
-You will be asked to select the server role for further deployment. Select **#3 Application server**.
 
-![On-Premise - Ubuntu installation - Application server](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135805.png)
+Выберите роль **#3 Application server**.
 
-The script will download and install Java, Nginx and other pre-requisites to run the platform. This will be done automatically and does not require your attention. After all the pre-requisites are installed, the script will ask you for SQL server user password. This is _navixy_ user password that you obtained after installing the database at the previous step. Use `Shift+Insert` to paste it from the clipboard.
+![Установка Ubuntu — сервер приложения](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135805.png)
 
-![On-Premise - Ubuntu installation - MySQL credentials](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135651.png)
+Скрипт автоматически установит Java, Nginx и другие зависимости.  
+Затем запросит пароль пользователя **navixy** и IP-адрес сервера базы данных.
 
-You will then be prompted for the IP address of your database server. Enter it.
+Пароль можно вставить с помощью `Shift+Insert`.
 
-![On-Premise - Ubuntu installation - MySQL setup](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135831.png)
+![Настройка MySQL](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230803-135651.png)
 
-The script will make sure that the IP is valid. You will then be asked to confirm the platform installation on your server.
+Введите IP-адрес SQL-сервера и подтвердите установку, введя `y`.
 
-Do this by typing `y` and pressing `Enter`.
+![Подтверждение установки](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130708.png)
 
-![On-Premise - Ubuntu installation - Application server](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230810-130708.png)
+---
 
-### Domains
+### Домены
 
-The script will ask you to specify a domain name for your service. This is a domain used for:
+Укажите основной домен вашей платформы.
 
-* All the system services in one-domain installation.
-* User interface and devices activation in three-domain installation.
+![Настройка домена](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140224.png)
 
-![On-Premise - Ubuntu installation - Domain checking](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140224.png)
+Затем введите домены для **API** и **панели администратора**:
 
-Next, you will be asked for API and Admin panel domains.
+* оставьте пустыми — для однодоменной установки;  
+* укажите — для трёхдоменной.
 
-* For one-domain installation, leave these values blank and press Enter (OK).
-* For three-domain installations, specify API and Panel domains accordingly.
+![Настройка API-домена](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140910.png)
 
-![On-Premise - Ubuntu installation - API checking](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140910.png)
+![Настройка домена панели администратора](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140938.png)
 
-![On-Premise - Ubuntu installation - Panel checking](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230802-140938.png)
+После подтверждения вы увидите уведомление о конфигурации.  
+При необходимости активируйте SSL — выберите **Yes** и следуйте инструкциям.
 
-You will see a notification about the domains configuration you have made.
+Подробнее об установке сертификатов см. [**Мастер конфигурации**](configuration-wizard.md).
 
-Next, you will be prompted to perform the installation of SSL certificates for your platform. If this is what you want to do, click `Yes` and follow the wizard prompts.
+---
 
-For details on installing the SSL certificate, see the [Configuration wizard](configuration-wizard.md) page.
+На этом базовая установка платформы **ГдеМои – Локальная версия** завершена.  
+Для расширенной настройки и оптимизации используйте скрипт [**./configure.sh**](configuration-wizard.md).
 
-At this point, the basic platform installation is complete. If you need more customization, use the [**./configure.sh**](configuration-wizard.md) script.
+---
+
+Если в процессе установки возникнут вопросы, обратитесь в **отдел технических решений** по адресу  
+[**solutions@gdemoi.ru**](mailto:solutions@gdemoi.ru).
+
