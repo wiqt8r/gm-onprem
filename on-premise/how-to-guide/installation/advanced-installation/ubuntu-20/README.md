@@ -1,37 +1,52 @@
 # Ubuntu 20+
 
-This guide describes Navixy On-Premise platform installation using automated scripts. This type of installation is designed for and supported only on **Ubuntu 20, 22 and 24**.
+Данное руководство описывает установку платформы **ГдеМои – Локальная версия** с использованием автоматизированных скриптов.  
+Этот тип установки предназначен **только для систем на базе Ubuntu 20, 22 и 24** и официально поддерживается на них.
 
-For other Linux distros, only manual installation is available.
+Для других дистрибутивов Linux доступна только **ручная установка**.
 
-For Windows servers, navigate to [the relevant section](../windows-installation/).
+Для серверов под управлением Windows перейдите в [соответствующий раздел](../windows-installation/).
 
-## Checking prerequisites
+---
 
-First, you need to have the following before you start the installation:
+## Проверка предварительных условий
 
-* A server (or servers) meeting all the [Server hardware](../../../requirements/server-hardware.md) requirements
-* Registered domain names that you will use for your Navixy instance
-* Navixy software package and License key provided by the Navixy team
+Перед началом установки убедитесь, что у вас есть следующее:
 
-This automatic process will install all the software prerequisites listed in [Server software](../../../requirements/server-software.md) document meaning that you don't need to install them yourself manually.
+* Сервер (или несколько серверов), соответствующий всем [требованиям к оборудованию](../../../requirements/server-hardware.md)
+* Зарегистрированные доменные имена, которые будут использоваться для вашей инстанции **ГдеМои**
+* Установочный пакет платформы и **лицензионный ключ**, предоставленный командой **ГдеМои**
 
-## Navixy package
+Автоматический установщик самостоятельно установит все зависимости, указанные в разделе  
+[**Серверное программное обеспечение**](../../../requirements/server-software.md), поэтому вам не нужно выполнять эти действия вручную.
 
-Navixy On-premise distribution package is always available for download at the [direct link](https://get.navixy.com/latest). On Ubuntu, you can download it with `wget` using the following command:
+---
 
+## Пакет установки ГдеМои
+
+Дистрибутив **ГдеМои – Локальная версия** всегда доступен для загрузки по [прямой ссылке](https://get.navixy.com/latest).  
+На Ubuntu его можно скачать с помощью команды:
 ```
 wget https://get.navixy.com/latest --content-disposition
 ```
 
-## Wizards for installation and configuration
+## Скрипты установки и конфигурации
 
-Script for [automatic initial installation](installation-wizard.md)
+Скрипт для [**автоматической начальной установки**](installation-wizard.md)  
+Скрипт для [**автоматической конфигурации**](configuration-wizard.md)
 
-Script for [automatic configuration](configuration-wizard.md)
+---
 
-## **Final steps**
+## **Завершающие шаги**
 
-When the instalation is done, you can login to the admin panel using domain name you have specified during the installation. Default login is '**admin**' and password is '**admin**'. To make additional settings, you can run the [Configuration wizard](configuration-wizard.md) again and choose other options.
+После завершения установки вы можете войти в административную панель, используя доменное имя, указанное во время установки.  
+Данные для входа по умолчанию:
 
-If you have any questions regarding the installation or configuration of the product, please contact Navixy technical support at [support@navixy.com](mailto:support@navixy.com).
+**Логин:** `admin`  
+**Пароль:** `admin`
+
+Чтобы внести дополнительные изменения, вы можете снова запустить [**мастер конфигурации**](configuration-wizard.md) и выбрать другие параметры.
+
+Если у вас возникнут вопросы по установке или настройке платформы, обратитесь в техническую поддержку **ГдеМои**:  
+[**support@gdemoi.com**](mailto:support@gdemoi.com)
+
