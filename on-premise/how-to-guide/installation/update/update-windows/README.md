@@ -1,6 +1,7 @@
-# Update - Windows
+# Обновление — Windows
 
-This section describes the update process of Navixy On-premise solution on Windows. Depending on your requirements and installation pecularities, you can resort to:
+В этом разделе описывается процесс обновления платформы **ГдеМои — Локальная версия** на Windows.  
+В зависимости от требований и особенностей вашей установки вы можете выбрать один из вариантов:
 
-* [Automatic update](automatic-update-windows.md) - to perform a standard update with minimal effort.
-* [Manual update](manual-update-windows.md) - to take a full control of the process.
+* [Автоматическое обновление](automatic-update-windows.md) — для выполнения стандартного обновления с минимальными усилиями  
+* [Ручное обновление](manual-update-windows.md) — для полного контроля над процессом
