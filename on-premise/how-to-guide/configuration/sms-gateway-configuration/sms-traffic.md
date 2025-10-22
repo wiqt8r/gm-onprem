@@ -1,41 +1,62 @@
 # SMS Traffic
 
-[SMS traffic](https://www.smstraffic.ru/en/) is a well-known telecommunications company based in Russia, and is particularly well-suited for messaging in Russia and Kazakhstan.
+[SMS Traffic](https://www.smstraffic.ru/) — российская телекоммуникационная компания, предоставляющая услуги отправки и приёма SMS.  
+Этот шлюз отлично подходит для работы с абонентами в России и Казахстане.
 
-## Navixy JSON configuration for SMS Traffic
+---
 
-{% code overflow="wrap" %}
-```json5
- provider: smstraffic
- type: transceiver
- params:
- {
- "login": <login>, //login to SMS Traffic
- "password":<password>, //password to SMS Traffic
- "urls": <array of URLs>, //e.g. ["https://www.smstraffic.ru/multi.php", "https://www2.smstraffic.ru/multi.php"]
- "override_originator": null //allows replacing sender's phone number, null means no override
- }
+## JSON-конфигурация для шлюза SMS Traffic
+
 ```
-{% endcode %}
-
-For example, here is an SQL query that can be used to add a new SMS gateway to the **'sms\_gates'** table in the **'google'** database:
-
-{% code overflow="wrap" %}
-```sql
-INSERT INTO google.sms_gates (type, provider, params, enabled, class_filter) VALUES ('transceiver', 'smstraffic', '{"login":"$LOGIN", "password":"$PASSWD","urls": ["https://www.smstraffic.ru/multi.php"]}', 1, '*');
+{
+  "provider": "smstraffic",
+  "type": "transceiver",
+  "params": {
+    "login": "username", 
+    "password": "password",
+    "urls": ["https://www.smstraffic.ru/multi.php", "https://www2.smstraffic.ru/multi.php"],
+    "override_originator": null
+  }
+}
 ```
-{% endcode %}
+## Пояснение параметров
 
-To use the SQL query above, simply replace the placeholders '`$LOGIN`' and '`$PASSWD`' with your own login and password credentials.
+| Параметр | Назначение |
+|-----------|------------|
+| **login** | Логин для авторизации в сервисе **СМС Траффик**. |
+| **password** | Пароль для доступа к API. |
+| **urls** | Список URL-адресов шлюза. Обычно указывается основной и резервный адрес, например:<br>`["https://www.smstraffic.ru/multi.php", "https://www2.smstraffic.ru/multi.php"]`. |
+| **override_originator** | Позволяет переопределить имя или номер отправителя. Значение `null` означает, что замена не выполняется. |
 
-Enabling an SMS gateway requires an additional SQL query, which can be executed separately to update the 'enabled' parameter for the desired gateway in the 'sms\_gates' table of the 'google' database:
+---
 
-{% code overflow="wrap" %}
-```sql
-UPDATE google.dealers SET master_phone="$SMS_FROM", from_sms="$SMS_FROM" WHERE dealer_id=1;
+## Пример SQL-запроса для добавления шлюза
+
+Ниже приведён пример SQL-запроса, добавляющего новый шлюз **СМС Траффик** в таблицу **google.sms_gates** базы данных **google**:
+
 ```
-{% endcode %}
+INSERT INTO google.sms_gates (type, provider, params, enabled, class_filter)
+VALUES ('transceiver', 'smstraffic', '{"login":"$LOGIN","password":"$PASSWD","urls":["https://www.smstraffic.ru/multi.php"]}', 1, '*');
+```
+Замените `$LOGIN` и `$PASSWD` на ваши реальные данные для подключения.
 
-## Inbound messages
+---
+## Активация шлюза
 
-The SMS Traffic gateway can process inbound messages without requiring any additional settings.
+После добавления записи выполните команду для указания исходящего номера (или имени отправителя):
+```
+UPDATE google.dealers
+SET master_phone = "$SMS_FROM", from_sms = "$SMS_FROM"
+WHERE dealer_id = 1;
+```
+
+Замените `$SMS_FROM` на зарегистрированное имя или номер отправителя, выданное вашим провайдером.
+
+---
+## Входящие сообщения
+
+Шлюз СМС Траффик поддерживает приём входящих SMS без дополнительной настройки.
+Все входящие сообщения автоматически обрабатываются платформой ГдеМои и сохраняются в базе данных.
+
+---
+С помощью правильно настроенного шлюза СМС Траффик вы можете надёжно отправлять и получать SMS-сообщения в рамках локальной платформы ГдеМои.
