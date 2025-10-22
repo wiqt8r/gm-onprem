@@ -1,165 +1,181 @@
-# Google maps and geocoding
+# Google Карты и геокодирование
 
-To use Google Maps with Navixy On-premise, you have to obtain valid Google Maps API keys. This documentation page provides a step-by-step guide on how to create Google Maps API keys and configure them for use with the Navixy platform.
+Чтобы использовать **Google Maps** в платформе **ГдеМои — Локальная версия**, необходимо получить действительные ключи API Google Maps.  
+Данная инструкция описывает процесс их создания и применения в конфигурации платформы.
 
-The guide will walk you through the process of setting up a Google Cloud Console account, creating a new project, generating the necessary API keys and applying them to your Navixy instance configuration. By following this guide, you will be able to easily integrate Google Maps with Navixy On-premise and take full advantage of the platform's advanced mapping features.
+Руководство поможет вам:
 
-## Creating Google API keys
+* настроить аккаунт в **Google Cloud Console**;
+* создать новый проект;
+* сгенерировать необходимые ключи API;
+* применить их в настройках платформы **ГдеМои**.
 
-To create Google API keys for use with the Navixy platform, please follow the guide below. Please note that Google API keys are associated with your account and are subject to Google's API usage policy. For more information, please refer to the links below:
+После выполнения шагов вы сможете интегрировать Google Карты и использовать все возможности продвинутой картографии и геокодирования.
 
-* [Google Maps APIs Terms of Service](https://developers.google.com/maps/terms)
-* [Goole Maps FAQ](https://developers.google.com/maps/faq)
+---
 
-### Setting up account and project
+## Создание ключей Google API
 
-1. Navigate to the [Google Cloud Console](https://console.cloud.google.com/projectselector2/apis/dashboard?supportedpurview=project) webpage and log in using your Google account credentials. If you do not have an account, you can create one.
-2. API keys are created within a project. If you already have a project, you can choose it from the list. If you do not have any existing projects, click "Create project" to create a new one.
-3. Name your project appropriately and click the "Create" button to create a new project
+Для корректной работы платформы требуется несколько ключей Google API.  
+Обратите внимание, что ключи привязываются к вашему аккаунту и подчиняются политике использования Google API.
+
+Полезные ссылки:
+
+* [Условия использования Google Maps APIs](https://developers.google.com/maps/terms)
+* [FAQ Google Maps](https://developers.google.com/maps/faq)
+
+---
+
+### Настройка аккаунта и проекта
+
+1. Перейдите на страницу [Google Cloud Console](https://console.cloud.google.com/projectselector2/apis/dashboard?supportedpurview=project) и войдите в систему под своей учётной записью Google.  
+   Если аккаунта нет — создайте его.
+2. Ключи API создаются внутри проекта.  
+   Если проект уже существует, выберите его из списка.  
+   Если нет — нажмите **Create project**.
+3. Назовите проект и нажмите **Create**, чтобы его создать.
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132227.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132250.png)
 
-4. Ensure that your newly created project is selected and click “Enable APIs and Services”. You will be taken to Google API library.
-5. Type the name of the API you need, select it and click “Enable”. In this case we are adding Maps Javascript API (used for google maps)
-6. Repeat the process for APIs you need. Navixy utilizes a total of 5 APIs:
+4. Убедитесь, что выбран созданный проект, и нажмите **Enable APIs and Services**.  
+   Откроется библиотека API.
+5. Введите название нужного API, выберите его и нажмите **Enable**.  
+   Для карт в интерфейсе используйте **Maps JavaScript API**.
+6. Повторите процесс для остальных API, необходимых платформе.  
+   Всего требуется 5 API:
 
-* Google Maps JavaScript API - Google maps in UI
-* Google Maps Geocoding API - Geocoding
-* Google Maps Geolocation API - LBS point processing
-* Google Maps Directions API - Route creation
-* Google Static Maps API - Static maps in email
+* Google Maps JavaScript API — карты в интерфейсе;
+* Google Maps Geocoding API — геокодирование;
+* Google Maps Geolocation API — обработка LBS-данных;
+* Google Maps Directions API — построение маршрутов;
+* Google Static Maps API — статические карты в письмах.
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132312.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132330.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132338.png)
 
-Ensure all enabled APIs are displayed in your dashboard:
+После включения убедитесь, что все API отображаются в вашей панели управления:
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132352.png)
 
-### Generating Google keys
+---
 
-To enable the full range of Navixy functionality, you will need a total of three API keys:
+## Генерация ключей Google API
 
-* Key #1 for displaying maps in the user interface
-* Key #2 for accessing GIS services (geocoding, routing, and geolocation)
-* Key #3 for displaying static Google Maps in email notifications
+Для полной функциональности платформы потребуется **три ключа API**:
 
-#### Generating Google key #1 for Maps in UI
+1. Ключ № 1 — для отображения карт в интерфейсе.  
+2. Ключ № 2 — для работы геокодирования, маршрутов и LBS.  
+3. Ключ № 3 — для статических карт в email-уведомлениях.
 
-1. Go to _Credentials_ tab
-2. Press _Create credentials_ and select _API key_
-3. Key will be displayed in a new window
-4. Press _Restrict key_ to make changes, you will be taken to a setup page
-5. Name the key so would be easier to distinguish it from others
-6. In _Application restrictions_ select _HTTP referrer_ and specify the domain you use for the platform. E.g [contoso.com/\*](http://contoso.com/*) [gps.contoso.com/\*](http://gps.contoso.com/*)
-7. In _API restrictions_ select _Restrict key_ and choose Maps JavaScript API
-8. Press _Save_ to apply the changes
+---
+
+### Ключ № 1 — для карт в интерфейсе
+
+1. Откройте вкладку **Credentials**.  
+2. Нажмите **Create credentials → API key**.  
+3. Ключ появится в новом окне.  
+4. Нажмите **Restrict key** для настройки ограничений.  
+5. Укажите понятное имя ключа.  
+6. В разделе **Application restrictions** выберите **HTTP referrer** и добавьте ваши домены, например:  
+   `https://contoso.com/*`, `https://gps.contoso.com/*`.  
+7. В разделе **API restrictions** выберите **Restrict key** и отметьте **Maps JavaScript API**.  
+8. Сохраните изменения.
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132440.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132450.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132458.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132505.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132513.png)
 
-#### Generating Google Key #2 for Geocoding, Routing and Geolocation
+---
 
-1. Go to _Credentials_ tab
-2. Press _Create credentials_ and select _API key_
-3. Key will be displayed in a new window
-4. Press _Restrict key_ to make changes, you will be taken to a setup page
-5. Name the key so would be easier to distinguish it from others
-6. In _Application restrictions_ select _IP adresses_ and specify public IP of your server
-7. In _API restrictions_ select _Restrict key_ and choose Maps Geocoding API, Maps Geolocation API, Maps Directions API
-8. Press _Save_ to apply the changes
+### Ключ № 2 — для геокодирования, маршрутов и геолокации
+
+1. Перейдите во вкладку **Credentials**.  
+2. Нажмите **Create credentials → API key**.  
+3. В новом окне нажмите **Restrict key**.  
+4. Укажите имя ключа.  
+5. В разделе **Application restrictions** выберите **IP addresses** и укажите публичный IP-адрес сервера.  
+6. В разделе **API restrictions** выберите **Restrict key** и отметьте:  
+   * Maps Geocoding API  
+   * Maps Geolocation API  
+   * Maps Directions API  
+7. Сохраните изменения.
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132553.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132557.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132602.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132607.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132612.png)
 
-#### **Generating Google Key #3 for Static maps in email notifications**
+---
 
-1. Go to _Credentials_ tab
-2. Press _Create credentials_ and select _API key_
-3. Key will be displayed in a new window
-4. Press _Restrict key_ to make changes, you will be taken to a setup page
-5. Name the key so would be easier to distinguish it from others
-6. In _Application restrictions_ select _HTTP referrer_ and specify the domain you use for the platform. E.g [contoso.com/\*](http://contoso.com/*) [gps.contoso.com/\*](http://gps.contoso.com/*)
-7. In _API restrictions_ select _Restrict key_ and choose Maps Static API
-8. Press _Save_ to apply the changes
+### Ключ № 3 — для статических карт в уведомлениях
 
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132642.png)
+1. Перейдите во вкладку **Credentials**.  
+2. Нажмите **Create credentials → API key**.  
+3. Нажмите **Restrict key** для редактирования.  
+4. Укажите имя ключа.  
+5. В разделе **Application restrictions** выберите **HTTP referrer** и укажите домены, например:  
+   `https://contoso.com/*`, `https://gps.contoso.com/*`.  
+6. В разделе **API restrictions** выберите **Restrict key** и отметьте **Maps Static API**.  
+7. Сохраните изменения.
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132652.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132657.png)
-
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132704.png)
-
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132709.png)
 
-For the Google key #3 you will also need an _URL signing secret_. Please refer to the guide below to generate a URL signing secret for your Static maps key:
+---
 
-1. Go to the _Dashboard_
-2. Scroll down to list of APIs and click on Maps Static API
-3. You will be forwarded to a new page.
-4. Click on _Credentials_ menu
-5. Check that Maps Static API is selected
-6. Scroll down to URL signing secret to see your current one.
+### Получение URL Signing Secret
+
+Для третьего ключа (Static Maps) потребуется **секрет подписи URL**.  
+Чтобы его получить:
+
+1. Перейдите на **Dashboard**.  
+2. В списке API выберите **Maps Static API**.  
+3. Откроется новая страница.  
+4. Перейдите в меню **Credentials**.  
+5. Убедитесь, что выбран **Maps Static API**.  
+6. Пролистайте вниз до раздела **URL signing secret** — здесь отображается текущий секрет.
 
 ![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132741.png)
 
-![](../../../../on-premise/on-premise/configuration/maps-and-gis/attachments/image-20230810-132749.png)
+---
 
-## Applying Google Maps API keys
+## Применение ключей Google API
 
-As described above, we recommend generating three Google Maps API keys and assign the following Google API services to them:
+Рекомендуется использовать три ключа с распределением по функциям:
 
-**Google Maps API key #1** – should be restricted by HTTP referrer, which is your user interface URL:
+**Ключ № 1** — ограничен по HTTP referrer (домен пользовательского интерфейса):  
+* Maps JavaScript API  
+* Street View Image API  
 
-* Google Maps JavaScript API
-* Google Street View Image API
+**Ключ № 2** — ограничен по IP-адресу сервера:  
+* Maps Geocoding API  
+* Maps Geolocation API  
+* Maps Directions API  
 
-**Google Maps API key #2** – should be restricted by server IP:
+**Ключ № 3** — ограничен по HTTP referrer (домен интерфейса):  
+* Maps Static API  
+* Требуется URL signing secret  
 
-* Google Maps Geocoding API
-* Google Maps Geolocation API
-* Google Maps Directions API
+---
 
-**Google Maps API key #3** – should be restricted by HTTP referrer, which is your user interface URL:
+Все три ключа необходимо сохранить в базе данных.  
+Используйте таблицу **google.dealer_service_credentials** и выполните запрос:
 
-* Google Static Maps API (you also need _URL signing secret_ for this key)
-
-All three keys will be stored in the database. They should be inserted into table **dealer\_service\_credentials** of **google** DB with the following query:
-
-{% code overflow="wrap" %}
 ```
 INSERT INTO dealer_service_credentials (dealer_id, service_type,credentials) VALUES (1, 'google', '{"maps_js_api_key":"FIRST_KEY_HERE","server_api_key":"SECOND_KEY_HERE","static_map_api_key":"THIRD_KEY_HERE", "static_map_crypto_key":"URL_SIGNING_SECRET_HERE"}';
 ```
-{% endcode %}
 
-If you don't want to use Google Maps for certain services, you can omit the keys that you don't need from the query. For example, use this query to apply the third key only:
+Если вы используете только один из ключей, можно добавить только его, например:
 
-{% code overflow="wrap" %}
 ```
 INSERT INTO google.dealer_service_credentials (dealer_id, service_type, credentials) VALUES (1, "google", '{"static_map_api_key":"THIRD_KEY_HERE", "static_map_crypto_key":"URL_SIGNING_SECRET_HERE"}');
 ```
-{% endcode %}
 
-**Restart the services**
+---
 
-`restart-navixy`
+## Завершение настройки
+
+После добавления ключей необходимо перезапустить сервисы платформы командой:
+```
+restart-navixy
+```
