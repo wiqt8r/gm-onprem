@@ -1,20 +1,27 @@
-# Update
+# Обновление
 
-This section provides detailed technical documentation on Navixy On-Premise platform update with different installation types. The instructions should be selected according to the operating system used (Linux/Windows).
+В этом разделе представлена подробная техническая документация по обновлению платформы **ГдеМои — Локальная версия** для различных типов установок.  
+Выберите инструкцию в зависимости от используемой операционной системы:
 
-* [Navixy platform update on Linux](update-linux/)
-* [Navixy platform update on Windows](update-windows/)
+* [Обновление платформы ГдеМои на Linux](update-linux/)
+* [Обновление платформы ГдеМои на Windows](update-windows/)
 
-## Update delivery
+---
 
-Navixy On-Premise platform version is updated several times per year, and software updates are included in the subscription fee. This gives administrators the option of upgrading to the latest version of Navixy or continuing to use the version currently installed.
+## Поставка обновлений
 
-The platform is not kept constantly up-to-date and does not receive the updates automatically. At the same time, customers can receive a new version of the platform on demand from Navixy technical support. Additionally, the latest build of the platform is always available for download at the direct link:
+Платформа **ГдеМои — Локальная версия** обновляется несколько раз в год, и все обновления включены в стоимость подписки.  
+Это даёт администраторам возможность обновить систему до последней версии или продолжить использование текущей сборки.
 
-⬇️[**Download Navixy platform distribution package**](https://get.navixy.com/latest)
+Платформа не обновляется автоматически и не поддерживается в постоянном актуальном состоянии.  
+Тем не менее, клиенты могут запросить новую сборку платформы в **отделе технических решений**.  
+Кроме того, актуальная версия дистрибутива всегда доступна по прямой ссылке:
 
-The platform updates include brand-new functionality and improvements to previously existing features, as well as known bug fixes. This ensures that customers always have access to the latest features and technologies offered by Navixy.
+⬇️ [**Скачать дистрибутив платформы**](https://get.navixy.com/latest)
 
-{% hint style="info" %}
-If you are interested in receiving a specific innovation, fix or improvement in a new Navixy On-Premise build, you can request this information from technical support before performing the update. Some implementations may be available later than they appear on the Navixy cloud platform.
-{% endhint %}
+Обновления включают новые функции, улучшения существующих возможностей, а также исправления известных ошибок.  
+Это гарантирует, что у пользователей будет доступ к самым свежим возможностям и технологиям платформы **ГдеМои**.
+
+Если вы заинтересованы в получении конкретного улучшения, новой функции или исправления, вы можете уточнить эту информацию в **отделе технических решений** перед выполнением обновления:  
+[solutions@gdemoi.ru](mailto:solutions@gdemoi.ru)  
+Некоторые нововведения могут появляться в локальной версии позже, чем в облачной платформе **ГдеМои**.
