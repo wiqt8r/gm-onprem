@@ -1,35 +1,74 @@
-# Map tile servers
+# Серверы тайлов карт
 
-A map tile server is a server that provides Navixy applications with map tiles, which are small square images used to display geolocation data. By running your own map tile server, you can offer customized maps for specific areas or additional map layers to your users, such as enterprise assets overlaid on the map.
+Сервер тайлов — это сервер, который предоставляет приложениям **ГдеМои — Локальная версия** картографические тайлы — небольшие квадратные изображения, из которых формируется карта.  
+Развернув собственный сервер тайлов, вы можете предоставить пользователям индивидуальные карты для определённых областей или добавить дополнительные картографические слои, например объекты компании, наложенные поверх карты.
 
-To add a new map layer to Navixy, you will need to follow three main steps:
+Чтобы добавить новый слой карт в платформу **ГдеМои — Локальная версия**, необходимо выполнить три основных шага:
 
-1. **Preparing map tiles.** The first step is to convert a cartographic document into uniform pieces of tile graphics with connections to graticule values (coordinates) for each scale level. The most common format for map tiles is MBTiles, but other formats like GeoTIFF can also be used. Regardless of the format, all the tile files must be imported in the Mercator projection to ensure correct layer overlapping on any map used by Navixy. The tile size will also be converted to the most common size of 256 ppi.
-2. **Launching a tile server.** Once the tile files are prepared, they need to be deployed on a server with each file having its direct link, such as [http://tileserver.com/{z}/{y}/{x}.](http://tileserver.com/%7Bz%7D/%7By%7D/%7Bx%7D.) You can run your own tile-server or use a cloud-based service provided by companies like Mapbox, CartoDB, Esri, or ArcGIS.
-3. **Adding the new map layer to the user interface.** After the tile server is started with all cartographic features uploaded, you can integrate it into the Navixy map panel by adding a new external cartographic plugin and providing it with the tile server URL. The new layer will appear in the list of available layers and can be placed separately or with other layers.
+1. **Подготовить тайлы карт.**  
+   Сначала нужно преобразовать картографический документ в равномерные графические тайлы, каждый из которых связан с координатами (градусной сеткой) для всех уровней масштабирования.  
+   Наиболее распространённый формат тайлов — **MBTiles**, однако можно использовать и другие, например **GeoTIFF**.  
+   Независимо от формата, все файлы тайлов должны быть импортированы в **проекции Меркатора**, чтобы обеспечить корректное наложение слоёв на любые карты, используемые в платформе **ГдеМои**.  
+   Размер тайлов также будет приведён к стандартному значению — **256 ppi**.
 
-## Preparing map tiles
+2. **Запустить сервер тайлов.**  
+   После подготовки файлов тайлов их необходимо развернуть на сервере, где каждому файлу будет соответствовать прямая ссылка, например  
+   [http://tileserver.com/{z}/{y}/{x}](http://tileserver.com/%7Bz%7D/%7By%7D/%7Bx%7D).  
+   Вы можете использовать собственный сервер или облачный сервис от компаний **Mapbox**, **CartoDB**, **Esri** или **ArcGIS**.
 
-An available cartographic document needs to be converted to tile graphics – uniform pieces with the connection to graticule values (coordinates) for each scale level. One of the most popular tile format is MBTiles created by [Mapbox](https://www.mapbox.com/), but other formats, for example, GeoTIFF can be also used for Navixy.
+3. **Добавить новый слой карт в интерфейс.**  
+   После запуска сервера тайлов и загрузки картографических данных вы можете интегрировать их в интерфейс платформы, добавив новый внешний картографический слой и указав URL сервера тайлов.  
+   Новый слой появится в списке доступных и может отображаться отдельно или совместно с другими слоями.
 
-Regardless of the format, all the tile files must be imported in the [Mercator projection](https://en.wikipedia.org/wiki/Mercator_projection). It can guarantee correct user’s layer overlapping on any type of map that is used by Navixy, because all the maps are made in the Mercator projection. A tile size may vary, thus, it will be converted to the most common size – 256 ppi.
+---
 
-![Map tiles](../../../../on-premise/on-premise/platform-installation/optional-software/attachments/image-20230810-131010.png)
+## Подготовка тайлов карт
 
-## Launching a tile server
+Доступный картографический документ необходимо преобразовать в тайлы — равномерные графические элементы, связанные с координатами для каждого уровня масштабирования.  
+Одним из наиболее популярных форматов тайлов является **MBTiles**, созданный [Mapbox](https://www.mapbox.com/), однако можно использовать и другие форматы, например **GeoTIFF**.
 
-You need to deploy the prepared tile-files on a server. Every file will have its direct link: `http://tileserver.com/{z}/{y}/{x}`. It allows getting a correct response at the request of: `//tileserver.com/{z}/{x}/{y}.png`. The tile server may be launched locally or in the cloud.
+Независимо от используемого формата, все файлы тайлов должны быть импортированы в [проекции Меркатора](https://en.wikipedia.org/wiki/Mercator_projection).  
+Это гарантирует корректное наложение пользовательских слоёв на любые карты, применяемые в платформе **ГдеМои**, поскольку все они используют проекцию Меркатора.  
+Размер тайлов может отличаться, но будет автоматически приведён к наиболее распространённому формату — **256 ppi**.
 
-### **Option 1: Your local** **tile server**
+![Тайлы карт](../../../../on-premise/on-premise/platform-installation/optional-software/attachments/image-20230810-131010.png)
 
-Running your own tile server is a common task for a system administrator. The configuration process itself is not particularly challenging, but the server requires high computing resources and specialized equipment.
+---
 
-The tile server performs several crucial tasks, including rendering and preparing tiles to be cached, sharing the load and creating a request queue, converting vector data to raster tiles, uploading incoming data to a database (if necessary), and providing database control through the database management system.
+## Запуск сервера тайлов
 
-System administrators may opt for a Unix-based operating system as it is often more straightforward and cost-effective. Additionally, there are some pre-packaged solutions available. For instance, one may deploy a tile server from Ubuntu packages using the OpenStreetMap mount.
+Необходимо развернуть подготовленные файлы тайлов на сервере.  
+Каждый файл должен иметь прямую ссылку:  
+`http://tileserver.com/{z}/{y}/{x}`  
+Это позволяет получать корректный ответ при запросе:  
+`//tileserver.com/{z}/{x}/{y}.png`  
+Сервер тайлов может быть установлен локально или развернут в облаке.
 
-### Option 2: Tile service from a 3rd party (SaaS)
+---
 
-If you prefer not to run your own tile server, there are many companies that offer ready-made solutions for deploying and supporting tile servers. These providers offer all the necessary components and computing resources, so you don't have to worry about setting up and maintaining a tile server yourself. Some of the most popular providers include Mapbox, CartoDB, Esri, and ArcGIS.
+### Вариант 1. Локальный сервер тайлов
 
-Navixy integrates with the majority of these options. Please contact our customer success team to discuss how your preferred map providers can integrate with the platform.
+Развёртывание собственного сервера тайлов — обычная задача системного администратора.  
+Сам процесс настройки несложен, но сервер требует значительных вычислительных ресурсов и специализированного оборудования.
+
+Сервер тайлов выполняет несколько ключевых функций:  
+* рендеринг и подготовку тайлов к кэшированию;  
+* распределение нагрузки и создание очереди запросов;  
+* преобразование векторных данных в растровые тайлы;  
+* загрузку поступающих данных в базу данных (если это предусмотрено);  
+* управление базой данных через СУБД.
+
+Чаще всего для таких задач используют операционные системы на базе **Unix**, поскольку это более просто и экономично.  
+Кроме того, существуют готовые решения — например, можно развернуть сервер тайлов из пакетов **Ubuntu** с использованием **OpenStreetMap**.
+
+---
+
+### Вариант 2. Сторонние сервисы (SaaS)
+
+Если вы не хотите запускать собственный сервер тайлов, можно воспользоваться услугами компаний, предоставляющих готовые решения для развёртывания и поддержки серверов тайлов.  
+Они обеспечивают все необходимые ресурсы и инфраструктуру, поэтому вам не придётся заниматься настройкой и сопровождением.  
+Среди наиболее популярных провайдеров — **Mapbox**, **CartoDB**, **Esri**, **ArcGIS**.
+
+Платформа **ГдеМои — Локальная версия** поддерживает интеграцию с большинством таких решений.  
+Для обсуждения подключения выбранного картографического провайдера свяжитесь с **отделом технических решений**:  
+[solutions@gdemoi.ru](mailto:solutions@gdemoi.ru).
