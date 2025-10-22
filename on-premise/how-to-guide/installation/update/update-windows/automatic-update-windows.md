@@ -1,73 +1,70 @@
-# Automatic update - Windows
+# Автоматическое обновление — Windows
 
-This guide describes Navixy On-Premise platform update using automated script. This script is designed for Windows servers that are already running Navixy platform.
+В этом руководстве описывается процесс обновления платформы **ГдеМои — Локальная версия** с помощью автоматического скрипта. Скрипт предназначен для серверов Windows, на которых уже установлена платформа.
 
-For the initial installation of the platform, refer to the [installation instructions](../../advanced-installation/windows-installation/).
+Для первичной установки платформы см. раздел [Инструкция по установке](../../advanced-installation/windows-installation/).
 
-For Linux servers, please refer to the [Easy installation](../../easy-installation.md) instruction or to [advanced installation section for Ubuntu](../../advanced-installation/ubuntu-20/).
+Для серверов Linux используйте [Быструю установку](../../easy-installation.md) или [расширенную установку для Ubuntu](../../advanced-installation/ubuntu-20/).
 
-## Prerequisites for update
+## Предварительные требования
 
-Before starting the update, please make sure that your system meets the following prerequisites:
+Перед началом обновления убедитесь, что ваша система соответствует следующим требованиям:
 
-1. **Java Development Kit 21**\
-   Starting from March 2025, the platform deprecated version 17 and older.
-2. **MySQL 8.0**\
-   Starting from March 2024, the platform deprecated MySQL 5.7. This version reached its EOL and is no longer supported.
+1. **Java Development Kit 21**  
+   Начиная с марта 2025 года, версии 17 и старше не поддерживаются.
+2. **MySQL 8.0**  
+   Начиная с марта 2024 года, версия MySQL 5.7 не поддерживается.
 
-Non-compliance with the required software will result in the new version of the platform being unable to start. However, a preliminary update of prerequisites will keep the platform functional.
+Несоответствие требованиям приведёт к тому, что новая версия платформы не сможет запуститься. Предварительное обновление компонентов позволит этого избежать.
 
-{% hint style="info" %}
-The update script operation starts with checking the system environment. If any of the required software is missing or has an incompatible version, the script will display a warning.
-{% endhint %}
+Скрипт обновления автоматически проверяет окружение. Если какое-либо из необходимых приложений отсутствует или имеет несовместимую версию, будет выведено предупреждение.
 
-## Navixy package
+## Пакет платформы
 
-Navixy On-premise distribution package is always available for download at the direct link:
+Дистрибутив платформы всегда доступен по прямой ссылке:
 
-[⬇️ Download Navixy package](https://get.navixy.com/latest)
+[⬇️ Скачать установочный пакет](https://get.navixy.com/latest)
 
-{% hint style="info" %}
-Your browser may warn you that the download is not secure - this is normal for tar.gz archives. Ignore the warning and download the archive safely.
-{% endhint %}
+Браузер может вывести предупреждение о небезопасной загрузке — это нормально для архивов `.tar.gz`. Игнорируйте предупреждение и продолжайте загрузку.
 
-Unpack the newly downloaded archive and navigate to the folder named `\navixy-package`. This will be the main folder this instruction works with.
+После скачивания распакуйте архив и перейдите в папку `\navixy-package`. Это основная рабочая директория, используемая в дальнейших инструкциях.
 
-## Update script
+## Скрипт обновления
 
-Proceed to `\navixy-package\windows` folder and run the `NavixyUpdater.ps1` script with Powershell:
+Перейдите в папку `\navixy-package\windows` и запустите скрипт `NavixyUpdater.ps1` через PowerShell:
 
 ![NavixyUpdater](../../../../../on-premise/on-premise/platform-installation/update/update-windows/attachments/image-20250604-135031.png)
 
-This will initiate the update process. The script will check the environment, and if all the required software is up to date, you will see the installation type selection menu:
+Это инициирует процесс обновления. Скрипт проверит программное окружение, и если всё соответствует требованиям, появится меню выбора типа установки:
 
 ![Update menu](../../../../../on-premise/on-premise/platform-installation/update/update-windows/attachments/image-20250604-135854.png)
 
-If Java and MySQL of the required versions are not detected, the script will terminate.
-
-If one of the required software is detected, the script will continue execution, but will show a warning:
+Если нужные версии Java или MySQL не обнаружены, выполнение будет остановлено.  
+Если обнаружено только одно из приложений, скрипт продолжит выполнение, но покажет предупреждение:
 
 ![Error - service not found](../../../../../on-premise/on-premise/platform-installation/update/update-windows/attachments/image-20250604-135235.png)
 
-You can continue the installation in the following cases:
+Продолжать обновление можно в следующих случаях:
 
-* If MySQL is not detected, but you are updating the application server.
-* If Java is not detected, but you are updating the database server.
+* MySQL не обнаружен — вы обновляете только сервер приложений.  
+* Java не обнаружена — вы обновляете только сервер базы данных.
 
-If you are updating all-in-one server with all components, stop the update and check the versions of the installed software. If they are of the required versions, reinstall or upgrade them.
+Если обновляется сервер с полной установкой (все компоненты на одном сервере), остановите процесс, проверьте версии установленных компонентов и при необходимости обновите их вручную.
 
-## Update process
+## Процесс обновления
 
-After selecting the desired option, the script will start the update process. If all components or the database are being updated, you will need to enter a login and password to access the database.
+После выбора нужного варианта скрипт запустит процесс обновления.  
+Если обновляются все компоненты или база данных, необходимо будет ввести логин и пароль для доступа к MySQL.
 
-The update process is fully automated, all you need to do is keep an eye on the screen and wait.
+Процесс полностью автоматизирован — остаётся только наблюдать за ходом выполнения.
 
 ![Update process](../../../../../on-premise/on-premise/platform-installation/update/update-windows/attachments/image-20250605-120128.png)
 
-After a successful update, the script will notify you of completion and terminate.
+После успешного завершения обновления появится сообщение о завершении, и скрипт автоматически закроется.
 
-## Final steps
+## Завершающие действия
 
-When the update is complete, check that the platform admin panel and user accounts are available and everything is working correctly. If you were expecting any specific innovations, check if they are present among the platform functionality.
+После завершения обновления проверьте доступность панели администратора и пользовательских учётных записей, убедитесь, что все функции работают корректно.  
+Если вы ожидали появления определённых нововведений, убедитесь, что они появились.
 
-If you find any issues, proceed to the troubleshooting section or contact technical support.
+При обнаружении неполадок обратитесь в раздел [Устранение неполадок](../../../troubleshooting/) или свяжитесь с **отделом технических решений** по адресу [solutions@gdemoi.ru](mailto:solutions@gdemoi.ru).
