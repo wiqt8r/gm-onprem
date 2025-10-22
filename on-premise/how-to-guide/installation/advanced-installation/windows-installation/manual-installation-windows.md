@@ -1,125 +1,93 @@
-# Manual installation - Windows
+# Ручная установка — Windows
 
-This page describes a process of manual installation of the Navixy On-premise solution on Windows. We recommend using **Windows Server 2016 or newer**. If you want to install the platform on any other version of Windows, for example desktop versions, you can still apply this guide, as the basic principles and software are the same. However, only server versions are considered a reliable solution.
+На этой странице описан процесс **ручной установки** платформы **ГдеМои – Локальная версия** на Windows.  
+Рекомендуем использовать **Windows Server 2016 и новее**. Если вы устанавливаете платформу на другую редакцию Windows (например, настольную), вы также можете следовать этому руководству: базовые принципы и ПО совпадают. Однако надёжным вариантом считаются именно серверные редакции.
 
-{% hint style="danger" %}
-The fully manual installation of Navixy-On-premise for Windows is provided for clients who need full control over the installation process or who have custom configuration requirements. In general, it is recommended to perform an automated installation on Linux, as it is much easier and more flexible not only for the initial installation, but also for future administration and maintenance. Windows installation instructions are available for those customers who are focused on using this OS exclusively due to corporate requirements or other internal reasons.
-{% endhint %}
+Хотя платформа использует на Linux и Windows схожие сторонние компоненты, есть важные особенности работы сервисов в Windows:
 
-Although the platform uses the same third-party software on both Linux and Windows, the main difference in its operation is how the services work on Windows:
+* Java-сервисы запускаются как службы Windows с помощью YAJSW.  
+* Nginx запускается как обычное фоновое приложение, а не как служба.
 
-* Java services are converted into Windows services using YAJSW software.
-* Nginx is not a service but a regular program running in the background.
+Для установки требуется учётная запись Windows с **правами администратора** (локальная или доменная — неважно; платформа не зависит от доменной инфраструктуры).
 
-To perform the installation, you need a Windows account with **administrator privileges**. It doesn't matter if it's a local or domain account because the platform is not related to the domain infrastructure in any way. You only need sufficient rights to install it.
+## Установка необходимых компонентов
 
-## Install pre-requisite software
+Установите ПО из раздела [Программное обеспечение сервера](../../../requirements/server-software.md). Вкратце понадобится:
 
-Download and install the pre-requisites described in [Server software](../../../requirements/server-software.md) document. Essentially, you will need these components to get the platform up and running:
+* [MySQL 8.0](https://dev.mysql.com/downloads/installer/) — достаточно компонента **Server**;  
+  * Мастер установки может попросить Microsoft Visual C++ — установите при необходимости.
+* [Java SE Development Kit 21](https://www.oracle.com/java/technologies/downloads/#jdk21-windows)
+* [Nginx](https://nginx.org/en/download.html) — свежая версия (инсталлятор не требуется, достаточно распаковать архив)
 
-* [MySQL 8.0](https://dev.mysql.com/downloads/installer/) - only Server is required, other components are optional;
-  * Microsoft Visual C++ may be required for installation. Setup wizard will notify you about it.
-* [Java SE Development Kit 21](https://www.oracle.com/java/technologies/downloads/#jdk21-windows);
-* [Nginx](https://nginx.org/en/download.html) - any recent version (it does not need installation, just extract it);
+Дополнительно рекомендуем:
 
-In addition to the basic components, it is also recommended to install the following software to make further work easier:
+* Архиватор с поддержкой `tar.gz`, например [7-Zip](https://www.7-zip.org/).  
+* Расширенный текстовый редактор (конфигурации, большие логи), например [Notepad++](https://notepad-plus-plus.org/downloads/).
 
-* Any archiver capable of unpacking tar.gz files - for example [7-Zip](https://www.7-zip.org/).
-* Advanced text editor to work with configurations and large log files - for example [Notepad++](https://notepad-plus-plus.org/downloads/).
+### Настройка MySQL
 
-{% hint style="info" %}
-It is strongly recommended to install third-party software only from official resources - preferably from the links above. If software is installed from unreliable resources, operability is not guaranteed.
-{% endhint %}
-
-### MySQL configuration
-
-After installing MySQL Server, you need to apply changes to its configuration for Navixy platform to work correctly with the database. The configuration is specified in **my.ini** file located at the following path:
+После установки MySQL примените настройки для корректной работы платформы. Конфигурационный файл:
 
 `C:\ProgramData\MySQL\MySQL Server 8.0\my.ini`
 
-In this file you need to set the parameters below under `[mysqld]` section. If they are already present - change them accordingly.
+В секции `[mysqld]` задайте/обновите параметры:
 
 ```
 default-time-zone='+00:00'
 sql-mode="NO_ENGINE_SUBSTITUTION"
 innodb_buffer_pool_size=10G
 ```
+`innodb_buffer_pool_size` — объём ОЗУ под MySQL. Рекомендуем выставить ~**70% общей RAM** сервера (в гигабайтах).
 
-The `innodb_buffer_pool_size` parameter is the amount of RAM allocated for MySQL. It is strongly recommended to set this parameter to **70% of total RAM** on your server (in gigabytes).
+Сохраните файл и **перезапустите MySQL** (services.msc), чтобы применить изменения.
 
-After the configuration is changed, save the file and **restart MySQL** from Windows Services snap-in (services.msc) to apply changes.
+### Переменные окружения
 
-### Environment variables
-
-Java and MySQL `bin` folders must be specified in Windows `PATH` system environment variable. These folders are (by default) as follows:
+Добавьте пути к `bin` Java и MySQL в системную переменную `PATH`, а путь к Java — в переменную `JAVA_HOME`:
 
 * `C:\Program Files\Java\jdk-21\bin`
 * `C:\Program Files\MySQL\MySQL Server 8.0\bin`
+* `JAVA_HOME = C:\Program Files\Java\jdk-21`
 
-Java installation folder must also be added to the new `JAVA_HOME` system variable. This is required for the backend services to work properly
+Имена папок могут отличаться — проверьте фактические пути.
 
-{% hint style="danger" %}
-Folder names may vary from version to version, so check the actual paths first.
-{% endhint %}
-
-You can update the environment variables with the following commands from command line:
+Обновить переменные можно из командной строки (от имени администратора):
 
 ```
 setx /m Path "%PATH%;C:\Program Files\Java\jdk-21\bin;C:\Program Files\MySQL\MySQL Server 8.0\bin"
 setx /m JAVA_HOME "C:\Program Files\Java\jdk-21"
 ```
-
-This will create the required values.
-
-You can also update the `Path` and `JAVA_HOME` environment variables manually in system properties.
-
-As a result, you must have the following:
-
-![Environment variables](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250321-102652.png)
-
-After the variables are saved, open the command line and check the versions of software with the following commands:
+Проверьте версии:
 
 ```
 mysql -V
 java -version
 ```
+Если видите ошибки вида `is not recognised as an internal or external command`, проверьте заданные пути.
 
-If the versions are returned, then the variables are configured properly.
+## Распаковка платформы
 
-![Software versions](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250321-103003.png)
+Дистрибутив **ГдеМои – Локальная версия** распространяется в архиве `.tar.gz`. Актуальная версия доступна по ссылке:
 
-If you see the errors like `is not recognised as an internal or external command`, check the paths you specified before.
+[⬇️ Скачать пакет ГдеМои – Локальная версия](https://get.navixy.com/latest)
 
-## Unpack the platform
+Сохраните и распакуйте архив. Учтите, что в пакете много вложенных папок — не превышайте ограничение Windows на длину пути (≈255 символов).
 
-Navixy distribution package is provided as a .tar.gz archive. The latest version is always available for download at the following link:
+Поместите папку `navixy-package` в удобный каталог, например: `C:\distrib\navixy-package`
 
-[⬇️ Download Navixy On-premise package](https://get.navixy.com/latest)
+Далее в инструкции пути вида `...navixy-package\...` означают работу из этой папки и её подкаталогов.
 
-Place it to any folder on your server and extract it.
+## Базы данных ГдеМои
 
-{% hint style="info" %}
-The package has a plenty of nested folders, so be careful not to exceed Windows limit of 255 symbols in file path.
-{% endhint %}
-
-Place `navixy-package` folder from the archive to some directory like: `C:\distrib\navixy-package`
-
-Hereinafter this will be the main folder of the distribution. Further in this instruction you can find paths like `...navixy-package/db`, which means that operations must be performed from this folder and its subfolders.
-
-After unpacking the platform and preparing all the pre-requisites, you are ready to start Navixy platform installation.
-
-## Navixy databases
-
-First, you need to perform MySQL database configuration. It is recommended to work with MySQL from the command line. Connect to MySQL as `root` user with the password you set during MySQL installation:
+Сначала создайте пользователя и базы в MySQL. Подключитесь под `root`:
 
 ```
 mysql -uroot -p
 ```
+Выполните SQL-блок (вместо `<PASSWORD>` укажите пароль для пользователя `navixy` и **запомните его**):
 
-Execute the below queries block. Substitute `<PASSWORD>` with a new password for `navixy` user, remember it, you will need it later.
-
-{% code overflow="wrap" %}
-```sql
+```
+sql
 CREATE USER navixy@'%' IDENTIFIED BY '<PASSWORD>' WITH MAX_QUERIES_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 CREATE DATABASE google CHARACTER SET utf8 COLLATE utf8_general_ci;
 CREATE DATABASE tracking CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -127,138 +95,151 @@ GRANT USAGE ON *.* to navixy@'%';
 GRANT ALL PRIVILEGES ON google.* TO navixy@'%';
 GRANT ALL PRIVILEGES ON tracking.* TO navixy@'%';
 ```
-{% endcode %}
+Будут созданы пустые базы данных.
 
-This will create empty databases for further use.
+Выйдите из MySQL.
 
-Quit MySQL and return to command line.
+### Импорт структуры данных
 
-### Database contents
-
-Change the directory in command line to `...navixy-package\db`.
-
-Execute the following command to import the business data tables structure:
+Перейдите в каталог `...navixy-package\db` и выполните импорт структуры таблиц бизнес-данных.  
+Для этого в командной строке введите:
 
 ```
+bash
 mysql -uroot -p google < google.sql
 ```
 
-After that, delete the `updates.sql` and `google.sql` files with the following commands, as they are not needed in the next step:
+Дождитесь завершения процесса — структура таблиц будет создана.
+После этого удалите файлы updates.sql и google.sql, так как они не потребуются на следующем этапе:
 
 ```
 del updates.sql
 del google.sql
 ```
 
-Now import the remaining files into the database using this command:
+Теперь необходимо импортировать остальные SQL-файлы, чтобы добавить данные по умолчанию.
+Выполните следующую команду:
 
 ```
 type *.sql | mysql -uroot -p google
 ```
+После выполнения этой команды база данных будет полностью инициализирована.
 
-### File server
+### Настройка файлового хранилища
 
-Connect to MySQL again and execute the below SQL query. This will allow to upload files from the mobile app and web interface to your server, which is required when working with field service forms, vehicle maintenance and other features. Change `api.domain.com` to your domain for API, and change `https` to `http` if you do not use SSL.
-
-{% code overflow="wrap" %}
-```sql
+Подключитесь к MySQL повторно, затем выполните указанный ниже SQL-запрос. Он создаст локальное файловое хранилище, которое используется для загрузки файлов и изображений с мобильных приложений и веб-интерфейса — например, в формах обслуживания, заявках, отчётах и т. д.
+Измените `api.domain.com` на ваш домен API и при необходимости замените `https` на `http`, если SSL не используется.
+```
 INSERT INTO google.file_storages (id, engine, config) values (1, 'local_fs', '{"base_path":"./files/","base_upload_url":"https://api.domain.com/file/upload","base_download_url":"https://api.domain.com/file/dl","secret":"s3cCr3Et","upload_credentials_ttl":"10m","is_dynamic_preview_enabled": true,"dynamic_preview_pattern":"(.+)/file/dl/(.+)","dynamic_preview_replace":"$1/file/preview/$2","security_module":{"type":"hashid","salt":"S4lTh45hV4lu3","ttl":"7d","min_length":8}}');
 ```
-{% endcode %}
 
-The values of `secret` and `salt` are recommended to be a random hash of letters and numbers.
+Значения параметров `secret` и `salt` рекомендуется заменить на случайные наборы букв и цифр. Это повысит безопасность хранилища.
 
-### License key
+### Лицензионный ключ
 
-Finally, apply the license key (fingerprint), which should be provided by Navixy. It looks like a long string of random symbols.
+После инициализации базы данных необходимо применить лицензионный ключ (fingerprint), выданный отделом технических решений. Он представляет собой длинную строку из букв и цифр.
+Выполните запрос, подставив свой ключ вместо `<FINGERPRINT>`:
 
-Insert fingerprint into the database with the below query. Change `<FINGERPRINT>` to the received value):
-
-```sql
+```
 UPDATE google.variables SET value='<FINGERPRINT>' WHERE var='fingerprint';
 ```
 
-{% hint style="info" %}
-Fingerprint is dynamic. It is updated each time your server connects to the [auth.navixy.com](http://auth.navixy.com/) licensing server. This happens every 3 days and at every service startup. So you do not need to store it separately from the platform as it is constantly changing. Also for this reason you cannot use it on multiple instances. The key can only be used for a single Navixy On-premise instance.
-{% endhint %}
+Fingerprint является динамическим ключом. Он обновляется каждый раз, когда сервер обращается к лицензирующему серверу `auth.gdemoi.ru` — это происходит каждые 3 дня и при каждом перезапуске сервисов. Поэтому нет необходимости сохранять ключ отдельно: он регулярно обновляется. Также его нельзя использовать на нескольких серверах — лицензия действует только для одной платформы.
 
-## Frontend
+## Фронтенд
 
-The next step is to set up Navixy On-premise platform frontend - configuring Nginx web server and user interface static files.
+Следующим шагом необходимо настроить фронтенд платформы **ГдеМои — Локальная версия** — веб-сервер **Nginx** и статические файлы пользовательского интерфейса.
 
-Create `nginx` folder on disk `C:`.
+Создайте папку `nginx` на диске `C:`.
 
 ```
 md nginx
 ```
+Скопируйте распакованный дистрибутив Nginx в `C:\nginx`.
 
-Copy the unpacked Nginx distribution to `C:\nginx`.
+![Папка Nginx](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20230928-145508.png)
 
-![Nginx folder](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20230928-145508.png)
+### Статические файлы
 
-### Static files
+Создайте папку `www` в `C:\nginx`. Скопируйте в неё каталоги `panel-v2` и `pro-ui` из `navixy-package`. Эти папки содержат статические файлы веб-интерфейса платформы — фактически, весь её видимый контент.
 
-Create a folder named `www` in `C:\nginx`. Copy `panel-v2` and `pro-ui` folders from `navixy-package` into it. These are the folders containing Navixy website static files - actually, all its visible contents. Now you need to rename the configuration files:
+Теперь переименуйте конфигурационные файлы:
 
-* Open `\panel-v2` folder and rename the file `PConfig.example.sa.js` to `PConfig.js`.
-* Open `\pro-ui` and rename `Config.example.sa.js` to `Config.js`.
-* Open `\pro-ui\static` and rename `app_config.example.sa.js` to `app_config.js`.
+* В папке `\panel-v2` переименуйте `PConfig.example.sa.js` → `PConfig.js`
+* В папке `\pro-ui` переименуйте `Config.example.sa.js` → `Config.js`
+* В папке `\pro-ui\static` переименуйте `app_config.example.sa.js` → `app_config.js`
 
-{% hint style="info" %}
-In all of the above steps, just remove `.example.sa` entry from file names. Be careful not to confuse files with similar names in the folders.
-{% endhint %}
+Во всех этих шагах просто удалите часть `.example.sa` из имени файла. Будьте внимательны — в каталогах могут быть похожие файлы.
 
-### Nginx
+### Настройка Nginx
 
-Add the following lines to `http` block of `C:\nginx\conf\nginx.conf` file:
+Откройте файл `C:\nginx\conf\nginx.conf` и в блоке `http` добавьте строки:
 
 ```
 include conf.d/*.conf;
 server_names_hash_bucket_size 64;
 ```
 
-Copy a folder named `include` from `...navixy-package\windows\nginx` to `C:\nginx\conf` folder.
+Скопируйте папку `include` из `...navixy-package\windows\nginx` в `C:\nginx\conf`.
 
-Create a folder named `conf.d` in `C:\nginx\conf`. This folder will contain the configuration for platform website.
+Создайте папку `conf.d` в `C:\nginx\conf`. Эта папка будет содержать конфигурационные файлы сайта платформы.
 
-Copy these files from `...navixy-package\windows\nginx` to the newly created `C:\nginx\conf\conf.d` folder:
+Из `...navixy-package\windows\nginx` скопируйте в неё следующие файлы:
 
 * `map.conf`
 * `navixy.conf`
 
-If you are going to use SSL protection on your server, so that your website opens via HTTPS, also copy this file:
+Если планируется использование SSL (HTTPS), скопируйте также файл:
 
 * `navixy_ssl.conf`
 
-Now, configure `navixy.conf` and `navixy_ssl.conf` according to [**Nginx configurations**](../../../configuration/nginx-web-server.md) page. These are the main configuration files for the web server, so take extra care when editing them.
+Далее настройте файлы `navixy.conf` и (если используется SSL) `navixy_ssl.conf` в соответствии с инструкцией  
+[Конфигурация Nginx](../../../configuration/nginx-web-server.md). Эти файлы определяют работу веб-сервера, поэтому редактируйте их внимательно.
 
-{% hint style="info" %}
-To configure the platform to work over HTTPS, you will need a valid SSL certificate issued for your domain, along with its private key. In the absence of the certificate and its matching private key, the web server with the “443 ssl” option will fail to run. To learn more about SSL certificates and their operation on the platform, please refer to [SSL certificates installation](../../../configuration/ssl-certificates/ssl-certificates-installation.md) page.
-{% endhint %}
+### Настройка HTTPS
 
-After all of the above is done - **run nginx.exe as administrator**. Make sure it is up and running in Task manager (normally it has two or more processes). If it stops working, check `C:\nginx\logs\error.log` for errors and act accordingly.
+Для корректной работы HTTPS потребуется действующий SSL-сертификат, выданный на ваш домен, и соответствующий ему приватный ключ.  
+Если сертификат или ключ отсутствуют, Nginx с параметром `443 ssl` не запустится.
 
-![Nginx running](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20231011-123558.png)
+Подробнее об установке и использовании SSL-сертификатов см. в разделе  
+[Установка SSL-сертификатов](../../../configuration/ssl-certificates/ssl-certificates-installation.md).
 
-## Backend
+### Запуск Nginx
 
-This part consists of two steps: configuring Java services and converting them to Windows services.
+После выполнения всех шагов запустите `nginx.exe` **от имени администратора**.  
+Убедитесь, что сервер работает — в диспетчере задач обычно отображаются два и более процесса Nginx.
 
-### Java services - pre-configuration
+Если сервер останавливается или не запускается, проверьте журнал ошибок:
 
-Create `java` folder on disk `C:`.
+```
+C:\nginx\logs\error.log
+```
+и внесите необходимые исправления в конфигурацию.
+
+![Работающий Nginx](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20231011-123558.png)
+
+
+## Бэкенд
+
+## Бэкенд
+
+Этот этап состоит из двух шагов: настройка Java-сервисов и их преобразование в службы Windows.
+
+### Предварительная настройка Java-сервисов
+
+Создайте папку `java` на диске `C:`.
 
 ```
 md java
 ```
 
-Copy the following folders from `...navixy-package` to `C:\java`:
+Скопируйте из `...navixy-package` в `C:\java` следующие каталоги:
 
 * `api-server`
 * `sms-server`
 * `tcp-server`
 
-In each of these folders, move the `conf` subfolder from the dist subdirectory to the service folder. Use the following commands in command line to make this easier.
+В каждой из этих папок переместите подкаталог `conf` из директории `dist` в корень сервиса. Для удобства можно воспользоваться следующими командами:
 
 ```
 move C:\java\api-server\dist\conf C:\java\api-server\
@@ -266,66 +247,71 @@ move C:\java\sms-server\dist\conf C:\java\sms-server\
 move C:\java\tcp-server\dist\conf C:\java\tcp-server\
 ```
 
-Open each of three `conf` subfolders one by one and find `db.properties` files inside. These are the files for configuring the platform services to connect to the database. To ensure proper functioning of each service, you need to update the database connection credentials for each of them. Edit the following lines in the configuration files (`<PASSWORD>` refers to the password you previously created for the user "navixy")
+Откройте поочерёдно каждую из трёх папок `conf` и найдите файл `db.properties`. Это конфигурационные файлы, с помощью которых сервисы подключаются к базе данных. Для корректной работы всех сервисов необходимо указать правильные данные для подключения. Измените строки:
 
 ```
 db.username=navixy
 db.password=<PASSWORD>
 ```
 
-If your database is hosted on a separate server, you also need to change the `db.connectionString` line in the same files. Specify the actual address of your database server instead of `localhost`, but do not change anything else in this string.
+Здесь `<PASSWORD>` — это пароль пользователя базы данных `navixy`, который вы задали ранее.
 
-### Java services - API-server
+Если база данных размещена на отдельном сервере, измените строку `db.connectionString`, указав фактический IP-адрес или домен сервера базы данных вместо `localhost`, но не меняйте другие параметры строки.
 
-Open the file `C:\java\api-server\conf\config.properties`.
+---
 
-Edit the following lines:
+### Java-сервис **api-server**
 
-* `api.externalBaseUrl=` - URL of your API domain (with `http://` or `https://` in the beginning). **i**
-* `feedback.toEmail=test@localhost` - address to receive feedback/help requests from users.
-* `feedback.defaultFromEmail=do-not-reply@localhsot` - default sender of help emails.
-* `feedback.substituteFromEmail=false` - toggles whether the help messages are sent from default sender (false) or from user's personal email address (true).
+Откройте файл `C:\java\api-server\conf\config.properties` и отредактируйте следующие строки:
 
-{% hint style="info" %}
-If you don't have a dedicated domain for the API, your base domain is specified here with `/api` appended, e.g.: `https://my.domain.com/api`
-{% endhint %}
+* `api.externalBaseUrl=` — адрес вашего домена API (начинается с `http://` или `https://`);
+* `feedback.toEmail=test@localhost` — адрес, на который будут поступать сообщения из раздела обратной связи;
+* `feedback.defaultFromEmail=do-not-reply@localhost` — адрес отправителя таких сообщений по умолчанию;
+* `feedback.substituteFromEmail=false` — если указано `true`, письма будут отправляться с адреса пользователя, иначе — с адреса по умолчанию.
 
-### Java services - SMS-server
+Если у вас нет отдельного домена для API, укажите здесь основной домен с добавлением `/api`, например:
+`https://my.domain.com/api`.
 
-This service does not require configuration and utilizes default settings.
+---
 
-### Java services - TCP-server
+### Java-сервис **sms-server**
 
-Open the file `C:\java\tcp-server\conf\config.properties`.
+Этот сервис не требует дополнительной настройки и использует конфигурацию по умолчанию.
 
-Edit the following lines:
+---
 
-* `externalIP=127.0.0.1` - specify the IP address of your user interface instead of `127.0.0.1`.
-* `externalHostname=myhost.ru` - specify the domain of your user interface insread of `myhost.ru`.
+### Java-сервис **tcp-server**
 
-The above settings will be used for devices automatic activation.
+Откройте файл `C:\java\tcp-server\conf\config.properties` и измените строки:
 
-### Java services - converting to Windows services
+* `externalIP=127.0.0.1` - укажите вместо `127.0.0.1` реальный IP-адрес вашего пользовательского интерфейса.
+* `externalHostname=myhost.ru` - укажите вместо `myhost.ru` домен пользовательского интерфейса.
 
-{% hint style="info" %}
-At this stage, third-party software is used - it is called YAJSW (Yet Another Java Service Wrapper). This is a freeware that is used to run Java applications as Windows services. More information can be found [on the project web page](https://yajsw.sourceforge.io/). The software itself is included in Navixy package.
-{% endhint %}
+Эти данные используются для автоматической активации устройств.
 
-Copy the folder named `wrapper` from `...navixy-package\windows` to `C:\java`.
+---
 
-Run command line as administrator and change directory to the following:
+### Преобразование Java-сервисов в службы Windows
+
+На этом этапе используется стороннее программное обеспечение **YAJSW (Yet Another Java Service Wrapper)**. Оно позволяет запускать Java-приложения как службы Windows.  
+Подробнее о проекте можно узнать на [официальном сайте YAJSW](https://yajsw.sourceforge.io/).  
+Необходимые файлы уже включены в дистрибутив платформы.
+
+Скопируйте папку `wrapper` из `...navixy-package\windows` в `C:\java`.
+
+Запустите командную строку **от имени администратора** и перейдите в каталог:
 
 ```
 cd C:\java\wrapper\bat
 ```
 
-Run `setenv.bat` from this directory in the command line.
+Выполните команду для настройки окружения:
 
 ```
 setenv.bat
 ```
 
-Execute the following commands, one by one:
+Затем поочерёдно выполните команды:
 
 ```
 wrapper.bat -i ../conf/wrapper.api-server.conf
@@ -333,45 +319,54 @@ wrapper.bat -i ../conf/wrapper.sms-server.conf
 wrapper.bat -i ../conf/wrapper.tcp-server.conf
 ```
 
-This will install the platform Java services as regular Windows services.
+Эти команды установят Java-сервисы платформы как стандартные службы Windows.
 
-Open the **"Services"** snap-in. You can search for it in start menu, or just run the following in cmd:
+---
 
-```
-services.msc
-```
+### Проверка служб
 
-Scroll the services list and find the newly installed Navixy services. Launch them one by one.
+Откройте оснастку **Services** (через меню «Пуск» или командой `services.msc`).
+
+Найдите в списке установленные службы:
 
 * **Navixy api-server**
 * **Navixy sms-server**
 * **Navixy tcp-server**
 
-![Navixy Windows services](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20231010-113440.png)
+Запустите их вручную по очереди.
 
-Make sure that the services keep working over time - they must have a “Running” status constantly. If any of them crashes, [check their logs](../../../troubleshooting/working-with-logs/) for possible errors.
+![Службы Windows](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20231010-113440.png)
 
-## Final steps
+Убедитесь, что все службы находятся в состоянии **Running (Работает)** и продолжают функционировать.  
+Если какая-либо из них завершает работу, проверьте журнал ошибок согласно инструкции:  
+[Работа с логами](../../../troubleshooting/working-with-logs/).
 
-### Accessing Admin panel
+## Завершающие действия
 
-Once everything is installed and launched, you need to check the availability of your Admin panel domain in your browser. When you specify it in the address line, you should be directed to the login page. If the domain is not directing you to the correct page, double check your web server configuration settings to ensure they are correct.
+### Доступ к панели администратора
 
-Consider changing your password for the Admin panel as soon as you log into the system, as the credentials are default:
+После завершения установки и запуска всех сервисов проверьте доступность домена вашей панели администратора в браузере.  
+При переходе по адресу вы должны увидеть страницу входа в систему.  
+Если домен не открывает нужную страницу, перепроверьте настройки веб-сервера — вероятнее всего, ошибка в конфигурации Nginx.
 
-* username: _admin_
-* password: _admin_
+После успешного входа обязательно смените пароль для панели администратора, поскольку по умолчанию используются стандартные учётные данные:
 
-### Accessing User interface
+* Имя пользователя: _admin_
+* Пароль: _admin_
 
-For the user interface to be available, you need to specify its domain in the Admin panel → Service Preferences first, as described in this document: [Domain name](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/domain-name).
+### Доступ к пользовательскому интерфейсу
 
-If the above is not done, the user interface will not be able to open.
+Чтобы пользовательский интерфейс платформы был доступен, необходимо указать его домен в панели администратора, в разделе **Service Preferences**.  
+Подробнее см. в инструкции: [Доменное имя](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/domain-name).
 
-### Updates
+Если домен не задан, пользовательский интерфейс не будет открываться.
 
-To update Navixy deployed on Windows system to the most current version, please refer to this document: [Update on Windows](../../update/update-windows/)
+### Обновление платформы
 
-### Troubleshooting
+Чтобы обновить платформу **ГдеМои — Локальная версия**, установленную на Windows, до актуальной версии, воспользуйтесь руководством:  
+[Обновление на Windows](../../update/update-windows/)
 
-If you encounter any issues during the installation or configuration process, please refer to the [Troubleshooting](../../../troubleshooting/) pages for possible solutions.
+### Диагностика и устранение неполадок
+
+Если в процессе установки или настройки возникли ошибки, обратитесь к разделу  
+[Диагностика и устранение неполадок](../../../troubleshooting/), где собраны возможные решения типовых проблем.
