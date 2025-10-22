@@ -1,96 +1,101 @@
-# Nginx web server
+# Веб-сервер Nginx
 
-Nginx is the web server used by Navixy platform to run the website. It is freeware designed to run on Linux and is also compatible with Windows.
+**Nginx** — это веб-сервер, используемый платформой **ГдеМои — Локальная версия** для работы веб-интерфейса.  
+Это бесплатное программное обеспечение, разработанное для Linux и совместимое с Windows.
 
-<div align="center"><img src="../../../on-premise/on-premise/configuration/attachments/Nginx_server.png" alt="Nginx logo"></div>
+<div align="center">
+<img src="../../../on-premise/on-premise/configuration/attachments/Nginx_server.png" alt="Логотип Nginx">
+</div>
 
-Nginx is used for both Navixy On-premise solution and Navixy PaaS servers. It is the only type of web server that is guaranteed to be compatible with the platform. No other web servers (Apache, IIS, etc.) are supported.
+Nginx используется как в **Локальной версии**, так и на серверах **ServerMate (PaaS)**.  
+Это единственный веб-сервер, полностью совместимый с платформой.  
+Другие серверы, такие как Apache или IIS, **не поддерживаются**.
 
-{% hint style="info" %}
-If you have other web applications installed on your server alongside Navixy On-premise, you can utilize different web server software concurrently with Nginx for those products. In this situation, it is crucial to perform port separation for these web servers to prevent port conflicts on the same ports.
-{% endhint %}
+Если на вашем сервере вместе с платформой **ГдеМои** установлены другие веб-приложения, вы можете использовать для них другие типы веб-серверов параллельно с Nginx.  
+В этом случае необходимо выполнить **разделение портов**, чтобы избежать конфликтов.
 
-## Nginx configurations
+## Конфигурация Nginx
 
-Using a web server means configuring it so that your website works as intended. The configuration specifies such important things as:
+Настройка веб-сервера необходима для корректной работы сайта. Конфигурационные файлы определяют важные параметры:
 
-* Domain(s) of your website
-* Protocol (HTTP/HTTPS)
-* SSL certificates
-* The location of the website content
+* домен(ы) сайта;
+* используемый протокол (HTTP/HTTPS);
+* SSL-сертификаты;
+* путь к файлам сайта;
 
-And other parameters necessary for the proper functioning of the web page.
+и другие параметры, обеспечивающие стабильную работу веб-интерфейса.
 
-### Linux configurations
+### Конфигурация в Linux
 
-The current version of Navixy On-premise platform is installed on Linux automatically, either using auto-install scripts or by deploying docker containers. In both cases, the Nginx configuration is done automatically during installation and you don't need to make any changes to it, and it is fully prepared for further work.
+В актуальной версии платформы **ГдеМои — Локальная версия** установка на Linux выполняется автоматически — как при установке через скрипты, так и при использовании Docker-контейнеров.  
+Во всех этих случаях Nginx настраивается автоматически во время установки, и вносить изменения вручную не требуется.
 
-If your instance was deployed in manual mode in the past, the previously made configs remain fully functional and do not need to be modified, unless you are going to apply some fundamental changes to the website (e.g. change the domain or enable/disable SSL). If any modifications are required, please contact [Navixy technical support](mailto:support@navixy.com) for further instructions.
+Если установка выполнялась вручную ранее, существующие конфигурации остаются рабочими и не требуют изменений, за исключением случаев, когда вы хотите изменить домен или включить/отключить SSL.  
+При необходимости внесения таких изменений рекомендуется обратиться в **отдел технических решений**: [solutions@gdemoi.ru](mailto:solutions@gdemoi.ru).
 
-### Windows configurations
+### Конфигурация в Windows
 
-In the case of Windows, all installation and configuration of Navixy On-premise platform is done manually and there is no automation. Therefore, Nginx must also be configured manually.
+При установке платформы на Windows настройка выполняется вручную либо с помощью установочного скрипта.  
+Для упрощения задачи в комплекте поставляются шаблоны конфигурационных файлов, которые можно использовать после подстановки реальных доменов и имён сертификатов.
 
-To make the setting process easier, configuration templates are provided, which are usable after simply replacing variables with the actual values of the domain and SSL certificate names.
+Шаблоны находятся в папке `\windows\nginx` внутри распакованного дистрибутива `navixy-package`.  
+Доступны два файла:
 
-The templates are located in `\windows\nginx` folder of `navixy-package` (unpacked distribution build of Navixy On-premise platform). The files are:
+* `navixy.conf` — конфигурация для сайта, работающего по HTTP (без SSL);
+* `navixy_ssl.conf` — конфигурация для сайта с SSL-защитой.
 
-* `navixy.conf` - configuration file for the platform website opened on HTTP, without SSL protection.
-* `navixy_ssl.conf` - configuration file for SSL-protected website.
+Выберите файл в зависимости от того, как планируется запуск сайта.
 
-Choose the file according to how you plan to set up the website.
+#### HTTP (без SSL)
 
-{% hint style="info" %}
-Variable values are specified with a dollar sign and in curly braces - these characters identify the variable. For example:\
-`${service_domain}`\
-When replacing the variable with the real value, these characters must be removed. For example:\
-`${service_domain}` becomes `my.domain.com`
-{% endhint %}
+Это самый простой вариант настройки.  
+Для работы требуется только зарегистрированный домен, указывающий на ваш сервер.
 
-#### HTTP, no SSL protection
+1. Откройте файл `C:\nginx\conf\conf.d\navixy.conf`.
+2. Замените переменные на реальные значения:
+   * `${service_domain}` — домен пользовательского интерфейса при трёхдоменной установке, либо основной домен при однодоменной;
+   * `${api_domain}` — домен API (удалите строку, если используется один домен);
+   * `${panel_domain}` — домен панели администратора (удалите строку, если используется один домен).
 
-This is the easiest option for setting up Navixy platform website, you only need a registered domain(s) pointing to your server.
+Сохраните файл и перезапустите Nginx.  
+Ваш сайт должен быть доступен по указанным доменам.
 
-Edit the file `navixy.conf` located in `C:\nginx\conf\conf.d`. Replace the following values:
+Для однодоменной установки:
+* панель администратора будет доступна по адресу `http://my.domain.com/panel`;
+* API — по адресу `http://my.domain.com/api`.
 
-* `${service_domain}` - user interface domain in three-domain installation or the main domain of your platform in a single-domain installation.
-* `${api_domain}` - the domain for API in three-domain installation. For a single-domain installation, delete the variable but preserve the rest of the line.
-* `${panel_domain}` - the domain for admin panel in three-domain installation. For a single-domain installation, delete the variable but preserve the rest of the line.
+#### HTTPS (SSL-защищённый режим)
 
-Save the file and restart Nginx. Your Navixy website must be available on the specified domain(s).
+Для настройки сайта с SSL-шифрованием требуется зарегистрированный домен, действующий SSL-сертификат и соответствующий приватный ключ.
 
-In case of one-domain installation, the admin panel will be available on `/panel` path (e.g. `http://my.domain.com/panel`), and API will be available on `/api` path (e.g. `http://my.domain.com/api`).
+Более подробную информацию о сертификатах можно найти в разделе  
+[Установка SSL-сертификатов](ssl-certificates/ssl-certificates-installation.md).
 
-#### HTTPS, SSL-protected
+1. Поместите сертификат(ы) и приватный ключ(и) в папку `C:\nginx\ssl` (создайте её, если не существует).
+2. Откройте файл `C:\nginx\conf\conf.d\navixy_ssl.conf` и замените переменные:
+   * `${service_domain}` — домен пользовательского интерфейса;
+   * `${api_domain}` — домен API (или удалите строку для одного домена);
+   * `${panel_domain}` — домен панели администратора (или удалите строку для одного домена);
+   * `${certificate_name}` — имя файла сертификата (с расширением);
+   * `${private_key_name}` — имя файла приватного ключа (с расширением).
 
-To set up an SSL-secured website, you need not only a registered domain, but also a valid SSL certificate and its private key.
+Сохраните изменения и перезапустите Nginx.  
+После этого сайт будет доступен по HTTPS.
 
-{% hint style="info" %}
-For more information about SSL certificates, please check [the corresponding page](ssl-certificates/ssl-certificates-installation.md) of the instructions.
-{% endhint %}
+Для однодоменной установки:
+* панель администратора — `https://my.domain.com/panel`
+* API — `https://my.domain.com/api`
 
-Place SSL certificate(s) and private key(s) in `C:\nginx\ssl` folder. Create it if it does not exist.
+#### Перенаправление HTTP → HTTPS
 
-Edit the file `navixy_ssl.conf` located in `C:\nginx\conf\conf.d`. Replace the following values:
+Чтобы пользователи могли открывать платформу даже при вводе адреса без `https://`, необходимо включить перенаправление.
 
-* `${service_domain}` - user interface domain in three-domain installation or the main domain of your platform in a single-domain installation.
-* `${api_domain}` - the domain for API in three-domain installation. For a single-domain installation, delete the variable but preserve the rest of the line.
-* `${panel_domain}` - the domain for admin panel in three-domain installation. For a single-domain installation, delete the variable but preserve the rest of the line.
-* `${certificate_name}` - name of the certificate file with extension. Must be the certificate issued for the domain.
-* `${private_key_name}` - name of the private key file with extension. The key must match the certificate.
-
-Save the file and restart Nginx. Your Navixy website must be available on the specified domain(s).
-
-In case of one-domain installation, the admin panel will be available on /panel path (e.g. `https://my.domain.com/panel`), and API will be available on /api path (e.g. `https://my.domain.com/api`).
-
-#### HTTP-HTTPS redirection
-
-When you use HTTPS, you may want your users to be able to get to the platform even if they open the address via HTTP. To do this, you need to have `navixy.conf` (HTTP config) applied along with `navixy_ssl.conf` (HTTPS config).
-
-Configure `navixy.conf` as specified above in **“HTTP”** section and then uncomment the following line (delete `#` character):
-
+1. Используйте оба файла конфигурации — `navixy.conf` (HTTP) и `navixy_ssl.conf` (HTTPS).
+2. В файле `navixy.conf` найдите строку:
 ```
 #return 301 https://$host$request_uri;
 ```
+3. Удалите символ `#`, чтобы раскомментировать строку.
+4. Сохраните файл и перезапустите Nginx.
 
-Save the file and restart Nginx to apply changes. Now, HTTP requests will be redirected to HTTPS.
+Теперь все HTTP-запросы будут автоматически перенаправляться на HTTPS
