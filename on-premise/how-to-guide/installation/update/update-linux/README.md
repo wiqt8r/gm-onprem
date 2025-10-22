@@ -1,6 +1,6 @@
-# Update - Linux
+# Обновление — Linux
 
-Linux updates can be performed through two methods:
+Обновление платформы **ГдеМои — Локальная версия** на Linux может выполняться двумя способами:
 
-* [Automatic updates](automatic-update-linux.md), for the default installations without docker
-* [Dockered updates](dockered-update-linux.md), for installations made with docker
+* [Автоматическое обновление](automatic-update-linux.md) — для стандартных установок без Docker  
+* [Обновление Docker-версии](dockered-update-linux.md) — для установок, выполненных с использованием Docker
