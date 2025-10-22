@@ -31,6 +31,7 @@
 
 ```
 tar -zxvf $PACKAGENAME
+```
 
 (где `$PACKAGENAME` — имя файла архива)
 
