@@ -87,7 +87,6 @@ mysql -uroot -p
 Выполните SQL-блок (вместо `<PASSWORD>` укажите пароль для пользователя `navixy` и **запомните его**):
 
 ```
-sql
 CREATE USER navixy@'%' IDENTIFIED BY '<PASSWORD>' WITH MAX_QUERIES_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 CREATE DATABASE google CHARACTER SET utf8 COLLATE utf8_general_ci;
 CREATE DATABASE tracking CHARACTER SET utf8 COLLATE utf8_general_ci;
