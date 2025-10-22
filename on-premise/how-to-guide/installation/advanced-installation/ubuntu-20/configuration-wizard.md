@@ -1,43 +1,45 @@
-# Configuration wizard
+# Мастер конфигурации
 
-The Navixy platform offers a configuration wizard that users can utilize to configure the platform initially or modify some common settings. While all the settings described below can be directly applied to the database and service configurations, doing so can be risky if not handled with care. To avoid any potential risks, it is strongly recommended to use the configurator.
+Платформа **ГдеМои – Локальная версия** предоставляет мастер конфигурации, который можно использовать для первичной настройки системы и изменения основных параметров.  
+Все описанные ниже настройки можно внести напрямую в базу данных и конфигурации сервисов, однако ручное редактирование параметров может привести к ошибкам. Чтобы избежать возможных проблем, **настоятельно рекомендуется** использовать мастер конфигурации.
 
-{% hint style="info" %}
-Configuration wizard can only be used for Navixy instances deployed with installation script on Ubuntu. This wizard is not applicable for other deployment methods.
-{% endhint %}
+Мастер конфигурации доступен **только** для платформы, развёрнутой установочным скриптом на **Ubuntu/Debian**. Для других способов развёртывания мастер неприменим.
 
-## Launching configuration wizard
+## Запуск мастера конфигурации
 
-To run the wizard, go to the `/navixy-package` directory and run **./configure.sh**
+Перейдите в директорию `/navixy-package` и выполните команду **./configure.sh**:
 
-You will be greeted by the main menu:
+```
+cd /navixy-package
+./configure.sh
+```
+
+Вы увидите главное меню:
 
 ![On-Premise - configuration wizard](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-110751.png)
 
-Below is the explanation of each menu and sub-menu:
+Ниже приведены пояснения к разделам меню и их подпунктам.
 
-## 1. Domain name and SSL settings
+---
 
-### 1.1. Domain names
+## 1. Домены и SSL
 
-The only option here is to change domain names and SSL.
+### 1.1. Доменные имена
 
-{% hint style="info" %}
-Domain names and SSL certificates are specified during the initial installation. However, there can be situation when you need to change some of those for an existing platform.
-{% endhint %}
+В этом разделе можно изменить доменные имена и параметры SSL.
+Домены и SSL-сертификаты задаются на этапе первоначальной установки. Тем не менее бывают ситуации, когда требуется изменить эти параметры для уже работающей платформы.
+Мастер позволяет настроить как **однодоменную** схему для всей платформы, так и **трёхдоменную** — отдельные домены для API, панели администратора и пользовательского интерфейса.
 
-The Configuration Wizard allows you to perform configuration with either a single domain name for the entire platform or with three domain names - separate for API, for admin panel and for the user interface.
-
-In the case of a **single domain name**, you only need to specify the domain for your service in the first step, leave the other two domains blank. In this case, the API and admin panel will be configured as subdirectories (this is made automatically). Examples:
+Для **однодоменной** конфигурации укажите домен сервиса на первом шаге, остальные два поля оставьте пустыми — в этом случае **API** и **панель администратора** будут автоматически доступны как подкаталоги. Примеры:
 
 * [my.domain.com/api](http://my.domain.com/api)
 * [my.domain.com/panel](http://my.domain.com/panel)
 
-If you are performing a **three domain names** configuration, you need to specify sequentially:
+Для **трёхдоменной** конфигурации последовательно укажите:
 
-* Service domain (used for user interface and device activation). E.g.: [my.domain.com](http://my.domain.com)
-* API domain (used for all API operations). E.g.: [api.domain.com](http://api.domain.com)
-* Admin panel domain (used to access Admin panel). E.g.: panel.domain.com
+* Домен сервиса (используется для пользовательского интерфейса и активации устройств), например: [my.domain.com](http://my.domain.com)  
+* Домен API (для всех API-операций), например: [api.domain.com](http://api.domain.com)  
+* Домен панели администратора (для доступа к панели администратора), например: `panel.domain.com`
 
 ![On-Premise - Domain settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-112159.png)
 
@@ -45,186 +47,201 @@ If you are performing a **three domain names** configuration, you need to specif
 
 ![On-Premise - Panel settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-112313.png)
 
-Once all domains are specified, the wizard will show you the results of your configuration. If you need something to be changed, run the wizard once again
+После ввода доменов мастер покажет сводку конфигурации. При необходимости повторно запустите мастер и скорректируйте параметры.
 
 ![On-Premise - Finishing configuration](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-112644.png)
 
-You can learn more information about domain names at this page: [Domains](../../../requirements/domains.md)
+Подробнее о доменах см. раздел: [Доменные имена](../../../requirements/domains.md)
 
-### 1.2. SSL certificates
+### 1.2. SSL-сертификаты
 
-After the domain names are configured, you will see an SSL certificate install menu.
+После настройки доменов отобразится меню установки SSL-сертификатов.
 
 ![On-Premise - SSL certificates](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-114715.png)
 
-{% hint style="info" %}
-If you don't intend to use SSL at all, just select **No** and the script will terminate, saving only the domain name configuration.
-{% endhint %}
+Если вы не планируете использовать SSL, выберите **No** — скрипт завершит работу, сохранив изменения доменных имен.
 
-If you select **Yes**, your platform will be configured to use HTTPS.
+При выборе **Yes** платформа будет настроена на работу по **HTTPS**.
 
-Next, the script will ask you whether you are going to use free Letsencrypt SSL certificates, or you want to use your own certificates.
+Далее мастер предложит выбрать: использовать **бесплатные сертификаты Let’s Encrypt** или установить **собственные** сертификаты.
 
 ![On-Premise - SSL certificates renewal](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-113420.png)
 
-#### Let's Encrypt free certificate
+#### Бесплатный сертификат Let’s Encrypt
 
-Select **Yes** to install free Let's Encrypt SSL certificates for your domains. This will also set up auto-renewal of certificates so you don't have to renew them manually.
+Выберите **Yes**, чтобы установить бесплатные сертификаты Let’s Encrypt для ваших доменов.  
+Автопродление будет настроено автоматически.
 
-The script will install the software needed to issue the certificate (this may take some time).
+Скрипт установит необходимое ПО для выпуска сертификатов (это может занять некоторое время).
 
-You will be be prompted to specify your email address. This is not necessary but recommended.
+Укажите email — это необязательно, но рекомендуется.
 
 ![On-Premise - Let's Encrypt](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-114031.png)
 
-The script will automatically recognize domain names (taking them from configs), generate and install certificates. After that the script will terminate.
+Мастер автоматически подставит доменные имена из конфигурации, выпустит и установит сертификаты, после чего завершит работу.
 
-Now you have configured domain names, and your website is SSL-protected.
+#### Собственный SSL-сертификат
 
-#### Your own SSL certificate
+Если вы выберете **No** на вопрос об использовании Let’s Encrypt, откроется меню установки **собственных сертификатов**.  
+Потребуются валидный сертификат **с полной цепочкой доверя** и соответствующий **приватный ключ**. Разместите их на сервере, стандартный путь: `/etc/nginx/ssl`.
 
-Selecting the **No** option in response to the question about Let's Encrypt SSL certificates will take you to the menu for installing your own SSL certificates. To proceed, you must have a valid full-chain certificate as well as its private key. Place them somewhere on your server. The standard location is `/etc/nginx/ssl`.
-
-First you need to specify a path to the certificate file:
+Сначала укажите путь к файлу сертификата:
 
 ![On-Premise - Own certificate](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-115050.png)
 
-Next, specify the path to the private key file of your SSL certificate:
+Затем укажите путь к приватному ключу:
 
 ![On-Premise - Own certificate key](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-115151.png)
 
-The paths to your certificates will be inserted to Nginx configuration.
+Указанные пути будут внесены в конфигурацию **Nginx**.
 
-Certificates are now installed, and your domains are SSL-protected.
+---
 
-## 2. SMS settings
+## 2. Настройки SMS
 
-Here you can apply settings of your SMS-gateway, and also specify credentials of service SMS sender.
+В этом разделе можно применить настройки вашего **SMS-шлюза**, а также указать параметры отправителя SMS.
 
 ![On-Premise - SMS Gateway](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-115307.png)
 
-### 2.1. Configure SMS gateway
+### 2.1. Конфигурация SMS-шлюза
 
-The first option in this menu allows you to disable the SMS gateway if you already have one set up and no longer need to use it.
+Первая опция позволяет **отключить** имеющийся SMS-шлюз, если он у вас настроен.
 
-The other options allow you to apply settings for a specific SMS gateway service provider.
+Другие пункты меню дают возможность применить настройки совместимых SMS-шлюзов.
 
-The last option allows you to connect the SMS gateway via SMPP protocol. This option is also suitable if your gateway provider is not on the list, but it supports SMPP on its side.
+Последняя опция — подключение по протоколу **SMPP**. Подходит также, если вашего провайдера нет в списке, но он поддерживает **SMPP v3.4**.
 
 ![On-Premise - SMS Gateway configuration](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-115406.png)
 
-You can learn more about SMS gateways on the page [Messaging gateways](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/messaging-gateways).
 
-### Configure 'from name' and 'sender phone number'
+### Настройка имени отправителя и номера
 
-In this menu you can specify the number and name of the sender of service SMS messages, if necessary.
+Здесь можно указать **номер** и **имя отправителя** для сервисных SMS.
 
 ![On-Premise - SMS Gateway phone number](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-115441.png)
 
 ![On-Premise - SMS Gateway identifier](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-115606.png)
 
-## 3. Email gateway settings
+---
 
-Here you can configure only feedback email settings. **Please note:** Main email gateway settings are configured from the admin panel ([Messaging gateways](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/messaging-gateways)).
+## 3. Настройки почтового шлюза
 
-The script will ask you to specify the email address to receive user feedbacks from a help section (TO email address).
+В этом разделе настраиваются **адреса для обратной связи**.  
+**Обратите внимание:** основные параметры почтового шлюза задаются в **панели администратора**: [Messaging gateways](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/messaging-gateways).
+
+Скрипт попросит указать email для приёма обращений из раздела «Помощь» (TO email).
 
 ![On-Premise - Email Gateway](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120149.png)
 
-Then you will be asked about user email substitution.
+Затем потребуется выбрать, использовать ли **email пользователя** как адрес отправителя.
 
 ![On-Premise - Email Gateway configuration](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120256.png)
 
-Select **YES** to use the email address of the user to send feedback requests.
-
-Select **NO** to replace the sender's email address with a specific one. In this case, the script will ask you to specify this email address (FROM email address).
+Выберите **YES**, чтобы использовать адрес пользователя.  
+Выберите **NO**, чтобы подставлять **фиксированный адрес** — тогда мастер запросит его (FROM email).
 
 ![On-Premise - Email Gateway feedback](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120347.png)
 
-## 4. Google Maps API settings
+---
 
-Here you can specify the Google maps API key if you did not purchase the Premium GIS package from Navixy, but preferred to use the key you purchased yourself ([GIS](../../../requirements/gis.md))
+## 4. Настройки Google Maps API
+
+Если вы не приобретали пакет **Премиум ГИС** и используете собственные ключи Google, укажите ключи здесь ([ГИС](../../../requirements/gis.md)).
 
 ![On-Premise - Google Maps API keys](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120428.png)
 
-First, you need to specify Google API JavaScript key (required for maps availability).
+Сначала укажите **JavaScript API key** (обязателен для загрузки карт):
 
 ![On-Premise - Google Maps API keys JavaScript key](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120534.png)
 
-Next, apply Google API server key (required for geocoding operations).
+Затем укажите **Server API key** (используется для геокодирования):
 
 ![On-Premise - Google Maps API keys](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120615.png)
 
-## 5. Navixy License Key
+---
 
-This section contains two options.
+## 5. Лицензионный ключ
+
+В разделе доступны две опции.
 
 ![On-Premise - Navixy License key](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120649.png)
 
-### 5.1. Change license key
+### 5.1. Сменить лицензионный ключ
 
-Here you can specify the license key for your On-premise instance. The license key is applied during the initial installation of the platform, or if it is lost or corrupted for some reason (usually a consequence of tampering with the database). The license key is issued and provided by technical support.
+Здесь можно указать ваш лицензионный ключ.  
+Ключ применяется при первичной установке или повторно, если он был утрачен (например, вследствие некорректных правок БД).  
+Ключ выдаётся **отделом технических решений**.
 
-After selecting this option, you will see a warning that changing the license key carelessly may cause the platform to become inoperable.
+После выбора опции отобразится предупреждение: неосторожная смена ключа может привести к неработоспособности платформы.
 
 ![On-Premise - Change license key](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-120737.png)
 
-After that you need to apply the license key you received. This is a rather long combination of characters, so it can be quite difficult to enter manually. You can paste the key from a clipboard by using `Shift+Insert` combination. Alternatively, you can hold `Shift` and use `mouse right click`.
+Укажите ваш ключ. Это длинная последовательность случайных символов — для вставки используйте `Shift+Insert` или зажатый `Shift` + **правый клик мышью**.
 
 ![On-Premise - Input license key](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121133.png)
 
-The key will be inserted into the database, and your instance will have a valid license.
+Ключ будет записан в базу данных, платформа получит валидную лицензию.
 
-### 5.2. Request trial key
+### 5.2. Запросить тестовый ключ
 
-This option can only be used to get a one-time trial key. The key is valid for 30 days. Do not use this option if you already have a valid key.
+Эта опция выдаёт **одноразовый тестовый ключ** на **30 дней**.  
+Не используйте её, если у вас уже есть действующий ключ.
 
 ![On-Premise - Request trial key](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121025.png)
 
-* You cannot re-issue or renew the trial key in this way.
-* You cannot restore a lost key in this way.
-* You cannot restore a disabled license in this way.
+* Повторно оформить или продлить тестовый ключ нельзя.  
+* Восстановить утерянный ключ таким способом нельзя.  
+* Включить отключённую лицензию таким способом нельзя.
 
-After your trial is expired and you want to continue using your On-premise instance, please contact our customer success team for the commercial license key.
+По окончании тестового периода для продолжения работы обратитесь в **отдел технических решений** за коммерческим ключом:  
+**solutions@gdemoi.ru**
 
-## 6. Plugin settings
+---
 
-Plugins allow to modify or enable various functions of the platform. Since the configurator is designed for basic platform configuration, you can only find three plugins in this menu.
+## 6. Настройки плагинов
+
+Плагины позволяют модифицировать или включать отдельные функции платформы.  
+Так как мастер рассчитан на базовую конфигурацию, в меню доступны три варианта.
 
 ![On-Premise - Plugin settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121204.png)
 
-### 6.1. Activation code settings
+### 6.1. Коды активации
 
-Here you can enable or disable the use of mandatory activation codes for device registration. If the "Mandatory" option is enabled, users will not be able to register a device without an activation code.
+Включает/отключает обязательное использование **кодов активации** при регистрации устройства.  
+Если опция «Mandatory» включена, пользователи не смогут зарегистрировать устройство без кода.
 
 ![On-Premise - Activation codes settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121337.png)
 
-### 6.2. Custom logo settings
+### 6.2. Индивидуальный логотип
 
-Here you can set up a special logo for an individual user.
+Позволяет задать **особый логотип** для отдельного пользователя.
 
-**Please note**: the logo for the entire platform is customized in the admin panel.
+**Важно:** логотип всей платформы настраивается в **панели администратора**.
 
-The configuration wizard will ask you to specify the user ID (it can be found in the admin panel or in the user interface)
+Мастер попросит указать **ID пользователя** (его можно посмотреть в панели администратора или в пользовательском интерфейсе).
 
 ![On-Premise - Logo settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121447.png)
 
-Next, you need to specify a link to the user's logo. It can be located on an external resource, or locally on the server in a website directory. The logo must be in PNG format, recommended size is 400x400.
+Затем укажите ссылку на логотип (внешний ресурс или локальный файл на сервере).  
+Формат — **PNG**, рекомендуемый размер — **400×400**.
 
 ![On-Premise - Logo](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121640.png)
 
-The logo will be applied to user’s interface and to reports.
+Логотип появится в интерфейсе пользователя и в отчётах.
 
-### 6.3. Help section settings
+### 6.3. Раздел «Помощь»
 
-Here you can choose whether to hide or show help section in the user interface (it is shown by default). Help section leads to Navixy website, so its disabling may be useful for white labeling.
+Позволяет скрыть или показать раздел «Помощь» в пользовательском интерфейсе (по умолчанию включён).  
+Раздел ведёт на сайт ГдеМои, поэтому его отключение может быть полезно для брендинга.
 
 ![On-Premise - Help section settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121740.png)
 
-## 7. File storage settings
 
-This section allows you to enable and disable file storage.
+## 7. Хранилище файлов
+
+Этот раздел позволяет настроить **файловое хранилище**.
 
 ![On-Premise - File storage settings](../../../../../on-premise/on-premise/platform-installation/advanced-installation/ubuntu-20/attachments/image-20230804-121814.png)
 
-It is used to store file and image attachments to the task forms and maintenance works. The default directory for storing files is `/home/java/api-server/files`_._
+Хранилище используется для вложений (файлы и изображения) в формах задач и работ по обслуживанию.  
+Каталог по умолчанию: `/home/java/api-server/files`.
