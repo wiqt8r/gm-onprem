@@ -1,8 +1,9 @@
-# SSL certificates
+# SSL-сертификаты
 
-This section contains documentation on how to install and update SSL certificates on the Navixy On-Premise instance.
+В этом разделе приведена документация по установке и обновлению SSL-сертификатов на платформе **ГдеМои — Локальная версия**.
 
-* [First time installation of SSL certificates](ssl-certificates-installation.md)
-* [Replacing or updating expired certificates](ssl-certificates-update.md)
+* [Первичная установка SSL-сертификатов](ssl-certificates-installation.md)
+* [Замена или обновление просроченных сертификатов](ssl-certificates-update.md)
 
-You may find more details about how SSL encryption is used with Navixy in the document: [SSL encryption](../../requirements/ssl-encryption.md)
+Более подробную информацию о том, как используется SSL-шифрование в платформе, см. в разделе:  
+[Шифрование SSL](../../requirements/ssl-encryption.md)
