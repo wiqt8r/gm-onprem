@@ -1,57 +1,80 @@
-# Automatic Update - Linux
+# Автоматическое обновление — Linux
 
-The Navixy platform update process typically consists of three parts: updating the database, updating Java service files, and updating web service files. It is important to follow the update instruction carefully and make sure that each part of the update is completed successfully, and no errors are encountered along the way.
+Процесс обновления платформы **ГдеМои — Локальная версия** обычно состоит из трёх этапов:  
+обновление базы данных, обновление файлов Java-сервисов и обновление файлов веб-интерфейса.  
+Важно строго соблюдать порядок действий и убедиться, что каждый шаг выполнен успешно, без ошибок.
 
-{% hint style="danger" %}
-If any errors or other difficulties occur during the update process, please contact [Navixy technical support](mailto:support@navixy.com) immediately. Started and incomplete upgrades may cause the platform to malfunction or become unavailable.
-{% endhint %}
+Если во время обновления возникли ошибки или другие сложности, сразу обратитесь в **отдел технических решений**:  
+[solutions@gdemoi.ru](mailto:solutions@gdemoi.ru)  
+Незавершённое обновление может привести к некорректной работе платформы или сделать её недоступной.
 
-## Checking prerequisites
+---
 
-Before installing, please make sure that your system meets the following prerequisites:
+## Проверка требований
 
-1. **Java Development Kit 21**\
-   Starting from March 2025, the platform deprecated version 17 and older.
-2. **MySQL 8.0**\
-   Starting from March 2024, the platform deprecated MySQL 5.7. This version reached its EOL and is no longer supported.
+Перед началом убедитесь, что ваша система соответствует следующим условиям:
 
-{% hint style="info" %}
-Non-compliance with the required software will result in the new version of the platform being unable to start. However, a preliminary update of prerequisites will keep the platform functional.
-{% endhint %}
+1. **Java Development Kit 21**  
+   С марта 2025 года поддержка версий 17 и ниже прекращена.
+2. **MySQL 8.0**  
+   С марта 2024 года поддержка MySQL 5.7 прекращена, так как эта версия достигла конца жизненного цикла (EOL).
 
-## Beginning of the update
+Несоблюдение этих требований приведёт к невозможности запуска новой версии платформы.  
+Рекомендуется предварительно обновить необходимые компоненты, чтобы система оставалась работоспособной.
 
-Extract a platform distribution package received from Navixy, typically it is a `.tar.gz` file.
+---
+
+## Начало обновления
+
+Распакуйте архив дистрибутива, полученный от отдела технических решений.  
+Файл обычно имеет расширение `.tar.gz`:
 
 ```
 tar -zxvf $PACKAGENAME
-```
 
-_(where `$PACKAGENAME` is the name of `tar.gz` file)_
+(где `$PACKAGENAME` — имя файла архива)
 
-It will be extracted to `/navixy-package` directory, containing all the platform files in it. Hereinafter this will be the main directory of the distribution.
+После распаковки будет создан каталог `/navixy-package`, содержащий все файлы платформы.  
+Дальнейшие действия выполняются из этого каталога.
 
-## Automated update
+---
 
-For instances hosted on Linux servers, an automated update solution is available. It is strongly recommended to use the `update.sh` script. It performs a step-by-step update of the database and application files, and you do not need to make any internal operations manually.
+## Автоматическое обновление
 
-Run the `update.sh` script from the `/navixy-package` directory. If your platform is hosted on two servers, run the script on the application server (where Java services run).
+Для платформ, размещённых на серверах под управлением **Linux**, предусмотрен автоматический сценарий обновления.  
+Рекомендуется использовать скрипт `update.sh`, который выполняет поэтапное обновление базы данных и файлов системы без ручного вмешательства.
+
+Запустите скрипт из каталога `/navixy-package`.  
+Если ваша установка разделена на два сервера, выполняйте обновление на **сервере приложений** (где работают Java-сервисы).
 
 ```
 root@server:/home/navixy-package# ./update.sh
 ```
 
-The script will start with a database update. If the database is on a separate server, the script will take the connection data from the Java services' configuration.
+Сначала будет выполнено обновление базы данных.  
+Если база находится на отдельном сервере, скрипт возьмёт данные подключения из конфигурации Java-сервисов.
 
-After the database update (which may take a while), the script will update the platform system files.
+После обновления базы данных (этот процесс может занять некоторое время) скрипт продолжит обновление системных файлов платформы.
 
-{% hint style="info" %}
-If your instance hasn't been updated in a while, you may see the following message during the update: `It seems Navixy services is not under systemd control. Do you want to create systemd services (runit services will be removed)? (y/n)` It is recommended that you answer affirmatively. The point is that we deprecated **runit** method of starting services, and now use **systemd** for this purpose. The script will do everything for you. However, if you answer no for some reason, it will not crash the system, and runit will keep working. You can switch to systemd on the next update.
-{% endhint %}
+Если во время обновления появится сообщение:
 
-#### Database update (optional)
+```
+It seems Navixy services is not under systemd control. Do you want to create systemd services (runit services will be removed)? (y/n)
+```
 
-You can perform database upgdate separately from the rest of the platform if needed. To do this, run the `update-db.sh` script from the `/navixy-package` directory. This can be done either on the database server (localhost) or from another server, specifying the host address. After running the script, you will see the following dialog:
+рекомендуется ответить **y (Yes)**.  
+Платформа больше не использует систему **runit**, вместо этого сервисы инициализируются **systemd**.  
+Скрипт выполнит все необходимые изменения автоматически.  
+Если вы выберете **n (No)**, система продолжит работать, но переход на systemd можно будет выполнить при следующем обновлении.
+
+---
+
+### Отдельное обновление базы данных (опционально)
+
+При необходимости вы можете обновить базу данных отдельно от других компонентов.  
+Для этого запустите скрипт `update-db.sh` из каталога `/navixy-package`.  
+Скрипт можно выполнять как на сервере базы данных, так и с другого сервера, указав адрес хоста.  
+После запуска появится диалог:
 
 ```
 Enter mysql host [localhost]:
@@ -61,77 +84,88 @@ Updating Navixy db..
 Enter password:
 ```
 
-Default parameters are shown in square brackets. If they are the same as the actual ones (update is made within database server), you do not need to input anything - just press Enter. If you want to specify a different host, a custom port, or a different user, fill the appropriate parameters.
+Значения в квадратных скобках — параметры по умолчанию.  
+Если они совпадают с фактическими, просто нажмите **Enter**.  
+В противном случае введите нужные данные.
 
-{% hint style="danger" %}
-If anything is not working properly after the update, try restarting the platform services using `restart-navixy` script. Additionally, clear your browser data, or check the issues in incognito mode.
-{% endhint %}
+Если после обновления что-то работает некорректно, перезапустите сервисы командой:
 
-***
+```
+restart-navixy
+```
 
-## Manual update
+Также очистите кэш браузера или проверьте работу в режиме инкогнито.
 
-{% hint style="info" %}
-Automated update of a platform deployed on Linux is a proven working solution and it is highly recommended to use it. Therefore, the following information is for your information only, and for cases of special non-standard installations.
-{% endhint %}
+---
 
-#### Database update
+## Ручное обновление
 
-Open `navixy-package/db` directory and execute `updates.sql` file with the following command:
+Автоматическое обновление — надёжный и рекомендуемый способ.  
+Ручные действия описаны ниже и предназначены для нетипичных или кастомных установок.
+
+### Обновление базы данных
+
+Перейдите в каталог `navixy-package/db` и выполните команду:
 
 ```
 mysql -uroot -p$ROOTPASSWORD google < updates.sql
 ```
 
-(where $ROOTPASSWORD is MySQL root password)
+(где `$ROOTPASSWORD` — пароль пользователя root MySQL)
 
-Delete `updates.sql` and `google.sql` from db folder.
-
-{% hint style="warning" %}
-**This must be done** not to override the database on the next step.
-{% endhint %}
+После выполнения удалите файлы `updates.sql` и `google.sql`, чтобы избежать их повторного применения:
 
 ```
 rm updates.sql
 rm google.sql
 ```
 
-Make sure these files are removed, and then execute all the other sql files.
+Убедитесь, что файлы действительно удалены, затем выполните оставшиеся SQL-скрипты:
 
 ```
 cat *.sql | mysql -uroot -p$ROOTPASSWORD google
 ```
 
-#### **Java services update**
+---
 
-Updating the Java services simply means replacing the files in the service directories under `/home/java`. These directories are:
+### Обновление Java-сервисов
+
+Для обновления Java-сервисов замените файлы в каталогах `/home/java`:
 
 * `api-server`
 * `sms-server`
 * `tcp-server`
 
-Find the corresponding directories in `navixy-package`. You need to replace all the files except `config.properties` and `db.properties` in the _conf_ folders. Compare the existing `config.properties` files with the ones from new distributive. If you see any new parameters - add them to the existing config.
+Замените все файлы, **кроме** `config.properties` и `db.properties` в папках `conf`.  
+Сравните ваши текущие `config.properties` с новыми — если появились дополнительные параметры, добавьте их вручную.
 
-#### Web services update
+---
 
-Proceed to _/var/www_ directory. Replace all files in _**panel-v2**_ and _**pro-ui**_ directories with files from the corresponding directories of the distribution package. This will not corrupt any settings, as the configuration files in the package are named as _example_, and will not overwrite the existing ones.
+### Обновление веб-интерфейса
 
-Compare these files:
+Перейдите в каталог `/var/www` и замените содержимое папок:
 
-* panel-v2/**Config.js**,
-* pro-ui/**PConfig.js**
-* pro-ui/static/**app\_config.js**
+* `panel-v2`
+* `pro-ui`
 
-with the examples in distribution package.
+на соответствующие файлы из нового дистрибутива.  
+Это не затронет настройки, так как конфигурационные файлы в архиве имеют суффикс `_example_` и не перезаписывают существующие.
 
-If you see any new parameters, add them.
+Проверьте и при необходимости обновите параметры в файлах:
 
-## Final steps
+* `panel-v2/Config.js`
+* `pro-ui/PConfig.js`
+* `pro-ui/static/app_config.js`
 
-Restart Navixy java services. Typically this is done by this command:
+---
+
+## Завершение обновления
+
+После завершения обновления перезапустите Java-сервисы:
 
 ```
 restart-navixy
 ```
 
-Verify that the services have restarted successfully and are running for at least one minute. This indicates that the update process is complete.
+Убедитесь, что все сервисы успешно запущены и работают не менее одной минуты.  
+Это будет означать, что обновление платформы завершено корректно.
