@@ -1,25 +1,55 @@
-# Device statuses
+# Статусы устройств
 
-Each device in the Navixy platform has a specific status that indicates its current condition. These statuses change based on the duration of time that elapses.
+Каждое устройство на платформе **ГдеМои — Локальная версия** имеет определённый статус, отображающий его текущее состояние. Эти статусы изменяются в зависимости от времени, прошедшего с момента последней активности устройства.
 
-<table data-header-hidden><thead><tr><th width="236.727294921875" align="center"></th><th width="119.9090576171875"></th><th></th></tr></thead><tbody><tr><td align="center"><img src="../../../on-premise/on-premise/configuration/attachments/browser_lrla4GLmVP.png" alt="browser_lrla4GLmVP.png" data-size="original"></td><td>N/A</td><td>Data is constantly being received from a device and contains valid coordinates</td></tr><tr><td align="center"><img src="../../../on-premise/on-premise/configuration/attachments/browser_qJjb9CyZAT.png" alt="browser_qJjb9CyZAT.png"></td><td>5 minutes</td><td>No valid location data for more than 5 minutes or the device is transmitting data in a time zone other than UTC+0</td></tr><tr><td align="center"><img src="../../../on-premise/on-premise/configuration/attachments/browser_CHEecmH3nB.png" alt="browser_CHEecmH3nB.png"></td><td>10 minutes</td><td>The device does not send any data packets for over set time period</td></tr></tbody></table>
+<table data-header-hidden>
+<thead>
+<tr>
+<th width="236.727294921875" align="center"></th>
+<th width="119.9090576171875"></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><img src="../../../on-premise/on-premise/configuration/attachments/browser_lrla4GLmVP.png" alt="browser_lrla4GLmVP.png" data-size="original"></td>
+<td>N/A</td>
+<td>Данные от устройства поступают постоянно и содержат корректные координаты.</td>
+</tr>
+<tr>
+<td align="center"><img src="../../../on-premise/on-premise/configuration/attachments/browser_qJjb9CyZAT.png" alt="browser_qJjb9CyZAT.png"></td>
+<td>5 минут</td>
+<td>Нет корректных данных о местоположении более 5 минут, либо устройство передаёт данные в часовом поясе, отличном от UTC+0.</td>
+</tr>
+<tr>
+<td align="center"><img src="../../../on-premise/on-premise/configuration/attachments/browser_CHEecmH3nB.png" alt="browser_CHEecmH3nB.png"></td>
+<td>10 минут</td>
+<td>Устройство не передаёт никаких пакетов данных в течение заданного периода времени.</td>
+</tr>
+</tbody>
+</table>
 
-### Adjusting Timeout Settings
+### Настройка таймаутов
 
-If needed, timeouts in On-Premise instances can be adjusted by modifying the "tcp-server" configuration file. The configuration file is located at the following path
+При необходимости, время таймаутов в локальных платформах можно изменить, отредактировав конфигурационный файл **tcp-server**.  
+Файл конфигурации расположен по следующим путям:
 
-* on Linux: `/home/java/tcp-server/conf/config.properties`
-* on Windows: `C:\java\tcp-server\conf\config.properties`
+* для Linux: `/home/java/tcp-server/conf/config.properties`
+* для Windows: `C:\java\tcp-server\conf\config.properties`
 
-To adjust the timeouts, open the "tcp-server" configuration file for editing and add the following lines:
+Чтобы изменить таймауты, откройте файл конфигурации **tcp-server** для редактирования и добавьте строки:
 
 ```
 timers.idleTimeout=10m
 timers.offlineTimeout=15m
 ```
 
-In the above example, the timeout value for "<mark style="color:purple;">GPS not updated</mark>" status is set to 10 minutes, while the timeout value for "<mark style="color:orange;">Offline</mark>" status is set to 15 minutes. You can specify any values you need, but make sure to set the first timeout value to be less than the second one. Also, note that it is mandatory to add the letter "m" after the specified timeout value, which means minutes.
+В приведённом примере значение таймаута для статуса **«Местоположение не обновлено»** установлено на 10 минут, а для статуса **«Оффлайн»** — на 15 минут.  
+Вы можете указать любые значения, однако первое значение должно быть меньше второго.  
+Также обратите внимание, что после числа обязательно добавляется буква **"m"**, обозначающая минуты.
 
-After specifying the timeout values, save the configuration file and restart the "tcp-server" to apply the changes.
+После изменения параметров сохраните файл конфигурации и перезапустите **tcp-server**, чтобы применить настройки.
+
+Эти изменения позволяют адаптировать время перехода между статусами под требования пользователей и обеспечить оптимальную работу устройств на платформе.
 
 With these adjustments, the timeout settings can be customized to suit users' needs and ensure optimal device performance on the Navixy platform.
