@@ -1,75 +1,83 @@
-# Custom maps
+# Пользовательские карты
 
-You can add your own custom map layers to Navixy platform, which can be particularly useful for tracking vehicles in restricted areas that are blurred or not displayed on publicly available maps, or for adding custom routes that do not exist on other maps (e.g. marine routes).
+Платформа **ГдеМои — Локальная версия** позволяет добавлять собственные картографические слои.  
+Это особенно полезно для отслеживания объектов в зонах с ограниченным доступом, не отображаемых на публичных картах,  
+или для добавления уникальных маршрутов (например, морских или промышленных трасс).
 
-There are two types of layers that can be added to Navixy:
+В платформу можно добавить два типа пользовательских слоёв:
 
-* Layer from a tile server
-* Layer from an SVG file
+* слой с тайлового сервера;
+* слой из SVG-файла.
 
-## Adding a tile server as custom map layer
+---
 
-Once the tile server is up and running with the cartographic data is uploaded, you can easily add new map layers into the Navixy interface. You will need to enable the appropriate plugin for external cartography and provide it with the URL to your tile server. You can also restrict access to the new map layer to certain user accounts.
+## Добавление тайлового сервера в качестве пользовательского слоя
 
-Once the plugin is activated, the new layer will appear in the list of available layers in the user web interface and/or mobile apps. Users will be able to select each layer separately (substitution mode) or combine multiple layers together (overlapping mode).
+После запуска тайлового сервера и загрузки картографических данных вы можете добавить новый слой в интерфейс платформы.  
+Для этого необходимо активировать соответствующий плагин внешней картографии и указать ссылку на ваш сервер.  
+Также возможно ограничить доступ к новому слою для отдельных пользователей.
 
-The application has two parameters:
+После активации плагина слой появится в списке доступных карт в веб-интерфейсе и мобильных приложениях.  
+Пользователи смогут включать слои по отдельности (режим замещения) или накладывать их друг на друга (режим совмещения).
 
-* %name – Name of the application
-* %link\_to\_the\_tiles _–_ External link to the tiles
+Параметры плагина:
 
-{% hint style="info" %}
-If you are using an HTTPS connection, it is important that the link to the app is also HTTPS. Otherwise, you may encounter a mixed content error.
-{% endhint %}
+* `%name` — название слоя;  
+* `%link_to_the_tiles` — внешняя ссылка на тайлы карты.
 
-Once you have the necessary data, you simply need to add a line to your MySQL database. Map layers can be added to the entire service (a.k.a. Dealer PaaS account) or only to specific users.
+> 💡 Если используется HTTPS, ссылка на сервер должна также быть HTTPS, иначе возможна ошибка «смешанного контента».
 
-### Enabling the layer for the entire service (for all user accounts)
+---
 
-To add a new map layer to the entire Navixy service, use the following query and provide the parameters marked in bold:
+### Включение слоя для всего сервиса (для всех пользователей)
 
-{% code overflow="wrap" %}
+Чтобы добавить новый картографический слой для всей платформы, выполните SQL-запрос, указав собственные значения параметров:
+
 ```
 INSERT INTO google.plugins2dealers (dealer_id, plugin_id, parameters) VALUES (1, 50, '{"layers":[{"name":"%name","tiles":["%link_to_the_tiles"]}]}');
 ```
 {% endcode %}
 
-### Enabling the layer for selected user accounts only
+---
 
-When adding a map layer to a specific user, a new parameter (%user\_id) must be included in the request. This parameter should be substituted with the ID of the user to whom the map layer should be added. If the layer needs to be added to multiple users, a separate request must be made for each user.
+### Включение слоя для отдельных пользователей
+
+Чтобы добавить слой только для выбранных пользователей, необходимо указать их идентификаторы (`%user_id`).  
+Если нужно добавить слой нескольким пользователям — выполните отдельный запрос для каждого.
 
 ```
 INSERT INTO google.plugins2users (user_id, plugin_id, parameters) VALUES (%user_id, 50, '{"layers":[{"name":"%name","tiles":["%link_to_the_tiles"]}]}');
 ```
 
-## Adding a SVG file as a custom map layer
+---
 
-The Navixy platform allows you to add SVG files as a map layer, which can be particularly useful for displaying outlines of hard-to-access areas, such as mines or construction sites.
+## Добавление слоя из SVG-файла
 
-When adding a custom map layer to the Navixy platform, the following three parameters must be configured for the application:
+Платформа также поддерживает добавление SVG-файлов в качестве картографических слоёв.  
+Это удобно для отображения контуров ограниченных территорий, например, шахт, складов или строительных площадок.
 
-* %name: the name of the map layer
-* %link\_to\_the\_layer: an external link to the layer
-* %lat1, %lng1, %lat2, %lng2: the coordinates of any opposing corners of the layer
+При добавлении пользовательского слоя необходимо задать три типа параметров:
 
-{% hint style="danger" %}
-If you are using an HTTPS connection for your Navixy platform, it's important to ensure that any links to external apps or resources are also HTTPS. Otherwise, you may encounter a mixed content error.
-{% endhint %}
+* `%name` — название слоя;  
+* `%link_to_the_layer` — ссылка на внешний ресурс (SVG-файл);  
+* `%lat1`, `%lng1`, `%lat2`, `%lng2` — координаты двух противоположных углов слоя.
 
-### Enabling the SVG layer for the entire service (for all user accounts)
+> ⚠️ Если ваша платформа работает по HTTPS, все внешние ссылки (на SVG или сервисы) также должны быть HTTPS,  
+> иначе возникнет ошибка «смешанного контента».
 
-{% code overflow="wrap" %}
+---
+
+### Включение SVG-слоя для всего сервиса (для всех пользователей)
+
 ```
 INSERT INTO google.plugins2dealers (dealer_id, plugin_id, parameters) VALUES (1, 83, '{"layers":[{ "name": "%name","url":"%link_to_the_layer","bounds":[{"lat":%lat1,"lng":%lng1},{"lat":%lat2,"lng":%lng2}]}]}');
 ```
-{% endcode %}
+---
 
-### Enabling the SVG layer for selected user accounts only
+### Включение SVG-слоя для отдельных пользователей
 
-To add a map layer to a specific user in Navixy, you must include a new parameter (%user\_id) in the request. This parameter should be replaced with the ID of the user for whom the map layer is intended. If the map layer needs to be added to multiple users, a separate request must be made for each user.
+Чтобы добавить слой только для конкретного пользователя, укажите его идентификатор (`%user_id`):
 
-{% code overflow="wrap" %}
 ```
 INSERT INTO google.plugins2users (user_id, plugin_id, parameters) VALUES (%user_id, 83, '{"layers":[{ "name": "%name","url":"%link_to_the_layer","bounds":[{"lat":%lat1,"lng":%lng1},{"lat":%lat2,"lng":%lng2}]}]}');
 ```
-{% endcode %}
