@@ -1,9 +1,19 @@
 # Nominatim
 
-Nominatim is a free software tool that offers forward geocoding, allowing users to search for locations by name or address, and reverse geocoding, retrieving the postal address or place name by known coordinates.
+**Nominatim** — это бесплатное программное обеспечение, предоставляющее функции прямого и обратного геокодирования.  
+Оно позволяет искать местоположения по названию или адресу (прямое геокодирование), а также определять почтовый адрес или название места по известным координатам (обратное геокодирование).
 
-One of the main advantages of using Nominatim with Navixy On-premise is that it can be deployed on your local server, enabling you to process an unlimited number of requests without any limits. While other geocoding sources can be used in parallel, such as Google, they can be expensive or may not meet your needs in specific regions.
+Одно из ключевых преимуществ использования **Nominatim** с платформой **ГдеМои — Локальная версия** заключается в том, что его можно развернуть на собственном сервере.  
+Это позволяет обрабатывать неограниченное количество запросов без ограничений со стороны внешних сервисов.  
+При этом вы можете использовать и другие источники геокодирования — например, **Google**, — однако они могут быть платными или иметь ограничения в некоторых регионах.
 
-Nominatim is developed as part of the OpenStreetMap (OSM) project and is distributed under an open license, with its source code under the GPLv2. The hardware requirements for Nominatim will depend heavily on the amount of data you plan to maintain. For instance, installing data only for one country or one continent requires fewer resources than the entire globe.
+**Nominatim** разрабатывается как часть проекта **OpenStreetMap (OSM)** и распространяется по открытой лицензии GPLv2.  
+Требования к оборудованию зависят от объёма данных, которые вы планируете поддерживать.  
+Например, установка данных только для одной страны или континента требует значительно меньше ресурсов, чем установка данных для всей планеты.
 
-To download Nominatim, simply visit its official web page at [https://nominatim.org/](https://nominatim.org/) . Here, you can access hardware and software requirements, along with a detailed installation manual to help you get started. You can also check out the official Nominatim GitHub page at [https://github.com/openstreetmap/Nominatim](https://github.com/openstreetmap/Nominatim) for additional resources and support.
+Для загрузки Nominatim посетите официальный сайт:  
+[https://nominatim.org/](https://nominatim.org/)  
+Там вы найдёте актуальные системные требования и подробное руководство по установке.
+
+Дополнительные ресурсы и инструкции доступны также на официальной странице проекта на GitHub:  
+[https://github.com/openstreetmap/Nominatim](https://github.com/openstreetmap/Nominatim)
