@@ -1,3 +1,3 @@
-# Configuration
+# Настройка
 
-This section provides detailed information on how to further configure and customize your **Navixy On-Premise instance** to meet your specific requirements, regardless of whether you are deploying on your own servers or a cloud infrastructure.
+В этом разделе представлена подробная информация о том, как выполнить дополнительную настройку и персонализацию платформы **ГдеМои — Локальная версия** в соответствии с вашими требованиями — независимо от того, развёрнута ли она на собственных серверах или в облачной инфраструктуре.
