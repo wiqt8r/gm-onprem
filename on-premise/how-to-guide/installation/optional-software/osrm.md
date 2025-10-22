@@ -1,11 +1,20 @@
 # OSRM
 
-OSRM stands for Open Source Routing Machine, which is an open-source software designed for finding optimal routes between two points. By using OSRM with Navixy On-premise solutions, you can deploy it on your local server without limiting the number of requests. OSRM is not restricted by any maps, giving you the freedom to choose your cartography provider.
+**OSRM (Open Source Routing Machine)** — это программное обеспечение с открытым исходным кодом, предназначенное для построения оптимальных маршрутов между двумя точками.  
+Используя **OSRM** с платформой **ГдеМои — Локальная версия**, вы можете развернуть его на собственном сервере и обрабатывать неограниченное количество запросов без ограничений со стороны внешних сервисов.  
+OSRM не привязан к конкретным картам, что позволяет вам самостоятельно выбирать поставщика картографических данных.
 
-Deploying a local OSRM server can be very beneficial in cases where network access is restricted, and it's preferable to keep the connection within the local network. Other routing tools may also be too expensive or may not provide accurate data for your region.
+Развёртывание локального сервера **OSRM** особенно полезно в случаях, когда доступ к внешней сети ограничен, и предпочтительно, чтобы весь обмен данными происходил внутри корпоративной сети.  
+Кроме того, другие инструменты маршрутизации могут быть слишком дорогими или предоставлять менее точные данные для вашего региона.
 
-OSRM is currently available under the 2-clause BSD license, and you can check if the data is available for your region by visiting their [official website](http://project-osrm.org/) and viewing their demo. The installation instructions and FAQ can be found on their [GitHub page](https://github.com/Project-OSRM/osrm-backend/wiki).
+**OSRM** распространяется по лицензии **BSD 2-clause**.  
+Проверить наличие данных для вашего региона можно на [официальном сайте проекта](http://project-osrm.org/), где также доступна онлайн-демоверсия.  
+Инструкции по установке и раздел FAQ размещены на странице проекта в GitHub:  
+[https://github.com/Project-OSRM/osrm-backend/wiki](https://github.com/Project-OSRM/osrm-backend/wiki)
 
-It is essential to ensure that your server meets the hardware and software requirements before installing OSRM. The hardware requirements will depend on the amount of data you plan to maintain. For instance, installing data for only one country or one continent will require fewer resources than data for the whole globe.
+Перед установкой убедитесь, что ваш сервер соответствует требованиям к оборудованию и программному обеспечению.  
+Объём необходимых ресурсов напрямую зависит от количества данных, которые вы планируете хранить.  
+Например, установка данных только для одной страны или континента потребует меньше ресурсов, чем установка данных для всей планеты.
 
-Once you have installed OSRM, you can access its routing services by making requests to the server through the REST API. OSRM supports several routing profiles, such as driving, cycling, and walking, which you can choose based on your use case.
+После установки **OSRM** вы можете обращаться к его маршрутизатору через **REST API**.  
+Сервис поддерживает несколько профилей маршрутизации — например, **для автомобилей, велосипедов и пешеходов**, — которые можно выбрать в зависимости от ваших задач.
