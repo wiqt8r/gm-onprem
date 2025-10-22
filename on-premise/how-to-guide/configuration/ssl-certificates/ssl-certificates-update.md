@@ -1,68 +1,70 @@
-# SSL certificates update
+# Обновление SSL-сертификатов
 
-## Installation of the SSL certificate
+## Установка SSL-сертификата
 
-This page provides instructions on how to update your expired SSL certificate. If you need instructions on how to install a certificate for the first time (switch from HTTP to HTTPS), please refer to the [installation](ssl-certificates-installation.md) page.
+На этой странице приведены инструкции по обновлению истёкших SSL-сертификатов.  
+Если вы устанавливаете SSL впервые (переходите с HTTP на HTTPS), см. раздел [Установка SSL-сертификатов](ssl-certificates-installation.md).
 
-SSL certificates have an expiration date, which means they need to be re-issued and updated on your server before they expire. Updating SSL certificates is a simple process that doesn't require advanced system administration skills.
+SSL-сертификаты имеют ограниченный срок действия, поэтому их необходимо переиздавать и обновлять на сервере до истечения срока.  
+Процесс обновления не требует сложных навыков администрирования и выполняется в несколько простых шагов.
 
-The Navixy platform uses Nginx as its web server. To update your SSL certificates, locate the current certificate and private key files in the Nginx config and replace them with the new ones. This page explains the SSL certificate update process in detail.
+Платформа **ГдеМои** использует Nginx в качестве веб-сервера. Чтобы обновить сертификаты, достаточно найти текущие файлы сертификата и ключа в конфигурации Nginx и заменить их новыми.  
 
-{% hint style="danger" %}
-To ensure proper functioning of the web server, it is important to have not only an SSL certificate, but also a matching private key file. Without the correct private key, the web server will fail to start. Both the certificate and the private key are typically provided by your SSL certificate authority.
-{% endhint %}
+Для корректной работы веб-сервера необходимо, чтобы сертификат имел соответствующий ему приватный ключ. Без правильного ключа сервер не запустится.  
+Обычно оба файла — сертификат и ключ — предоставляет центр сертификации.
 
-## Updating the certificates
+## Обновление сертификатов
 
-### Nginx configuration on Linux server
+### Конфигурация Nginx на Linux
 
-Nginx configuration for your website is located at the path below. Read the file contents with any text editor.
+Файл конфигурации Nginx для вашего сайта находится по пути:
 
 `/etc/nginx/sites-available/navixy.conf`
 
-Inside you can see lines like this:
+Откройте его любым текстовым редактором и найдите строки:
 
 ```
 ssl_certificate /etc/nginx/ssl/certificate.crt;
 ssl_certificate_key /etc/nginx/ssl/private.key;
 ```
 
-This means that the certificate files are located at `/etc/nginx/ssl/`. The path can also be shortened to `ssl/certificate.crt` if the files are in the above directory. Both are correct.
+Это значит, что файлы сертификата и ключа расположены в каталоге `/etc/nginx/ssl/`.  
+Путь может быть записан короче, например `ssl/certificate.crt` — оба варианта корректны.
 
-### Nginx configuration on Windows server
+### Конфигурация Nginx на Windows
 
-Nginx configuration for your website is located at the path below. Read the file contents with any text editor.
+Файл конфигурации Nginx для сайта находится по адресу:
 
 `C:\nginx\conf\sites-enabled\navixy.conf`
 
-In the file you can find the lines like this:
+Внутри вы увидите строки:
 
 ```
 ssl_certificate /ssl/certificate.crt;
 ssl_certificate_key /ssl/private.key;
 ```
 
-The `/ssl/` entry here is short for `C:\nginx\conf\ssl`. It is recommended to use this path, but if your certificates are located in a different folder, you need to specify the full path in the config file.
+Запись `/ssl/` является сокращением пути `C:\nginx\conf\ssl`.  
+Рекомендуется использовать именно этот путь, однако если сертификаты размещены в другом каталоге, укажите полный путь в конфигурации.
 
-If you have multiple domains configured on your Navixy platform, you'll typically have separate domains for API, admin panel, and user interface. This will result in the Nginx configuration containing several blocks starting with "server" and specifying the path to the certificate for each block. It's important to note that you'll need either a separate SSL certificate for each domain name or a wildcard certificate (for \*.domain.com) to work with all third-level domains.
+Если на платформе настроено несколько доменов (например, отдельные домены для API, панели администратора и пользовательского интерфейса),  
+в конфигурации Nginx будет несколько блоков `server`, в каждом из которых указывается свой сертификат.  
+Для корректной работы вам потребуется либо отдельный SSL-сертификат на каждый домен, либо wildcard-сертификат (например, `*.domain.com`), охватывающий все поддомены.
 
-## Certificate requirements
+## Требования к сертификату
 
-### Chain of trust
+### Цепочка доверия
 
-In order for your SSL certificate to work properly, it must include a full chain of trust. This means that the certificate file(s) should not only contain the primary certificate, but also any intermediate and root certificates necessary to establish a chain of trust with the certificate issuer. Such certificates are known as full chain certificates.
+Для корректной работы SSL-сертификата должна быть настроена **полная цепочка доверия**.  
+Это означает, что файл сертификата должен содержать не только основной сертификат, но и промежуточные и корневые сертификаты, создающие цепочку доверия до центра сертификации.
 
-It is important to ensure that the certificate you obtain includes the full chain, as some features such as mobile applications may not function properly without it. If you encounter any difficulties in building the full chain, you can contact the certificate issuer for assistance or use online tools like this one to resolve the chain of trust. For more information about the chain of trust, you can refer to an explanation provided by the SSL issuer.
+Если цепочка неполная, часть функций (например, мобильные приложения) может работать некорректно.  
+При возникновении проблем с построением цепочки обратитесь к вашему провайдеру SSL.
 
-{% hint style="info" %}
-* [How certificate chains work](https://knowledge.digicert.com/solution/SO16297.html)
-* [SSL certificates chain resolver](https://www.leaderssl.com/tools/cert_chain_resolver)
-{% endhint %}
+### Проверка приватного ключа
 
-### Private key requirement
+Для запуска Nginx необходимо, чтобы приватный ключ соответствовал SSL-сертификату.  
+Как правило, при продлении сертификата в том же центре сертификации используется тот же ключ, и заменять его не требуется.
 
-For the Nginx web server to start correctly, the private key must match the SSL certificate. Usually, the certificate issuer provides the private key along with the certificate. If you reissue a certificate from the same authority, the private key often stays the same and does not need to be replaced.
-
-{% hint style="info" %}
-[Tool to confirm the certificate matches the private key](https://www.sslshopper.com/certificate-key-matcher.html)
-{% endhint %}
+Проверить соответствие сертификата и ключа можно с помощью онлайн-инструмента:  
+[Certificate and Key Matcher](https://www.sslshopper.com/certificate-key-matcher.html)
