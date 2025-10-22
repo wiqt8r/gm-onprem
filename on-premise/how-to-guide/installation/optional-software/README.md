@@ -1,7 +1,7 @@
-# Optional software
+# Дополнительное программное обеспечение
 
-In addition to its built-in mapping features, Navixy supports integration with a range of third-party mapping and GIS software. These optional software solutions can provide users with additional customization and functionality in their mapping workflows.
+Помимо встроенных картографических функций, платформа **ГдеМои — Локальная версия** поддерживает интеграцию с различными сторонними картографическими и GIS-сервисами. Эти дополнительные решения позволяют расширить функциональность карт, добавляя гибкость и возможности кастомизации под конкретные задачи.
 
-* [Map tile servers](map-tile-servers.md)
+* [Серверы тайлов карт](map-tile-servers.md)
 * [Nominatim](nominatim.md)
 * [OSRM](osrm.md)
