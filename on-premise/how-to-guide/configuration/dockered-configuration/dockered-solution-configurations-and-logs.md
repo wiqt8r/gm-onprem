@@ -1,44 +1,57 @@
-# Dockered solution configurations and logs
+# Конфигурации и логи Docker-решения
 
-Because of the unique nature of the Dockered solution, all services are housed within containers. Consequently, to access a directory with service files, simply navigating to the desired path is insufficient; one must first enter the container itself.
+Из-за особенностей архитектуры Docker все сервисы платформы находятся внутри контейнеров.  
+Поэтому для доступа к каталогам с их файлами недостаточно просто перейти по пути — сначала необходимо войти внутрь контейнера.
 
-The Navixy Dockered solution was initially crafted with a focus on simplicity and user-friendliness in the installation and maintenance process. As a result, the decision was made to allocate dedicated directories within the main working directory for housing configuration files and logs. This ensures convenient accessibility and ease of use for managing these essential components.
+Docker-версия платформы **ГдеМои** разработана с упором на простоту установки и эксплуатации.  
+Для удобства конфигурации и анализа логов в рабочем каталоге создаются отдельные директории для каждого компонента платформы.
 
-The main directory is specified during the initial Navixy Dockered solution installation in a `WORKDIR` line of `.env` file, and by default it is `.../navixy-package/work/`. Hereinafter we will specify this directory as `WORKDIR`.
+Основной рабочий каталог указывается при установке в строке `WORKDIR` файла `.env`.  
+По умолчанию его путь — `.../navixy-package/work/`.  
+Далее в тексте он будет обозначаться как **WORKDIR**.
 
-Inside you will find many working files, including Java service configs and logs, database files and frontend configs.
+В этом каталоге находятся все основные файлы: конфигурации сервисов Java, журналы логов, файлы базы данных и настройки интерфейса.
 
-{% hint style="info" %}
-To successfully perform the necessary configurations, it is crucial to know the location of the required files. On this page, we provide only the file locations without going into detail about their contents or specific settings. For a comprehensive understanding of the various configurations you need to perform, please refer to the relevant documentation pages.
-{% endhint %}
+---
 
-## Java services
+## Java-сервисы
 
-As indicated on [System Components](../../troubleshooting/system-components.md) page, the platform backend consists of three Java services called API-server, SMS-server and TCP-server. Although the services themselves are located inside containers, their service files are stored in `WORKDIR` for easy access.
+Как указано на странице [Системные компоненты](../../troubleshooting/system-components.md), серверная часть платформы состоит из трёх Java-сервисов:
 
-Each of the Java services has its own directory named accordingly:
+* **api-server**  
+* **sms-server**  
+* **tcp-server**
+
+Хотя сами сервисы работают внутри контейнеров, их конфигурационные файлы и логи хранятся в **WORKDIR** для удобного доступа.
+
+Каждый сервис имеет собственную директорию:
 
 * `./api-server`
 * `./sms-server`
 * `./tcp-server`
 
-Inside of each of these three directories you will find these subdirectories:
+Внутри каждой из них расположены подкаталоги:
 
-* `./conf` - configuration files of the service.
-* `./log` - log files of the service.
+* `./conf` — конфигурационные файлы сервиса;  
+* `./log` — файлы журналов работы.
 
 ![](../../../../on-premise/on-premise/configuration/dockered-configuration/attachments/image-20230906-122950.png)
 
-## Frontend
+---
 
-Admin panel and User interface configurations are also stored in the `WORKDIR`. They are located in `./web/conf` directory.
+## Веб-интерфейс
 
-Inside you will find three files:
+Конфигурации панели администратора и пользовательского интерфейса также находятся в **WORKDIR** — в каталоге `./web/conf`.
 
-* `app_config.js` - user interface settings configuration.
-* `Config.js` - user interface main configuration.
-* `PConfig.js` - admin panel configuration.
+В нём содержатся три файла:
 
-{% hint style="info" %}
-To modify platform configurations, kindly consult the pertinent documentation pages. Should you require any adjustments, the information provided therein will be of great assistance. If you are not sure what configuration changes you need to make, consult [technical support](mailto:support@navixy.com). Please be mindful! Making hasty alterations could render the platform inoperable.
-{% endhint %}
+* `app_config.js` — настройки пользовательского интерфейса;  
+* `Config.js` — основная конфигурация интерфейса;  
+* `PConfig.js` — конфигурация панели администратора.
+
+---
+
+⚠️ **Важно:**  
+Перед изменением любых параметров конфигурации ознакомьтесь с соответствующими страницами документации.  
+Если вы не уверены, какие именно настройки нужно скорректировать, обратитесь в **отдел технических решений**: [solutions@gdemoi.ru](mailto:solutions@gdemoi.ru).  
+Неправильное редактирование конфигурационных файлов может привести к сбоям в работе платформы.
