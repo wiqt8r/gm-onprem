@@ -1,18 +1,18 @@
 # Windows
 
-This section describes the step-by-step installation of the Navixy On-premise solution on Windows. Depending on your requirements, you can resort to:
+В этом разделе описывается пошаговая установка платформы **ГдеМои – Локальная версия** на Windows. В зависимости от ваших потребностей вы можете выбрать один из вариантов:
 
-* [Automatic installation](automatic-installation-windows.md) - to perform a standard deployment with less effort.
-* [Manual installation](manual-installation-windows.md) - to control each step and get a full understanding of the platform structure.
+* [Автоматическая установка](automatic-installation-windows.md) — стандартное развертывание с минимальными усилиями.  
+* [Ручная установка](manual-installation-windows.md) — полный контроль над каждым этапом и полное понимание структуры платформы.
 
-In both cases, the result will be an installed and operational platform on your server.
+В обоих случаях результатом будет установленная и готовая к работе платформа на вашем сервере.
 
-## Operation system version
+## Версия операционной системы
 
-Navixy is cross platform software and has no strict OS version requirements. However, the best solution is to use the latest version of **Windows Server**, as this guarantees better stability and security.
+Платформа **ГдеМои** является кроссплатформенной и не имеет жёстких требований к версии ОС. Тем не менее, наилучшим решением будет использование актуальной версии **Windows Server**, что обеспечивает более высокую стабильность и безопасность работы.
 
-Using the desktop version of Windows is highly not recommended, although it remains compatible. This version lacks certain administrative features, and in addition, the desktop OS typically resides on desktop hardware, which is never reliable for use as a server.
+Использование десктопных версий Windows крайне не рекомендуется (хотя и остаётся теоретически совместимым). Такие системы не содержат необходимых административных возможностей и, как правило, установлены на потребительском оборудовании (настольных ПК и ноутбуках), которое не рассчитано на круглосуточную работу в роли сервера.
 
-## Third-party software
+## Стороннее программное обеспечение
 
-From the experience of many clients, we know that Windows servers often share their capacity between Navixy platform and other software such as antiviruses, web servers, accounting systems and other service programs. This is not prohibited, but it is important to allocate server resources appropriately and ensure that third-party software does not interfere with Navixy by occupying ports or in any other ways.
+Опыт показывает, что Windows-серверы нередко используются не только для платформы **ГдеМои**, но и для других программ — антивирусов, веб-серверов, бухгалтерских систем и прочих сервисов. Это не противопоказано, однако важно грамотно распределить ресурсы сервера и убедиться, что сторонние приложения не мешают работе **ГдеМои**, например, не занимают нужные порты и не создают конфликтов в работе служб.
