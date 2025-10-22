@@ -1,55 +1,90 @@
-# Dockered update - Linux
+# Обновление Docker-версии — Linux
 
-Similar to any software, the Navixy platform necessitates regular updates to incorporate all the latest innovations and enhancements. While the PaaS version automatically handles this, On-premise instances require customers to request and install updates themselves.
+Как и любое программное обеспечение, платформа **ГдеМои — Локальная версия** требует регулярного обновления, чтобы включать все последние улучшения и нововведения. В то время как облачная версия обновляется автоматически, обновления для локальных установок выполняются администраторами вручную.
 
-For the Dockered version, the update process is simplified to the maximum extent, making it accessible even to those with basic system administration skills.
+Для Docker-версии процесс обновления максимально упрощён и не требует глубоких знаний системного администрирования.
 
-{% hint style="danger" %}
-While the skill requirements may be low, it remains imperative to exercise utmost caution during the update process and diligently adhere to the instructions. This ensures that sensitive data is safeguarded from inadvertent damage.
-{% endhint %}
+Тем не менее, даже при минимальных требованиях к навыкам важно соблюдать осторожность и строго следовать инструкциям. Это позволит избежать повреждения данных и сохранить стабильность работы платформы.
 
-## Preparing for update
+---
 
-The basic configuration of the Dockered platform is in the `.env` file located in the `/navixy-package` directory. Open this file in a text editor and check the value specified for `WORKDIR`, which is the directory containing the platform's critical files: database and all service configs. It can be located either in `/navixy-package` directory itself (default value - `./work` ), or in any other location on your server.
+## Подготовка к обновлению
 
-Once you have checked where the files are located, proceed with the update.
+Основной конфигурационный файл Docker-версии — **`.env`**, расположенный в каталоге `/navixy-package`. Откройте его в текстовом редакторе и проверьте значение параметра `WORKDIR`. Этот путь указывает на директорию, где хранятся критически важные данные платформы — база данных и конфигурационные файлы сервисов.
 
-## Update process
+По умолчанию `WORKDIR=./work`, то есть рабочая папка находится внутри `/navixy-package`. Однако в некоторых случаях она может быть вынесена в другое место на сервере — уточните это перед началом обновления.
 
-**Step 1.** Make sure you are in the `/navixy-package` directory and execute this command:
+После проверки расположения данных можно переходить к процедуре обновления.
+
+---
+
+## Процесс обновления
+
+### Шаг 1. Остановка текущей версии
+
+Перейдите в каталог `/navixy-package` и выполните команду:
 
 ```
 docker compose down
 ```
 
-This will stop the currently running platform.
+Это остановит все контейнеры текущей версии платформы.
 
-**Step 2** - optional but recommended. Make a backup of `.env` file and `WORKDIR` directory.
+---
 
-**Step 3.** Unpack the new Navixy platform distribution package (where `<PACKAGE_NAME>` is the name of the file):
+### Шаг 2. Резервное копирование (рекомендуется)
+
+Сделайте копию файлов:
+
+* `.env`
+* директории, указанной в `WORKDIR`
+
+Это позволит безопасно откатиться в случае непредвиденных ошибок.
+
+---
+
+### Шаг 3. Распаковка новой версии
+
+Распакуйте архив новой версии платформы (замените `<PACKAGE_NAME>` на имя файла):
 
 ```
 tar -zxvf <PACKAGE_NAME>.tar.gz
 ```
 
-{% hint style="info" %}
-If you perform unpacking in the same location where the existing `/navixy-package` resides, **this will overwrite the current platform files**. However, the package does not contain `.env` file and `./work` directory, so your data is not endangered.
-{% endhint %}
+Если вы выполняете распаковку в ту же директорию, где уже находится `/navixy-package`, **текущие файлы платформы будут перезаписаны**, однако данные и конфигурации не затрагиваются —  в архиве отсутствуют `.env` и `./work`.
 
-**Step 4.** Place the `.env` file from the old directory to the newly unpacked `/navixy-package`. If it is already there, check its contents and make sure that domain(s) and other values are specified correctly.
+---
 
-**Step 5.** If the `WORKDIR` value is `./work`, move the `/work` directory from old to new `/navixy-package`. If the work directory has a custom path, or if it is already in a new directory, skip this step.
+### Шаг 4. Проверка и перенос конфигурации
 
-**Step 6.** Make sure you are in the newly unpacked `/navixy-package` and run the following command:
+Скопируйте файл `.env` из старой директории в новую `/navixy-package`. Если файл уже на месте, откройте его и убедитесь, что домены, пути и параметры указаны корректно.
+
+---
+
+### Шаг 5. Перенос рабочей директории
+
+Если значение `WORKDIR` равно `./work`, переместите папку `/work` из старой директории в новую `/navixy-package`. Если используется отдельный путь (например, `/opt/navixy/work`), этот шаг можно пропустить.
+
+---
+
+### Шаг 6. Запуск обновлённой платформы
+
+Находясь в новой директории `/navixy-package`, выполните команду:
 
 ```
 docker compose up -d
 ```
 
-This will launch a new version of the platform. All you have to do is wait.
+Это запустит контейнеры новой версии платформы. Дождитесь завершения запуска — это займёт несколько минут.
 
-## Finishing the update
+---
 
-After successfully completing the above steps, you can delete the old `/navixy-package` directory if it has not been overwritten with the new one.
+## Завершение обновления
 
-To verify the availability of your platform, access the Admin Panel and user interface. If all functions are operating properly, the update has been successfully implemented.
+После успешного обновления можно удалить старую директорию `/navixy-package`, если она не была перезаписана новой версией.
+
+Откройте браузер и проверьте доступность **панели администратора** и пользовательского интерфейса. Если всё работает корректно — обновление платформы завершено успешно.
+
+---
+
+Если при обновлении возникнут ошибки или контейнеры не запускаются, обратитесь в **отдел технических решений**: [solutions@gdemoi.ru](mailto:solutions@gdemoi.ru)
