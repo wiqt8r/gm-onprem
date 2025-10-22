@@ -1,184 +1,207 @@
-# Automatic installation - Windows
+# Автоматическая установка — Windows
 
-This guide describes Navixy On-Premise platform installation using automated script. This type of installation is designed for Windows servers.
+В этом руководстве описывается процесс установки платформы **ГдеМои – Локальная версия** на Windows с использованием автоматизированного скрипта.  
+Данный способ предназначен для серверов под управлением Windows.
 
-For Linux servers, please use the appropriate instructions.
+Для серверов на базе Linux используйте соответствующие инструкции.
 
-## Installation prerequisites
+## Предварительные требования
 
-First, you need to have the following before you start the installation:
+Перед началом установки необходимо подготовить следующее:
 
-* A server (or servers) meeting all the [Server hardware](../../../requirements/server-hardware.md) requirements. Please note that Windows servers are generally more resource-intensive, so providing extra RAM and CPU resources is always advisable.
-* Windows Server of the latest version available to you. The installation script was developed on Windows Server 2025, but uses Powershell, so it is applicable to any up-to-date OS version.
-* Navixy software package and License key provided by Navixy team.
-* Registered domain name(s) that you will use for your Navixy instance.
+* Сервер (или несколько серверов), соответствующий [требованиям к серверному оборудованию](../../../requirements/server-hardware.md).  
+  Учтите, что Windows-серверы обычно потребляют больше ресурсов, поэтому рекомендуется предусмотреть запас оперативной памяти и вычислительной мощности.
+* Актуальную версию **Windows Server**. Скрипт разрабатывался на Windows Server 2025, но работает через **PowerShell**, поэтому совместим с другими современными версиями ОС.
+* Дистрибутив и лицензионный ключ платформы, предоставленные командой **ГдеМои**.
+* Зарегистрированные доменные имена, которые будут использоваться для доступа к вашему сервису.
 
-{% hint style="info" %}
-If you are not planning to use dedicated domains for API and admin panel, the configurator will configure access to these components as subdirectories of the basic domain.
-{% endhint %}
+Если вы не планируете использовать отдельные домены для API и панели администратора, конфигуратор автоматически создаст доступ к ним как к подкаталогам основного домена.
 
-This automatic process will install all the software prerequisites listed in [Server software](../../../requirements/server-software.md) document meaning that you don't need to install them yourself manually. However, for Windows, it is recommended to utilize third-party software such as:
+Автоматический установщик сам установит всё программное окружение, перечисленное в документе [Программное обеспечение](../../../requirements/server-software.md), поэтому вручную ничего ставить не нужно.  
+Тем не менее, для удобства на Windows рекомендуется установить дополнительные инструменты:
 
-* Advanced text editor to handle configurations and large log files (such as [Notepad++](https://notepad-plus-plus.org/downloads/)).
-* Any archiver capable of working with `tar.gz` archives (such as [7zip](https://www.7-zip.org/download.html)). The latest Windows versions are capable of handling this archive type natively so the third-party archiver may not be needed.
+* Расширенный текстовый редактор для работы с конфигурациями и логами — например, [Notepad++](https://notepad-plus-plus.org/downloads/).
+* Архиватор, поддерживающий формат `tar.gz` (например, [7-Zip](https://www.7-zip.org/download.html)).  
+  В актуальных версиях Windows этот формат поддерживается штатно, поэтому сторонний архиватор может не понадобиться.
 
-The entire installation process must be performed **as administrator**.
+Весь процесс установки должен выполняться **от имени администратора**.
 
-### Network configuration
+### Сетевые настройки
 
-Depending on the initial settings of your server, it may not have open ports necessary for the normal functioning of the platform. You may need to explicitly open these ports in Windows firewall.
+Убедитесь, что на сервере открыты все необходимые порты. Если нет — откройте их вручную в брандмауэре Windows.
 
-This typically includes ports such as:
+Как правило, это:
 
-* HTTP/HTTPS ports 80 and 443.
-* Port 32233 for license verification.
-* Any dedicated ports to connect tracking devices.
-* Port 3306 for working with the database on a dedicated server.
+* Порты **80** и **443** — для HTTP/HTTPS.  
+* Порт **32233** — для проверки лицензии.  
+* Порты, используемые устройствами для связи с сервером.  
+* Порт **3306** — для доступа к базе данных (если используется отдельный сервер).
 
-For more information, check the Network page in our instructions.
+Подробнее о сетевой конфигурации см. раздел [Сеть](../../../requirements/network.md).
 
-## Navixy package
+---
 
-Navixy On-premise distribution package is always available for download at the direct link:
+## Пакет ГдеМои
 
-[⬇️ Download Navixy package](https://get.navixy.com/latest)
+Дистрибутив **ГдеМои – Локальная версия** всегда доступен по прямой ссылке:
 
-{% hint style="info" %}
-Your browser may warn you that the download is not secure - this is normal for tar.gz archives. Ignore the warning and download the archive safely.
-{% endhint %}
+[⬇️ Скачать дистрибутив платформы](https://get.navixy.com/latest)
 
-Unpack the newly downloaded archive and navigate to the folder named `\navixy-package`. This will be the main folder this instruction works with, and any nested paths will refer to it unless explicitly specified.
+Браузер может предупредить о небезопасной загрузке — это нормально для архивов `.tar.gz`. Смело игнорируйте предупреждение и продолжайте загрузку.
 
-## Installation script
+После скачивания распакуйте архив и перейдите в папку `\navixy-package`.  
+Именно с ней будут связаны все последующие шаги.
 
-Proceed to `\navixy-package\windows` folder and run the `NavixyInstaller.ps1` script with Powershell:
+---
 
-![Run with Posershell](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250527-122145.png)
+## Установочный скрипт
 
-This will initiate the installation process, and you will see the installation type selection menu:
+Перейдите в каталог `\navixy-package\windows` и запустите скрипт **NavixyInstaller.ps1** через PowerShell.
 
-![Installer Menu](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250527-122250.png)
+![Запуск через PowerShell](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250527-122145.png)
 
-You can choose to install all components on a single server or deploy database and application on dedicated servers.
+После запуска появится меню выбора типа установки:
 
-Further steps will depend on the type of installation you choose.
+![Меню установщика](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250527-122250.png)
 
-## All components on one server
+Вы можете установить все компоненты на один сервер или развернуть базу данных и приложение отдельно.
 
-To deploy the entire platform on a single server, select `Install All Components (Full Installation)` - type the corresponding number `1` and press Enter.
+---
 
-{% hint style="danger" %}
-If you are going to deploy the database on a dedicated server separately from the application, skip this section and proceed to **Two servers** section below.
-{% endhint %}
+## Установка на один сервер
 
-The script will ask for the following values:
+Чтобы развернуть платформу на одном сервере, выберите пункт  
+`Install All Components (Full Installation)` — введите **1** и нажмите **Enter**.
 
-* **License key** - enter the combination of characters received from Navixy Technical Support. If you do not have a license key, terminate the installation and contact your Account Manager or Technical Support.
-* **Database password** - this password will be assigned to the database user `navixy` and will be used by backend services to access the database.
-* **Service domain** - basic domain of your instance. Will be used by your clients to access the tracking service.
-* **API domain** (optional) - if specified, will be used to access API. If not needed, press Enter to skip.
-* **Panel domain** (optional) - if specified, will be used to access Admin panel. If not needed, press Enter to skip.
-* **SSL configuration** - `y` for HTTPS, `n` for HTTP.
-* **SSL certificate paths** - full paths to certificates (in `crt` format) and private keys (in `key` format) for each of the specified domains. The certificate and private key files must be located in any folder on the server.
+Если вы планируете разместить базу данных на отдельном сервере, пропустите этот раздел и перейдите к разделу **Два сервера** ниже.
+
+Скрипт запросит следующие данные:
+
+* **Лицензионный ключ** — укажите код, полученный от отдела технических решений **ГдеМои**.  
+  При его отсутствии остановите установку и свяжитесь с вашим менеджером или по адресу **solutions@gdemoi.ru**.
+* **Пароль к базе данных** — будет присвоен пользователю `navixy` и использован сервисами платформы.
+* **Домен сервиса** — основной домен вашей платформы (используется клиентами для входа).
+* **Домен API** *(необязательно)* — если не требуется, просто нажмите Enter.
+* **Домен панели администратора** *(необязательно)* — если не требуется, просто нажмите Enter.
+* **Настройка SSL** — введите `y` для HTTPS или `n` для HTTP.
+* **Пути к SSL-сертификатам** — полные пути к файлам сертификатов (`.crt`) и приватных ключей (`.key`) для каждого домена.
 
 ![Windows - AiO](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250527-125239.png)
 
-After specifying the required parameters, the script will install the platform and all the necessary software. Here you will need to wait for some time. Here are the automatic actions you will see in the Powershell interface:
+После указания всех параметров скрипт установит платформу и необходимое окружение.  
+Процесс может занять некоторое время. В консоли PowerShell вы увидите шаги:
 
-1. JDK installation
-2. Nginx download
-3. MySQL installation
-4. MySQL configuration
-5. Database structure loading
-6. Web site configuration
-7. Backend services configuration
+1. Установка JDK  
+2. Загрузка Nginx  
+3. Установка MySQL  
+4. Настройка MySQL  
+5. Инициализация структуры БД  
+6. Настройка веб-сайта  
+7. Конфигурация backend-сервисов
 
-No active participation is needed on your part. If the script encounters any errors, it will notify you.
+Участие в процессе не требуется. Если возникнут ошибки — скрипт сообщит об этом.
 
-At this point, the installation is finished. Proceed to the Final steps section to check the platform operation.
+После завершения установки переходите к разделу **Заключительные шаги**.
 
-## Two-server installation
+---
 
-This section describes the installation of the platform split into two servers - a dedicated database server and a dedicated application server. Here you need to unpack `/navixy-package` on both servers and start with deploying the database.
+## Установка на два сервера
 
-### Database server
+В этом варианте база данных и приложение размещаются на отдельных серверах.  
+Распакуйте `/navixy-package` на обеих машинах и начните с установки БД.
 
-Run the `NavixyInstaller.ps1` script with Powershell and select `Install Database Only` - type the corresponding number `2` and press Enter.
+### Сервер базы данных
 
-The script will ask for the following values:
+Запустите `NavixyInstaller.ps1` через PowerShell и выберите  
+`Install Database Only` — введите **2** и нажмите **Enter**.
 
-* **License key** - enter the combination of characters received from Navixy Technical Support. If you do not have a license key, terminate the installation and contact your Account Manager or Technical Support.
-* **Database password** - this password will be assigned to the database user `navixy` and will be used by backend services to access the database. **Save this password!**
+Скрипт запросит:
+
+* **Лицензионный ключ** — получите его от отдела технических решений **ГдеМои**.  
+* **Пароль к базе данных** — назначается пользователю `navixy` (сохраните этот пароль!).
 
 ![Windows - DB server](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250528-124600.png)
 
-After specifying the required parameters, the script will install MySQL, import the database structure and populate it with default values. Wait for some time until the script finishes its operation.
+Далее установится MySQL, создастся структура базы и заполнятся стандартные значения.  
+Дождитесь завершения процесса и сохраните:
 
-Save the following values:
+* IP-адрес сервера  
+* Пароль базы данных  
 
-* Server IP address
-* Database password
+Эти данные понадобятся при установке приложения.
 
-You will need these values at the next stage.
+### Сервер приложения
 
-### Application server
+Запустите `NavixyInstaller.ps1` и выберите  
+`Install Frontend and Backend` — введите **3** и нажмите **Enter**.
 
-Run the `NavixyInstaller.ps1` script with Powershell and select `Install Frontend and Backend` - type the corresponding number `3` and press Enter.
+Скрипт запросит:
 
-The script will ask for the following values:
-
-* **Database server address** - enter the IP address of your database server. It can be a private or public IP depending on your network and firewall configuration.
-* **Database port** - the default port is 3306, so if you did not intentionally change it when installing the database, you can skip this step by pressing Enter.
-* **Database password** - this password will be assigned to the database user `navixy` and will be used by backend services to access the database.
-* **Service domain** - basic domain of your instance. Will be used by your clients to access the tracking service.
-* **API domain** (optional) - if specified, will be used to access API. If not needed, press Enter to skip.
-* **Panel domain** (optional) - if specified, will be used to access Admin panel. If not needed, press Enter to skip.
-* **SSL configuration** - `y` for HTTPS, `n` for HTTP.
-* **SSL certificate paths** - full paths to certificates (in `crt` format) and private keys (in `key` format) for each of the specified domains. The certificate and private key files must be located in any folder on the server.
+* **Адрес сервера БД** — IP-адрес базы данных (внутренний или внешний).  
+* **Порт БД** — по умолчанию 3306. Если не меняли, просто нажмите Enter.  
+* **Пароль БД** — тот, что был задан на предыдущем шаге.  
+* **Домен сервиса**, **домен API**, **домен панели администратора** — аналогично односерверной установке.  
+* **SSL-настройки** — `y` для HTTPS, `n` для HTTP.  
+* **Пути к сертификатам** — файлы `.crt` и `.key` должны находиться на сервере.
 
 ![Windows - App server](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250528-135513.png)
 
-After the required parameters are specified, the script will install the platform and all the necessary software. Wait for some time until the script installs JDK and Nginx and then configures the application. If the script encounters any errors, it will notify you.
+После указания параметров установка продолжится автоматически.  
+Дождитесь завершения — PowerShell покажет процесс установки JDK, Nginx и конфигурации приложения.  
+При ошибках скрипт уведомит об этом.
 
-At this point, the installation is finished. Proceed to the Final steps section.
+---
 
-## Final steps
+## Заключительные шаги
 
-After the script completes the application deployment, the Windows Services window will open. Wait for a couple of minutes, refresh the window and check the statuses of Navixy services:
+После завершения установки откроется окно **Службы Windows**.  
+Через пару минут обновите список и убедитесь, что активны службы:
 
-* Navixy api-server
-* Navixy sms-server
-* Navixy tcp-server
+* `Navixy api-server`  
+* `Navixy sms-server`  
+* `Navixy tcp-server`
 
-All three should be active (running), like in the screenshot below:
+Все три должны находиться в состоянии **Running (Работает)**.
 
 ![Windows services](../../../../../on-premise-how-to-guide/installation/advanced-installation/windows-installation/attachments/image-20250528-104137.png)
 
-{% hint style="info" %}
-If `Navixy tcp-server` shuts down, this is most commonly an indication of an incorrect license key. Contact Navixy technical support for further instructions.
-{% endhint %}
+Если служба `tcp-server` останавливается, это чаще всего указывает на неверный лицензионный ключ.  
+Обратитесь в **отдел технических решений**: **solutions@gdemoi.ru**.
 
-### Admin panel access
+---
 
-Once everything is installed and services are functional, you need to check the availability of your Admin panel domain in your browser. When you specify it in the address line, you should be directed to the login page.
+### Панель администратора
 
-The login credentials are default:
+После успешной установки откройте в браузере домен панели администратора.  
+Должна загрузиться страница входа.
 
-* username: _admin_
-* password: _admin_
+Данные по умолчанию:
 
-Consider changing your password for the Admin panel right after the login for security reasons.
+* **Логин:** `admin`  
+* **Пароль:** `admin`
 
-### Accessing User interface
+Рекомендуется сменить пароль администратора незамедлительно после первого входа.
 
-For the user interface to be available, you need to specify its domain in the Admin panel → Service Preferences first, as described in this document: [Domain name](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/domain-name).
+---
 
-If the above is not done, the user interface will not be able to open.
+### Пользовательский интерфейс
 
-### Updates
+Для работы пользовательского интерфейса необходимо указать его домен в разделе  
+**Панель администратора → Настройки сервиса**, как описано в документе  
+[Имя домена](https://app.gitbook.com/s/KdgeXg71LpaDrwexQYwp/settings/domain-name).
 
-To update Navixy deployed on Windows system to the most current version, please refer to this document: [Update on Windows](../../update/update-windows/)
+Без этого пользовательский интерфейс не будет доступен.
 
-### Troubleshooting
+---
 
-If you encounter any issues during the installation or configuration process, please refer to the [Troubleshooting](../../../troubleshooting/) pages for possible solutions.
+### Обновления
+
+Чтобы обновить платформу **ГдеМои – Локальная версия** на Windows до последней версии,  
+см. инструкцию [Обновление на Windows](../../update/update-windows/).
+
+---
+
+### Устранение неполадок
+
+Если в процессе установки или настройки возникнут ошибки,  
+ознакомьтесь с разделом [Устранение неполадок](../../../troubleshooting/), где приведены типовые сценарии и способы их устранения.
