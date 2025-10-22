@@ -29,6 +29,7 @@
 ```
 
 ## Расширенная JSON-конфигурация
+```
 {
   "addresses": ["smpp.server.com:1234"],
   "login": "username",
@@ -61,9 +62,9 @@
   "window_size": 10,
   "system_type": null,
   "registered_delivery_receipt_request": true,
-
   "support_binary": true
 }
+```
 
 ## Пояснение основных параметров
 
