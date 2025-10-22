@@ -1,45 +1,38 @@
-# Applications
+# Приложения
 
-In your Navixy instance, you can modify the list of web applications available to your users by adding or removing custom apps to the main menu.
+В вашей платформе **ГдеМои — Локальная версия** вы можете изменять список веб-приложений, доступных пользователям, добавляя или удаляя собственные приложения из главного меню.
 
-{% hint style="info" %}
-Standard modules, such as Field Service and Fleet Management, cannot be enabled or disabled in the database or in platform configuration files. Their presence in the interface is conditioned by the terms of your instance's tariff plan.
-{% endhint %}
+Стандартные модули, такие как «Полевой сервис» и «Управление автопарком», не могут быть включены или отключены в базе данных или в конфигурационных файлах платформы. Их наличие в интерфейсе определяется условиями тарифного плана платформы.
 
-## Embedding custom applications to Navixy
+## Встраивание собственных приложений в платформу
 
-The Navixy platform allows you to integrate your custom web application into the Navixy main application interface. This custom application will appear as a distinct item in the main menu, and upon clicking, it will open a specified external URL address as an internal interface application.
+Платформа **ГдеМои** позволяет интегрировать ваше собственное веб-приложение в основной интерфейс. Такое приложение будет отображаться как отдельный пункт главного меню, и при нажатии на него откроется указанный внешний URL-адрес в виде встроенного интерфейсного приложения.
 
 ![On-Premise - Configuration - Applications](../../../on-premise/on-premise/configuration/attachments/image-20230810-133621.png)
 
-There are several parameters the integration can have:
+Интеграция приложения может включать следующие параметры:
 
-* _%name –_ application name
-* _%link\_to\_the\_app –_ link to the application
+* _%name_ — имя приложения  
+* _%link_to_the_app_ — ссылка на приложение
 
-To activate an application and make it available for the entire service account or specific users, use the following SQL queries in the database.
+Чтобы активировать приложение и сделать его доступным для всего сервисного аккаунта или для отдельных пользователей, выполните в базе данных следующие SQL-запросы.
 
-**Enabling the app for the entire service account (all users)**
+### Включение приложения для всего сервисного аккаунта (всех пользователей)
 
-{% code overflow="wrap" %}
-```sql
+```
 INSERT INTO google.plugins2dealers (dealer_id, plugin_id, parameters) VALUES (1, 52, '[{"name": "%name","app_page_url": "%link_to_the_app"}]');
 ```
-{% endcode %}
 
-Change the highlighted parameters in bold to match the name and link to your app.
+Замените выделенные параметры на соответствующие имя и ссылку вашего приложения.
 
-**Enabling the app to individual user accounts**
+### Включение приложения для отдельных пользователей
 
-{% code overflow="wrap" %}
-```sql
+```
 INSERT INTO google.plugins2users (user_id, plugin_id, parameters) VALUES (%user_id, 52, '[{"name": "%name","app_page_url": "%link_to_the_app"}]');
 
 ```
-{% endcode %}
 
-In this case, replace %user\_id with the user ID that should have access to this app. If multiple users need access, each user will require their own command.
+В этом случае замените %user_id на идентификатор пользователя, которому нужно предоставить доступ к приложению.  
+Если доступ требуется нескольким пользователям, выполните команду отдельно для каждого.
 
-{% hint style="danger" %}
-Note that if you are using an HTTPS connection, your app link must also be HTTPS to avoid a mixed content error. Once you have added the app successfully, it should appear in the Navixy platform menu.
-{% endhint %}
+> ⚠️ Если вы используете защищённое соединение HTTPS, ссылка на приложение также должна быть HTTPS, иначе возникнет ошибка смешанного содержимого. После успешного добавления приложение появится в меню платформы.
