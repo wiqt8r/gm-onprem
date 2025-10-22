@@ -51,5 +51,3 @@ timers.offlineTimeout=15m
 После изменения параметров сохраните файл конфигурации и перезапустите **tcp-server**, чтобы применить настройки.
 
 Эти изменения позволяют адаптировать время перехода между статусами под требования пользователей и обеспечить оптимальную работу устройств на платформе.
-
-With these adjustments, the timeout settings can be customized to suit users' needs and ensure optimal device performance on the Navixy platform.
