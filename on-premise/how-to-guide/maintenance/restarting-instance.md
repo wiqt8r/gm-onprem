@@ -1,22 +1,26 @@
-# Restarting instance
+# Перезапуск платформы
 
-Restarting the Navixy platform may be necessary in certain situations such as troubleshooting, configuration changes, or to verify the license, especially after access has been previously suspended due to non-payment.
+Перезапуск платформы ГдеМои может потребоваться в различных ситуациях: при устранении неполадок, после внесения изменений в конфигурацию или для повторной проверки лицензии — особенно если доступ ранее был приостановлен из-за просроченного платежа.
 
-If you need to perform any of the tasks mentioned above, restarting the Navixy platform backend is usually sufficient. This backend consists of three Java services, namely the "api-server", "sms-server", and "tcp-server".
+В большинстве случаев достаточно перезапустить backend платформы. Backend состоит из трёх Java-сервисов:
 
-After restarting the services, it may take 60-90 seconds for them to start and stabilize. Therefore, it is recommended to wait for this period before checking the platform's operation.
+* **api-server**
+* **sms-server**
+* **tcp-server**
 
-## Restarting on Linux
+После перезапуска сервисам требуется примерно **60–90 секунд**, чтобы полностью запуститься и стабилизироваться. Рекомендуется подождать это время перед проверкой работы платформы.
 
-To restart the Navixy instance on on Linux, just run the following command:
+## Перезапуск на Linux
+
+Чтобы перезапустить платформу на Linux, выполните команду:
 
 ```
 restart-navixy
 ```
 
-This command will execute a script that restarts the backend services. The process is fully automated, so all you need to do is wait for it to complete.
+Эта команда запускает скрипт, который перезапускает все backend-сервисы. Процесс выполняется автоматически — просто дождитесь завершения.
 
-You can also restart any of the three backend servers separately. To do this, use the following commands:
+Вы также можете перезапускать backend-сервисы по отдельности:
 
 ```
 systemctl restart api-server
@@ -24,14 +28,18 @@ systemctl restart sms-server
 systemctl restart tcp-server
 ```
 
-## Restarting on Windows
+## Перезапуск на Windows
 
-If Navixy instance is installed on Windows, the platform backend services will work as regular Windows NT services. To access the services, open the **services.msc** snap-in, and you will find three Navixy services in the list:
+Если платформа установлена на Windows, backend-сервисы работают как стандартные NT-службы. Откройте консоль служб:
 
-* Navixy api-server
-* Navixy sms-server
-* Navixy tcp-server
+**services.msc**
 
-To restart any required service or all of them, simply right-click on the corresponding service(s) and select "Restart".
+В списке вы увидите следующие сервисы:
+
+* Navixy api-server  
+* Navixy sms-server  
+* Navixy tcp-server  
+
+Чтобы перезапустить один или несколько сервисов — выберите нужный, нажмите правой кнопкой мыши и выберите **Restart**.
 
 ![](../../../on-premise/on-premise/maintenance/attachments/image-20230810-134010.png)
